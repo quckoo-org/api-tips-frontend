@@ -1,0 +1,29 @@
+helmDefaults:
+  wait: true
+  atomic: true
+  timeout: 300
+
+repositories:
+  - url: {{ .Values.HARBOR_HOST | toString }}/{{ .Values.HARBOR_PROJECT_NAME | toString }}
+    name: {{ .Values.APPLICATION_NAME | toString }}
+    username: 'robot$api-tips+access'
+    password: {{ requiredEnv "HARBOR_ROBOT_TOKEN" }}
+    oci: true
+
+environments:
+  development:
+  production:
+
+releases:
+  - name: {{ .Values.APPLICATION_NAME | toString }}
+    namespace: {{ .Values.K8S_NAMESPACE | toString }}
+    version: {{ .Values.CHART_VERSION | toString }}
+    createNamespace: false
+    chart: {{ .Values.APPLICATION_NAME | toString }}/{{ .Values.APPLICATION_NAME | toString }}-chart/{{ .Values.APPLICATION_NAME | toString }}
+    values:
+      - image:
+          repository: {{ .Values.HARBOR_HOST | toString }}/{{ .Values.HARBOR_PROJECT_NAME | toString }}/{{ .Values.APPLICATION_NAME | toString }}
+          tag: {{ .Values.IMAGE_TAG | toString }}
+      - imagePullSecrets:
+          - name: {{ .Values.SECRET_NAME | toString }}
+      - ./values.yaml.gotmpl

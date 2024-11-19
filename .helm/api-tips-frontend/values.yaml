@@ -1,0 +1,98 @@
+replicaCount: 1
+
+image:
+  repository: registry.quckoo.net/api-tips/api-tips-frontend
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: 
+  - name: "api-tips-secret"
+
+nameOverride: ""
+fullnameOverride: ""
+
+imagePull:
+  credentials: ""
+  secretName: "api-tips-secret"
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+  portName: http
+  protocol: TCP
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+
+resources: 
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 10m
+    memory: 10Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+    # -- The liveness probe initial delay seconds
+  initialDelaySeconds: 10
+    # -- The liveness probe period seconds
+  periodSeconds: 5
+    # -- The liveness probe timeout seconds
+  timeoutSeconds: 30
+    # -- The liveness probe failure threshold
+  failureThreshold: 3
+    # -- The liveness probe success threshold
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+    # -- The readiness probe initial delay seconds
+  initialDelaySeconds: 10
+    # -- The readiness probe period seconds
+  periodSeconds: 5
+    # -- The readiness probe timeout seconds
+  timeoutSeconds: 30
+    # -- The readiness probe failure threshold
+  failureThreshold: 3
+    # -- The readiness probe success threshold
+  successThreshold: 1
+
+startupProbe: {}
