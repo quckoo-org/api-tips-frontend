@@ -1,0 +1,31 @@
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    {{ if eq .Environment.Name "production" }}
+    cert-manager.io/cluster-issuer: "letsencrypt-api-tips-frontend-prod"
+    {{else}}
+    cert-manager.io/cluster-issuer: "letsencrypt-api-tips-frontend-dev"
+    {{end}}
+  hosts:
+    {{ if eq .Environment.Name "production" }}
+    - host: api-tips.quckoo.net
+    {{else}}
+    - host: beta.api-tips.quckoo.net
+    {{end}}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    {{ if eq .Environment.Name "production" }}
+    - secretName: letsencrypt-api-tips-frontend-prod-tls
+    {{else}}
+    - secretName: letsencrypt-api-tips-frontend-dev-tls
+    {{end}}
+      hosts:
+        {{ if eq .Environment.Name "production" }}
+        - api-tips.quckoo.net
+        {{else}}
+        - beta.api-tips.quckoo.net
+        {{end}}
