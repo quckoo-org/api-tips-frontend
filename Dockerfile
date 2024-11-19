@@ -1,22 +1,27 @@
-FROM docker.io/node:22.11-bookworm-slim AS builder
+FROM node:22.11.0-alpine3.20 AS builder
 WORKDIR /app
 
-ARG BUILD_ENV=production
-
-# install and use yarn 4.x
 RUN corepack enable
 RUN corepack prepare yarn@4.5.1 --activate
 
-# install dependencies
-COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install --immutable
+COPY .yarnrc.yml ./
+COPY package.json yarn.lock ./
+
+RUN yarn install --immutable --inline-builds
 
 COPY . .
-RUN mkdir build
-#RUN yarn build:proto
 RUN yarn build
 
-FROM ghcr.io/nginxinc/nginx-unprivileged:1.25.2-alpine-slim AS final
-WORKDIR /usr/share/nginx/html
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder --chown=101:101 /app/build/ .
+FROM node:22.11.0-alpine3.20 AS runner
+WORKDIR /app
+
+RUN corepack enable
+RUN corepack prepare yarn@4.5.1 --activate
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

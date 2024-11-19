@@ -24,7 +24,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },
-  "packageManager": "yarn@4.5.1",
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "eslint --max-warnings 0 --format stylish --fix",
@@ -33,5 +32,9 @@
     "**/*.{ts,tsx,js,yml,yaml,json,md,ice}": [
       "prettier --write"
     ]
+  },
+  "packageManager": "yarn@4.5.1",
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
