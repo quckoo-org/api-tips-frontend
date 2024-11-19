@@ -1,0 +1,70 @@
+run-name: ${{ inputs.comment }} [${{ github.ref_name }} ref] ${{ inputs.application }} - ${{ inputs.environment }} by @${{ github.actor }}
+name: CI/CD
+on:
+  workflow_dispatch:
+    inputs:
+      application:
+        description: 'Application for deploy'
+        required: true
+        default: api-tips-frontend
+        type: choice
+        options:
+          - api-tips-frontend
+      environment:
+        type: environment
+        required: true
+        description: 'environment to deploy, for prod use workflow from tags'
+        default: development
+      comment:
+        description: "comment"
+        required: true
+        default: "test"
+        type: string
+
+defaults:
+  run:
+    working-directory: ./
+
+jobs:
+  check_environment:
+    runs-on: 'ubuntu-latest'
+    if: ${{ always() && !(contains(needs.*.result, 'failure')) && !cancelled() }}
+    outputs:
+      status: ${{ join(steps.*.conclusion) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: step_development
+        name: Development
+        if: ${{ inputs.environment == 'development' && github.ref_type != 'tag' }}
+        run: |
+          echo "Branch [${GITHUB_REF##*/}] would be deployed to [${{ inputs.environment }}]" >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
+      - id: step_production
+        name: Production
+        if: ${{ inputs.environment == 'production' && github.ref_type == 'tag' }}
+        run: |
+          echo "Branch [${GITHUB_REF##*/}] would be deployed to [${{ inputs.environment }}]" >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
+      - name: Fail
+        if: steps.step_development.conclusion == 'skipped' && steps.step_production.conclusion == 'skipped'
+        run: |
+          echo "Deploy failed! Production includes only tagged versions, development excludes tagged versions!" >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+
+  build:
+    uses: quckoo-org/api-tips-workflows/.github/workflows/build-fe.yaml@master
+    if: ${{ always() && !(contains(needs.*.result, 'failure')) && !cancelled() }}
+    needs:
+      - check_environment
+    with:
+      environment: ${{ inputs.environment }}
+      application: ${{ inputs.application }}
+      comment: ${{ inputs.comment }}
+    secrets:
+      MATTERMOST_WEBHOOK : ${{ secrets.MATTERMOST_WEBHOOK }}
+      HARBOR_ROBOT_TOKEN : ${{ secrets.HARBOR_ROBOT_TOKEN }}
+      KUBE_CONFIG : ${{ secrets.KUBE_CONFIG }}
