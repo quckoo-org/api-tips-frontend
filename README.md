@@ -4,6 +4,6 @@
 
 - [Application url](beta.api-tips.quckoo.net)  [beta version]
 ```sh
-curl beta.api-tips.api.quckoo.net
+curl beta.api-tips.quckoo.net
 ```
 - [Harbor registry](registry.quckoo.net/api-tips/) [images & helm charts]
