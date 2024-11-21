@@ -1,0 +1,69 @@
+
+syntax = "proto3";
+package custom_enums.v1;
+
+/*
+ * Статусы операций
+ *  http status codes 
+ *    https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ *  gRPC status codes
+ *    https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+ */
+enum OperationStatus {
+  /*
+   *  Дефолтный (неопределенный) статус операции
+   */
+  OPERATION_STATUS_UNSPECIFIED = 0;
+  
+  /*
+   *  Статус операции сигнализирующий о корректом завершении операции
+   *  http analog status code: 200
+   *  gRPC analog status code: 1
+   */
+  OPERATION_STATUS_OK = 1;
+  
+  /*
+   *  Статус операции сигнализирующий о не корректом завершении операции
+   *  http analog status code: 400
+   *  gRPC analog status code: 8,9,11
+   */
+  OPERATION_STATUS_ERROR = 2;
+  
+  /*
+   *  Статус операции сигнализирующий о недостаточном наборе прав для его вызова
+   *  http analog status code: 403
+   *  gRPC analog status code: 7
+   */
+  OPERATION_STATUS_NOT_PERMITTED = 3;
+  
+  /*
+   *  Статус операции сигнализирующий о том что операция продублирована
+   *  http analog status code: 409
+   *  gRPC analog status code: 6
+   */
+  OPERATION_STATUS_DUPLICATE = 4;
+  
+  /*
+   *  Статус операции сигнализирующий о не корректой обработке со стороны сервера
+   *  http analog status code: 500
+   *  gRPC analog status code: 13,14,15
+   */
+  OPERATION_STATUS_SERVER_ERROR = 5;
+  
+  /*
+   *  Статус операции сигнализирующий о том, что данных по запросу не обнаружено
+   *  http analog status code: 204
+   *  gRPC analog status code: 5
+   */
+  OPERATION_STATUS_NO_DATA = 6;
+
+  /*
+   *  Статус операции сигнализирующий о том, что при текущих условиях операцию выполнить нельзя
+   */
+  OPERATION_STATUS_DECLINED = 7;
+
+  /*
+   *  Статус операции - заблокировано
+   */
+  OPERATION_STATUS_LOCKED = 8;
+}

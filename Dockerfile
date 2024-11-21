@@ -10,6 +10,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --immutable --inline-builds
 
 COPY . .
+RUN yarn build:proto
 RUN yarn build
 
 FROM node:22.11.0-alpine3.20 AS runner
