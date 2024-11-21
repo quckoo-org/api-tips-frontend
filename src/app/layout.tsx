@@ -4,7 +4,7 @@ import "./globals.css";
 import {QueryClient, QueryClientProvider} from "react-query";
 import '@mantine/core/styles.css';
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import {  MantineProvider } from '@mantine/core';
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

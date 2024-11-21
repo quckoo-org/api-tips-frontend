@@ -1,7 +1,7 @@
 'use client'
-import React, {ChangeEvent, useState} from 'react';
-import {useMutation, useQuery} from "react-query";
-import {createChannel, createClient, FetchTransport} from "nice-grpc-web";
+import React, { useState} from 'react';
+import {useMutation } from "react-query";
+import {createChannel, createClient } from "nice-grpc-web";
 import {PingPongRequest, TestServiceDefinition} from "@/proto/test/v1/test";
 import {Button, TextInput} from "@mantine/core";
 
