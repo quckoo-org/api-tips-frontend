@@ -213,6 +213,7 @@ permissions/client/lib
 
 # proto
 **/src/proto
+**/src/shared/proto
 
 # devspace conf
 .devspace
