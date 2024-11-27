@@ -1,0 +1,10 @@
+**/node_modules
+**/build
+**/.local
+.idea/
+.helm/
+.husky/
+*.yaml
+*.yml
+.yarn/
+.next/
