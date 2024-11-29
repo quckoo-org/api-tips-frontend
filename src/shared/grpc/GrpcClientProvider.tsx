@@ -8,7 +8,7 @@ import { GrpcClientsContextValue, grpcClientsContext } from "./context";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
-const url = process.env.NEXT_PUBLIC_GRPC_URL ?? "";
+const url =  "https://beta.api-tips.api.quckoo.net";
 
 const channel = createChannel(url);
 
