@@ -1,8 +1,8 @@
-import { fontWeight } from "./fontWeight";
-import { twConfig } from "./config";
 import defaultColors from "tailwindcss/colors";
 
 import { colors } from "./colors";
+import { twConfig } from "./config";
+import { fontWeight } from "./fontWeight";
 
 type DefaultColorsT = typeof defaultColors;
 
