@@ -1,5 +1,5 @@
-import { OperationStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 import { ClientError, Status } from "nice-grpc-web";
+import { OperationStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 
 export class DeltaServerError extends Error {
   status: OperationStatus;
@@ -26,12 +26,13 @@ export const clientErrorWrapper = (accessFn: (...args: any) => any) => {
     try {
       const res = await accessFn(...args);
 
-      if (res && res.status !== OperationStatus.OPERATION_STATUS_OK) {
-        throw new DeltaServerError(res.status, res, "", res.statusDescription);
-      }
+      // if (res.err) {
+      //   throw new DeltaServerError(res.status, res, "", res.statusDescription);
+      // }
 
       return res;
     } catch (e) {
+      console.log({ e }, "erererr");
       if (e instanceof ClientError) {
         switch (e.code) {
           case Status.PERMISSION_DENIED:

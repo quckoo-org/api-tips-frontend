@@ -1,4 +1,4 @@
-import { Button, createTheme } from "@mantine/core";
+import { createTheme } from "@mantine/core";
 import { typedTwConfig } from "../tailwind";
 import { parseTailwindColors } from "./utils/parseTailwindColors";
 
@@ -9,11 +9,4 @@ export const mantineTheme = createTheme({
   colors: tailWindColors,
   primaryColor: "purple",
   black: typedTwConfig.theme.colors.indigo[700],
-  components: {
-    Button: Button.extend({
-      defaultProps: {
-        size: "md",
-      },
-    }),
-  },
 });

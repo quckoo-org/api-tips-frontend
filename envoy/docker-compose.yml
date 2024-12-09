@@ -7,3 +7,15 @@ services:
     ports:
       - "8085:9901"
       - "8084:8080"
+    # sysctls:
+    #   net.ipv6.conf.all.disable_ipv6: "1"
+    #   net.ipv6.conf.default.disable_ipv6: "1"
+    # networks: 
+    #   - cont
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+# networks:
+#   cont:
+#     driver:  bridge
+#     enable_ipv6: false
