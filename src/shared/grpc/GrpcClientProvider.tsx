@@ -5,6 +5,7 @@ import { useMemo } from "use-memo-one";
 
 import { AuthMiddleware } from "./AuthMiddleware";
 import { GrpcClientsContextValue, grpcClientsContext } from "./context";
+import { errorMiddleware } from "./errorMiddleware";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
@@ -16,6 +17,7 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
+      .use(errorMiddleware)
       .use(retryMiddleware);
 
     clientFactory = clientFactory.use(
@@ -45,5 +47,3 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
     </grpcClientsContext.Provider>
   );
 };
-
-GrpcClientsProvider.displayName = "GrpcClientsProvider";

@@ -48,6 +48,7 @@ export async function* loggerMiddleware<Request, Response>(
 
     return response;
   } catch (e) {
+    console.log(e, "e in logger");
     hadError = true;
     err = e;
     throw e;
