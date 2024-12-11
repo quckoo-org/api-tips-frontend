@@ -9,4 +9,11 @@ export const mantineTheme = createTheme({
   colors: tailWindColors,
   primaryColor: "purple",
   black: typedTwConfig.theme.colors.indigo[700],
+  components: {
+    Checkbox: {
+      styles: {
+        cursor: "pointer",
+      },
+    },
+  },
 });

@@ -6,7 +6,7 @@ import { createFilterMapper } from "../lib/create-filter-mapper";
 
 export const usePagination = () => {
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 25;
   const mounded = useRef(false);
   const searchParams = useSearchParams();
 
@@ -20,8 +20,6 @@ export const usePagination = () => {
 
     if (page >= 1 && page <= total) {
       setPage(page);
-
-      filterMapper.toSearchParams({ page, pageSize });
     }
   };
 

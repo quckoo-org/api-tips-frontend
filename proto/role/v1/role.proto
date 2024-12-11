@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package grpc.role.v1;
+
+message Role {
+  int32 id = 1;
+  string value = 2;
+}
+
+service RoleService {
+  rpc createRole (CreateRoleRequest) returns (RoleResponse);
+  rpc getRole (GetRoleRequest) returns (RoleResponse);
+  rpc getAllRoles (ListRolesRequest) returns (ListRolesResponse);
+  rpc updateRole (UpdateRoleRequest) returns (RoleResponse);
+  rpc deleteRole (DeleteRoleRequest) returns (DeleteRoleResponse);
+}
+
+message CreateRoleRequest {
+  string value = 1;
+}
+
+message GetRoleRequest {
+  int32 id = 1;
+}
+
+message ListRolesRequest {}
+
+message ListRolesResponse {
+  repeated Role roles = 1;
+}
+
+message UpdateRoleRequest {
+  int32 id = 1;
+  string value = 2;
+}
+
+message DeleteRoleRequest {
+  int32 id = 1;
+}
+
+message RoleResponse {
+  Role role = 1;
+}
+
+message DeleteRoleResponse {
+  bool success = 1;
+}

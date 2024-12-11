@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package grpc.country.v1;
+
+service CountryService {
+  rpc getAllCountries (Empty) returns (CountryList);
+}
+
+message Empty {}
+
+message Country {
+  int32 id = 1;
+  string name = 2;
+  string alpha2Code = 3;
+  string alpha3Code = 4;
+  string numericCode = 5;
+}
+
+message CountryList {
+  repeated Country countries = 1;
+}

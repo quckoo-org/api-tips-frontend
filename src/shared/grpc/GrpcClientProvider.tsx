@@ -17,8 +17,8 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
-      .use(errorMiddleware)
-      .use(retryMiddleware);
+      .use(retryMiddleware)
+      .use(errorMiddleware);
 
     clientFactory = clientFactory.use(
       AuthMiddleware({ getAccessToken: TokenService.getAccessToken }),
