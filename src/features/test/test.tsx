@@ -11,7 +11,10 @@ import {
 import { Button, TextInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { Client } from "nice-grpc-web";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {use} from 'react';
+import { log } from "node:util";
+
 
 export const useTestClient = () => {
   const client = useGrpcClient(TestServiceDefinition);
@@ -37,6 +40,25 @@ const Test = () => {
     mutationKey: ["pingpong"],
     mutationFn: (request: PingPongRequest) => pingPong(request),
   });
+  useEffect(() => {
+    fetch('http://localhost:8086/auth/login', {
+      method: 'POST',
+      credentials: 'include', // Важно для передачи кук
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // Add your request payload here
+      }),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+    document.cookie.split('; ').forEach((cookie) => {
+      console.log('Cookie:', cookie);
+    });
+  }, []);
+
 
   const sendReqeust = () => {
     pingpongMutation.mutate({ ping: value } as PingPongRequest, {
