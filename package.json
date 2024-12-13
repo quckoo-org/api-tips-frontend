@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "proto:gen": "rimraf src/proto && proto-gen.sh",
-    "build:proto": "rimraf src/proto && mkdirp src/proto && globstar -- grpc_tools_node_protoc --experimental_allow_proto3_optional --ts_proto_out=./src/shared/proto --ts_proto_opt=useExactTypes=false,outputTypeRegistry=false,outputServices=generic-definitions,outputServices=nice-grpc,stringEnums=true,oneof=unions-value,esModuleInterop=true --descriptor_set_out=./src/shared/proto/protoset.bin --include_imports -I ./proto \"./@(proto_deps|proto)/**/*.proto\"",
+    "build:proto": "rimraf src/shared/proto && mkdirp src/shared/proto && globstar -- grpc_tools_node_protoc --experimental_allow_proto3_optional --ts_proto_out=./src/shared/proto --ts_proto_opt=useExactTypes=false,outputTypeRegistry=false,outputServices=generic-definitions,outputServices=nice-grpc,stringEnums=true,oneof=unions-value,esModuleInterop=true --descriptor_set_out=./src/shared/proto/protoset.bin --include_imports -I ./proto \"./@(proto_deps|proto)/**/*.proto\"",
     "start:local": "cd envoy &&  docker compose up -d && cd .. && next dev --turbopack"
   },
   "dependencies": {
