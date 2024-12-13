@@ -5,7 +5,6 @@ RUN corepack enable
 RUN corepack prepare yarn@4.5.3 --activate
 
 COPY .yarnrc.yml ./
-COPY ./.yarn ./.yarn
 COPY package.json yarn.lock ./
 
 RUN yarn install --immutable --inline-builds
