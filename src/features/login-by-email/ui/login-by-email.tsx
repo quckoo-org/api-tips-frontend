@@ -1,10 +1,10 @@
 "use client";
 
-import { FC, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { fetchClient } from "@/shared/utils/fetchClient";
-import { authStore } from "@/shared/stores/AuthStore";
 import { Button } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
+import { authStore } from "@/shared/stores/AuthStore";
+import { fetchClient } from "@/shared/utils/fetchClient";
 
 type LoginByEmailProps = {
   className?: string;
@@ -14,9 +14,7 @@ export const LoginByEmail: FC<LoginByEmailProps> = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams()
-  const verificationStatus = searchParams.get('verification ')
-  console.log(verificationStatus);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -25,10 +23,12 @@ export const LoginByEmail: FC<LoginByEmailProps> = () => {
     e.preventDefault();
     try {
       const { data } = await fetchClient.post('/auth/login', form);
-      localStorage.setItem('accessToken', data.accessToken)
-      authStore.login(data);
+      authStore.login(data.user);
+      console.log(data.user);
       router.push('/');
-    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+    } catch (err: never) {
       setError(err.response?.data?.message || 'Login failed');
     }
   };

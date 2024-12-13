@@ -1,5 +1,9 @@
 "use client";
 
+import { Button, TextInput } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
+import { Client } from "nice-grpc-web";
+import { useState } from "react";
 import { clientErrorWrapper } from "@/shared/grpc/errorHandlers/clientErrorWrapper";
 import { useGrpcClient } from "@/shared/grpc/useGrpcClient";
 import LocaleSwitcher from "@/shared/locale/locale";
@@ -8,12 +12,7 @@ import {
   PingPongRequest,
   TestServiceDefinition,
 } from "@/shared/proto/test/v1/test";
-import { Button, TextInput } from "@mantine/core";
-import { useMutation } from "@tanstack/react-query";
-import { Client } from "nice-grpc-web";
-import { useEffect, useState } from "react";
-import {use} from 'react';
-import { log } from "node:util";
+
 
 
 export const useTestClient = () => {

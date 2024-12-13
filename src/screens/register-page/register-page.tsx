@@ -1,12 +1,12 @@
 'use client';
 
+import { Button } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { fetchClient } from "@/shared/utils/fetchClient";
-import { Button } from "@mantine/core";
-import { ROUTES } from "@/shared/router";
-import { notifications } from "@mantine/notifications";
 import { toast } from "react-hot-toast";
+import { ROUTES } from "@/shared/router";
+import { fetchClient } from "@/shared/utils/fetchClient";
 
 const RegisterPage = () => {
   const [form, setForm] = useState({ email: '', password: '', name: '', lastname: '' });
@@ -30,7 +30,9 @@ const RegisterPage = () => {
       toast.success('Registration Successful. Please check your email to verify your account.', {duration: 5000})
       router.push(ROUTES.LOGIN)
 
-    } catch (err: any) {
+    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setError(err.response?.data?.message || 'Registration failed');
     }
   };

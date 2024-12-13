@@ -1,25 +1,31 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { observer } from 'mobx-react-lite';
 import { Menu, Button } from '@mantine/core';
-import { authStore } from "@/shared/stores/AuthStore";
+import { observer } from 'mobx-react-lite';
+import Link from 'next/link';
+import { usePathname, useRouter } from "next/navigation";
+import { TokenService } from "@/shared/lib/tokenService";
 import { ROUTES } from "@/shared/router";
+import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
 
 const Header = observer(() => {
   const pathname = usePathname();
   const endOfPathName = pathname.split('/')[2]
-  const isAuth = localStorage?.getItem('accessToken')
-  const isAuthPage = endOfPathName === 'login' || pathname === 'register';
+  const router = useRouter()
 
+  const isAuthPage = endOfPathName === 'login' || pathname === 'register';
+  const logout = async () => {
+   await fetchClient.post('/auth/logout');
+    authStore.logout();
+    router.push(ROUTES.HOME)
+  }
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
       <Link href="/" className="text-xl font-bold">
         Home
       </Link>
-      {isAuth ? (
+      { TokenService.getAccessToken()? (
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
             <Button variant="subtle" className="text-white">
@@ -27,10 +33,7 @@ const Header = observer(() => {
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={async () => {
-              await fetchClient.post('/auth/logout');
-              authStore.logout();
-            }}>Logout</Menu.Item>
+            <Menu.Item onClick={logout}>Logout</Menu.Item>
           </Menu.Dropdown>
         </Menu>
       ) : (

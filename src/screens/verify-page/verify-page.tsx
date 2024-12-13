@@ -2,10 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import axios from 'axios';
-import { ROUTES } from "@/shared/router";
-import { fetchClient } from "@/shared/utils/fetchClient";
 import { toast } from "react-hot-toast";
+import { fetchClient } from "@/shared/utils/fetchClient";
 
 const VerifyPage = () => {
   const router = useRouter();

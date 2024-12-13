@@ -1,5 +1,5 @@
-import { OperationStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 import { ClientError, Status } from "nice-grpc-web";
+import { OperationStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 
 export class DeltaServerError extends Error {
   status: OperationStatus;
