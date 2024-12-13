@@ -11,8 +11,7 @@ type LoginPageProps = {
 export const LoginPage: FC<LoginPageProps> = ({ className }) => {
   return (
     <div className={clsx("", className)}>
-      Логин страница
-      <Test />
+      {/*<Test />*/}
       <LoginByEmail />
     </div>
   );

@@ -40,24 +40,6 @@ const Test = () => {
     mutationKey: ["pingpong"],
     mutationFn: (request: PingPongRequest) => pingPong(request),
   });
-  useEffect(() => {
-    fetch('http://localhost:8086/auth/login', {
-      method: 'POST',
-      credentials: 'include', // Важно для передачи кук
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // Add your request payload here
-      }),
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
-    document.cookie.split('; ').forEach((cookie) => {
-      console.log('Cookie:', cookie);
-    });
-  }, []);
 
 
   const sendReqeust = () => {
