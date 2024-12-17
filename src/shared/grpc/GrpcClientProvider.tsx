@@ -8,11 +8,7 @@ import { GrpcClientsContextValue, grpcClientsContext } from "./context";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
-const URI = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_HTTP2_PORT
-    ? `http://${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_HTTP2_PORT}`
-    : 'http://api-tips-backend:3001';
-
-const channel = createChannel(URI);
+const channel = createChannel('https://beta.api-tips.api.quckoo.net');
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
