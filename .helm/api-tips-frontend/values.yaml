@@ -66,33 +66,8 @@ tolerations: []
 
 affinity: {}
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-    # -- The liveness probe initial delay seconds
-  initialDelaySeconds: 10
-    # -- The liveness probe period seconds
-  periodSeconds: 5
-    # -- The liveness probe timeout seconds
-  timeoutSeconds: 30
-    # -- The liveness probe failure threshold
-  failureThreshold: 3
-    # -- The liveness probe success threshold
-  successThreshold: 1
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-    # -- The readiness probe initial delay seconds
-  initialDelaySeconds: 10
-    # -- The readiness probe period seconds
-  periodSeconds: 5
-    # -- The readiness probe timeout seconds
-  timeoutSeconds: 30
-    # -- The readiness probe failure threshold
-  failureThreshold: 3
-    # -- The readiness probe success threshold
-  successThreshold: 1
+additionalEnvs: []
 
+livenessProbe: {}
+readinessProbe: {}
 startupProbe: {}
