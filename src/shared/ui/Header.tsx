@@ -20,6 +20,7 @@ const Header = observer(() => {
     authStore.logout();
     router.push(ROUTES.HOME)
   }
+  console.log(TokenService.getAccessToken());
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
       <Link href="/" className="text-xl font-bold">

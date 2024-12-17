@@ -83,7 +83,7 @@ static_resources:
                   address:
                     socket_address:
                       address: host.docker.internal
-                      port_value: 6000
+                      port_value: 3001
     - name: http_service
       connect_timeout: 0.25s
       type: LOGICAL_DNS
