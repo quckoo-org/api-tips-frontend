@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@mantine/core";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -24,7 +25,10 @@ export const LoginByEmail: FC<LoginByEmailProps> = () => {
     try {
       const { data } = await fetchClient.post('/auth/login', form);
       authStore.login(data.user);
-      console.log(data.user);
+      console.log(data.user, data.accessToken);
+      Cookies.set('accessToken', data.accessToken, {
+        expires: 15 * 60 * 1000
+      })
       router.push('/');
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
