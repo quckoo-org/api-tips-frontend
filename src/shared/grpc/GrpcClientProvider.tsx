@@ -10,7 +10,7 @@ import { TokenService } from "../lib/tokenService";
 
 const URI = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_HTTP2_PORT
     ? `http://${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_HTTP2_PORT}`
-    : 'http://localhost:3001';
+    : 'http://api-tips-backend:3001';
 
 const channel = createChannel(URI);
 
