@@ -29,3 +29,11 @@ ingress:
         {{else}}
         - beta.api-tips.quckoo.net
         {{end}}
+
+additionalEnvs:
+  - name: NEXT_PUBLIC_API_URL
+    value: "api-tips-backend"
+  - name: NEXT_PUBLIC_HTTP1_PORT
+    value: "3000"
+  - name: NEXT_PUBLIC_HTTP2_PORT
+    value: "3001"

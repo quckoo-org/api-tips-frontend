@@ -1,6 +1,10 @@
 import axios from 'axios';
 
+const URI = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_HTTP1_PORT
+    ? `http://${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_HTTP1_PORT}`
+    : 'http://localhost:3000';
+
 export const fetchClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
-  withCredentials: true, // Для работы с куками
+  baseURL: URI,
+  withCredentials: true,
 });

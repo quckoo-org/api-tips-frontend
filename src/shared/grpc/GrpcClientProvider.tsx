@@ -8,9 +8,11 @@ import { GrpcClientsContextValue, grpcClientsContext } from "./context";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
-const url = process.env.NEXT_PUBLIC_GRPC_URL ?? "";
+const URI = process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_HTTP2_PORT
+    ? `http://${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_HTTP2_PORT}`
+    : 'http://localhost:3001';
 
-const channel = createChannel(url);
+const channel = createChannel(URI);
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
