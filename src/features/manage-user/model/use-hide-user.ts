@@ -8,7 +8,7 @@ export const useHideUser = () => {
 
   const handleHideUser = async (id: number, value: boolean) => {
     await mutation.mutateAsync(
-      { id, isHidden: value },
+      { id, isDeleted: value },
       {
         onSuccess: () => {
           toast.success(t("the_user_has_been_successfully_hide"));

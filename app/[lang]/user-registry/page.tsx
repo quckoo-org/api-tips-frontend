@@ -1,7 +1,12 @@
+import { Suspense } from "react";
 import { UserRegistryPage } from "@/screens/user-registry-page";
 
 const UserRegistry = async () => {
-  return <UserRegistryPage />;
+  return (
+    <Suspense>
+      <UserRegistryPage />
+    </Suspense>
+  );
 };
 
 export default UserRegistry;

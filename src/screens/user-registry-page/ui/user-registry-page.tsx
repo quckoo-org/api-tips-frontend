@@ -1,20 +1,22 @@
 "use client";
 
-import { Pagination, Table } from "@mantine/core";
+import { ActionIcon, MenuItem, Pagination, Table } from "@mantine/core";
 import clsx from "clsx";
+import { PlusIcon } from "lucide-react";
 import { FC, useState } from "react";
-import { UserRow, useGetUsers } from "@/entities/user";
+import { useGetUsers, UserRow } from "@/entities/user";
 import {
   BlockUserButton,
-  CreateUserModal,
   HideUserButton,
+  useCreateUserModal,
+  useUpdateUserModal,
   VerifyUserButton,
 } from "@/features/manage-user";
 import {
   UserRegistryFilters,
   UserRegistryFiltersT,
 } from "@/features/user-registry-filters";
-import { usePagination } from "@/shared/hooks/usePagination";
+import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
 import { UserRegistryPageError } from "./user-registry-page-error";
 import { UserRegistryPageSkeleton } from "./user-registry-page-skeleton";
@@ -26,7 +28,10 @@ type UserRegistryPageProps = {
 export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   const { t } = useTranslations();
   const pagination = usePagination();
+  const createModal = useCreateUserModal();
+  const updateModal = useUpdateUserModal();
   const [filtersResult, setFiltersResult] = useState<UserRegistryFiltersT>();
+  // const { sortValue, handleChangeSort } = useSort();
 
   const usersQuery = useGetUsers({
     ...filtersResult,
@@ -38,7 +43,13 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     <UserRow
       key={user.id}
       user={user}
-      actions={<>{/* <UpdateUserModal /> */}</>}
+      actions={
+        <>
+          <MenuItem onClick={() => updateModal.updateUser(user.id)}>
+            {t("update_user")}
+          </MenuItem>
+        </>
+      }
       renderHideUser={(userId, checked) => (
         <HideUserButton userId={userId} checked={checked} />
       )}
@@ -64,42 +75,45 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   }
 
   return (
-    <div className={clsx("", className)}>
-      <div className="flex gap-4 justify-between">
-        <UserRegistryFilters
-          className="grow"
-          onSubmit={handleSubmitFilters}
-          isPending={usersQuery.isFetching}
+    <>
+      <div className={clsx("", className)}>
+        <div className="flex gap-4 justify-between">
+          <UserRegistryFilters
+            className="grow"
+            onSubmit={handleSubmitFilters}
+            isPending={usersQuery.isFetching}
+          />
+          <ActionIcon onClick={createModal.createUser}>
+            <PlusIcon />
+          </ActionIcon>
+        </div>
+        <Table className="mb-4" striped highlightOnHover>
+          <Table.Thead className="bg-primary-200">
+            <Table.Tr>
+              <Table.Th>{t("email")}</Table.Th>
+              <Table.Th>{t("fist_name")}</Table.Th>
+              <Table.Th>{t("last_name")}</Table.Th>
+              <Table.Th>{t("cca3")}</Table.Th>
+              <Table.Th>{t("registry_date")}</Table.Th>
+              <Table.Th>{t("block")}</Table.Th>
+              <Table.Th>{t("deleted")}</Table.Th>
+              <Table.Th>{t("verified")}</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+        <Pagination
+          disabled={usersQuery.isPending}
+          value={pagination.page}
+          onChange={(page) => {
+            pagination.handlePageChange(page, usersQuery.data?.totalPages);
+          }}
+          total={usersQuery.data?.totalPages ?? 0}
         />
-        <CreateUserModal />
       </div>
-      <Table className="mb-4" striped highlightOnHover>
-        <Table.Thead className="bg-primary-200">
-          <Table.Tr>
-            <Table.Th>{t("email")}</Table.Th>
-            <Table.Th>{t("name")}</Table.Th>
-            <Table.Th>{t("lastname")}</Table.Th>
-            <Table.Th>{t("country")}</Table.Th>
-            <Table.Th>{t("registry_date")}</Table.Th>
-            <Table.Th>{t("role")}</Table.Th>
-            <Table.Th>{t("last_ip")}</Table.Th>
-            <Table.Th>{t("token")}</Table.Th>
-            <Table.Th>{t("verified")}</Table.Th>
-            <Table.Th>{t("block")}</Table.Th>
-            <Table.Th>{t("hidden")}</Table.Th>
-            <Table.Th />
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-      <Pagination
-        disabled={usersQuery.isPending}
-        value={pagination.page}
-        onChange={(page) => {
-          pagination.handlePageChange(page, usersQuery.data?.totalPages);
-        }}
-        total={usersQuery.data?.totalPages ?? 0}
-      />
-    </div>
+      {createModal.modal}
+      {updateModal.modal}
+    </>
   );
 };

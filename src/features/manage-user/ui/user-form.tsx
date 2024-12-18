@@ -3,16 +3,14 @@
 import { Button, Checkbox, Flex, TextInput } from "@mantine/core";
 import { clsx } from "clsx";
 import { FC } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { CountrySelect } from "@/entities/country";
-import { RolesMultiSelect } from "@/entities/role";
-import { User } from "@/shared/proto/user/v1/user";
+import { useForm } from "react-hook-form";
+import { useTranslations } from "@/shared/locale/translations";
 import { UserFormValues } from "../model/types";
 
 type UserFormProps = {
   className?: string;
   userId?: number;
-  onSuccess: (user: User) => void;
+  onSuccess: (user: UserFormValues) => Promise<void>;
 };
 
 export const UserForm: FC<UserFormProps> = ({
@@ -20,61 +18,50 @@ export const UserForm: FC<UserFormProps> = ({
   onSuccess,
   userId,
 }) => {
+  const { t } = useTranslations();
+
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormValues>({
     defaultValues: {
       email: "",
-      name: "",
-      lastname: "",
-      token: "",
-      countryId: null,
+      fistName: "",
+      lastName: "",
       isDeleted: false,
       isBlocked: false,
-      isHidden: false,
-      lastIp: "",
       isVerified: false,
-      createdAt: undefined,
-      roles: [],
+      cca3: "",
     },
   });
 
   const onSubmit = (data: UserFormValues) => {
     console.log(data);
     console.log(userId);
-    //req
-    const user = {} as User;
-    onSuccess(user);
+    onSuccess(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={clsx("", className)}>
       <Flex direction="column" gap="md">
         <TextInput
-          label="Email"
-          placeholder="Enter email"
-          {...register("email", { required: "Email is required" })}
+          label={t("email")}
+          placeholder={t("enter_email")}
+          {...register("email", { required: t("email_is_required") })}
           error={errors.email?.message}
         />
         <TextInput
-          label="Name"
-          placeholder="Enter first name"
-          {...register("name")}
+          label={t("first_name")}
+          placeholder={t("enter_first_name")}
+          {...register("fistName")}
         />
         <TextInput
-          label="Last Name"
-          placeholder="Enter last name"
-          {...register("lastname")}
+          label={t("last_name")}
+          placeholder={t("enter_last_name")}
+          {...register("lastName")}
         />
-        <TextInput
-          label="Token"
-          placeholder="Enter token"
-          {...register("token")}
-        />
-        <Controller
+        {/* <Controller
           name="countryId"
           control={control}
           render={({ field }) => (
@@ -83,31 +70,11 @@ export const UserForm: FC<UserFormProps> = ({
               onChangeCountry={field.onChange}
             />
           )}
-        />
+        /> */}
         <Checkbox label="Is Deleted" {...register("isDeleted")} />
         <Checkbox label="Is Blocked" {...register("isBlocked")} />
-        <Checkbox label="Is Hidden" {...register("isHidden")} />
-        <TextInput
-          label="Last IP"
-          placeholder="Enter last IP"
-          {...register("lastIp")}
-        />
         <Checkbox label="Is Verified" {...register("isVerified")} />
         {/* <Controller
-          name="roles"
-          control={control}
-          rules={{ required: "At least one role is required" }}
-          render={({ field }) => (
-            <MultiSelect
-              label="Roles"
-              placeholder="Select roles"
-              data={roles}
-              {...field} // Передаем все необходимые пропсы в MultiSelect
-              error={errors.roles?.message}
-            />
-          )}
-        /> */}
-        <Controller
           name="roles"
           control={control}
           rules={{ required: "At least one role is required" }}
@@ -117,7 +84,7 @@ export const UserForm: FC<UserFormProps> = ({
               onChangeRole={field.onChange}
             />
           )}
-        />
+        /> */}
         <Button type="submit">Submit</Button>
       </Flex>
     </form>

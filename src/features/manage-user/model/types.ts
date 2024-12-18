@@ -1,14 +1,9 @@
 export type UserFormValues = {
   email: string;
-  name?: string;
-  lastname?: string;
-  token?: string;
-  countryId?: number | null;
-  isDeleted: boolean;
+  fistName: string;
+  lastName: string;
+  cca3: string;
   isBlocked: boolean;
-  isHidden: boolean;
-  lastIp?: string;
+  isDeleted: boolean;
   isVerified: boolean;
-  createdAt?: Date;
-  roles: string[];
 };

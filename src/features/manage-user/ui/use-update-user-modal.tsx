@@ -5,12 +5,12 @@ import { UpdateUserModal } from "./update-user-modal";
 export const useUpdateUserModal = () => {
   const [modalProps, setModalProps] = useState<{
     onClose: (user?: User) => void;
-    userId: string;
+    userId: number;
   }>();
 
   const modal = modalProps ? <UpdateUserModal {...modalProps} /> : undefined;
 
-  const updateUser = (userId: string) => {
+  const updateUser = (userId: number) => {
     return new Promise<User | undefined>((res) => {
       setModalProps({
         onClose: (user) => {

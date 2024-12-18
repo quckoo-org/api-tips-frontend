@@ -2,18 +2,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
 import { QUERY_KEYS } from "@/shared/lib/query-keys";
 import {
+  CreateUserRequest,
+  CreateUserResponse,
   GetAllUsersResponse,
-  UpdateUserRequest,
-  UpdateUserResponse,
 } from "@/shared/proto/user/v1/user";
 
-export const useUpdateUser = () => {
-  const { updateUser } = useUsersClient();
+export const useCreateUser = () => {
+  const { createUser } = useUsersClient();
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateUserResponse, unknown, UpdateUserRequest>({
+  return useMutation<CreateUserResponse, unknown, CreateUserRequest>({
     mutationFn: async (req) => {
-      const response = await updateUser(req);
+      const response = await createUser(req);
 
       return response;
     },
@@ -21,13 +21,11 @@ export const useUpdateUser = () => {
       queryClient.setQueriesData(
         { queryKey: [QUERY_KEYS.USERS] },
         (oldData: GetAllUsersResponse | undefined) => {
-          if (!oldData) return oldData;
+          if (!oldData || !userResponse.user) return oldData;
 
           return {
             ...oldData,
-            rows: oldData.rows.map((user) =>
-              user.id === userResponse?.user?.id ? userResponse?.user : user,
-            ),
+            rows: [...oldData.rows, userResponse.user],
           };
         },
       );

@@ -17,7 +17,7 @@ import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { createFilterMapper } from "@/shared/lib/create-filter-mapper";
 import { useTranslations } from "@/shared/locale/translations";
-import { ListUsersRequest } from "@/shared/proto/user/v1/user";
+import { GetAllUsersRequest } from "@/shared/proto/user/v1/user";
 import { UserRegistryFiltersT } from "../model/types";
 
 type UserRegistryFiltersProps = {
@@ -37,12 +37,12 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
 
   const router = useRouter();
 
-  const filterMapper = createFilterMapper<ListUsersRequest>();
+  const filterMapper = createFilterMapper<GetAllUsersRequest>();
   const { handleSubmit, register, watch, control } =
     useForm<UserRegistryFiltersT>({
       defaultValues: {
         isBlocked: undefined,
-        isHidden: undefined,
+        isDeleted: undefined,
         isVerified: undefined,
         search: "",
       },
@@ -146,9 +146,8 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
           />
           <Controller
             control={control}
-            name="isHidden"
+            name="isDeleted"
             render={({ field }) => {
-              console.log(handleMapToSelectValue(field.value), "valsdsf");
               return (
                 <Select
                   {...field}
