@@ -2,11 +2,12 @@ syntax = "proto3";
 
 package test;
 
+import 'custom_enums/v1/custom_enums.proto';
+import 'google/protobuf/timestamp.proto';
+
 service TestService {
   rpc PingPong (PingPongRequest) returns (PingPongResponse);
 }
-
-import 'custom_enums/v1/custom_enums.proto';
 
 message PingPongRequest {
   string ping = 1;
@@ -19,3 +20,4 @@ message PingPongResponse {
   custom_enums.v1.OperationStatus status = 1;
   string pong = 2;
 }
+
