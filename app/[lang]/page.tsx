@@ -6,6 +6,7 @@ export default function Home() {
     <div>
       Home
       <Link href={ROUTES.LOGIN}>Login</Link>
+      <Link href={ROUTES.TARIFFS}>Tariffs</Link>
     </div>
   );
 }

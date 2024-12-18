@@ -14,10 +14,13 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.8",
     "@mantine/core": "^7.14.1",
+    "@mantine/dates": "^7.15.1",
     "@mantine/hooks": "^7.14.1",
     "@tanstack/react-query": "^5.61.4",
     "@tanstack/react-query-devtools": "^5.61.4",
+    "dayjs": "^1.11.13",
     "lodash.isempty": "^4.4.0",
+    "lucide-react": "^0.468.0",
     "memoize-one": "^6.0.0",
     "negotiator": "^1.0.0",
     "next": "15.0.3",
