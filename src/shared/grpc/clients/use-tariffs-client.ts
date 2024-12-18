@@ -6,6 +6,7 @@ export const useTariffsClient = () => {
       totalPages: 10,
       rows: [
         {
+          id: 1,
           startDate: "01.01.2001",
           endDate: "01.03.2001",
           name: "Название тарифа 1",
@@ -16,6 +17,7 @@ export const useTariffsClient = () => {
           totalCost: 100,
         },
         {
+          id: 2,
           startDate: "01.01.2001",
           endDate: "01.03.2001",
           name: "Название тарифа 2",
@@ -26,6 +28,7 @@ export const useTariffsClient = () => {
           totalCost: 100,
         },
         {
+          id: 3,
           startDate: "01.01.2001",
           endDate: "01.03.2001",
           name: "Название тарифа 3",

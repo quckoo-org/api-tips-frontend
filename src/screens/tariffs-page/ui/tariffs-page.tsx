@@ -61,7 +61,7 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
     <>
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
-          <Title order={3} className="font-normal">
+          <Title order={3} className="font-normal mb-4">
             {t("tariffs")}
           </Title>
           <ActionIcon onClick={crateModal.createTariff}>
