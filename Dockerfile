@@ -2,7 +2,7 @@ FROM node:22.11.0-alpine3.20 AS builder
 WORKDIR /app
 
 RUN corepack enable
-RUN corepack prepare yarn@4.5.1 --activate
+RUN corepack prepare yarn@4.5.3 --activate
 
 COPY .yarnrc.yml ./
 COPY package.json yarn.lock ./
@@ -17,7 +17,7 @@ FROM node:22.11.0-alpine3.20 AS runner
 WORKDIR /app
 
 RUN corepack enable
-RUN corepack prepare yarn@4.5.1 --activate
+RUN corepack prepare yarn@4.5.3 --activate
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static

@@ -29,3 +29,7 @@ ingress:
         {{else}}
         - beta.api-tips.quckoo.net
         {{end}}
+
+additionalEnvs:
+  - name: NEXT_PUBLIC_API_URL
+    value: "https://beta.api-tips.api.quckoo.net"
