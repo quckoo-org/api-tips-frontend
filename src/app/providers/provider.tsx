@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
@@ -33,9 +33,7 @@ export const Provider: FC<ProviderProps> = ({
           <GrpcClientsProvider>
             <MantineProvider theme={mantineTheme}>
               <ErrorBoundary errorComponent={ErrorPage}>
-                <Container className="p-4" size="xl">
-                  {children}
-                </Container>
+                {children}
               </ErrorBoundary>
               {process.env.NODE_ENV === "development" && (
                 <ReactQueryDevtools initialIsOpen={false} />

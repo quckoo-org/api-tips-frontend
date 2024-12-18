@@ -1,7 +1,7 @@
 import { ClientError, ClientMiddleware, Metadata } from "nice-grpc-web";
 
 export type AuthMiddlewareParams = {
-  getAccessToken: (signal?: AbortSignal) => string;
+  getAccessToken: (signal?: AbortSignal) => string | undefined;
 };
 
 export function AuthMiddleware({
