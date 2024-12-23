@@ -13,8 +13,6 @@ import {
   TestServiceDefinition,
 } from "@/shared/proto/test/v1/test";
 
-
-
 export const useTestClient = () => {
   const client = useGrpcClient(TestServiceDefinition);
   let testClient: Client<TestServiceDefinition> = client;
@@ -39,7 +37,6 @@ const Test = () => {
     mutationKey: ["pingpong"],
     mutationFn: (request: PingPongRequest) => pingPong(request),
   });
-
 
   const sendReqeust = () => {
     pingpongMutation.mutate({ ping: value } as PingPongRequest, {

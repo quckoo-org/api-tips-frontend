@@ -1,5 +1,4 @@
 import { ClientError, ClientMiddleware, Metadata } from "nice-grpc-web";
-import { toast } from "react-hot-toast";
 
 export type AuthMiddlewareParams = {
   getAccessToken: (signal?: AbortSignal) => string | undefined;
@@ -25,7 +24,8 @@ export function AuthMiddleware({
       return response;
     } catch (error) {
       if (error instanceof ClientError) {
-        toast.error(error.details);
+        // toast.error(error.details);
+        throw error;
       } else {
         throw error;
       }

@@ -17,7 +17,6 @@ const VerifyPage = () => {
         if (!token) {
           throw new Error('Invalid or missing token');
         }
-        console.log('work');
 
         // Запрос на бэкенд для верификации
        await fetchClient.get('/auth/verify-email' + '?token=' + token);

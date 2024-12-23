@@ -10,6 +10,7 @@ type LoginPageProps = {
 export const LoginPage: FC<LoginPageProps> = ({ className }) => {
   return (
     <div className={clsx("", className)}>
+      {/* eslint-disable-next-line react/jsx-no-undef */}
       {/*<Test />*/}
       <LoginByEmail />
     </div>

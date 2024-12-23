@@ -276,3 +276,5 @@ next-env.d.ts
 ./yarn/*
 .yarn
 .next
+
+certificates
