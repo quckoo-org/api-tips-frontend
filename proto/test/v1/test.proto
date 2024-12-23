@@ -3,7 +3,6 @@ syntax = "proto3";
 package test;
 
 import 'custom_enums/v1/custom_enums.proto';
-import 'google/protobuf/timestamp.proto';
 
 service TestService {
   rpc PingPong (PingPongRequest) returns (PingPongResponse);

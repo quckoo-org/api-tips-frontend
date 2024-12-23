@@ -4,7 +4,7 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { User } from "@/shared/proto/user/v1/user";
+import { CreateUserRequest, User } from "@/shared/proto/user/v1/user";
 import { UserForm } from "./user-form";
 import { UserFormValues } from "../model/types";
 import { useCreateUser } from "../model/use-create-user";
@@ -23,7 +23,9 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   const createMutation = useCreateUser();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onCreateUser = async (userData: UserFormValues) => {
-    // createMutation.mutateAsync(userData);
+
+    //TODO: fix
+    createMutation.mutateAsync(userData as CreateUserRequest);
     onClose({} as User);
   };
 

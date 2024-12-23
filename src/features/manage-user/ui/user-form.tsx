@@ -2,10 +2,12 @@
 
 import { Button, Checkbox, Flex, TextInput } from "@mantine/core";
 import { clsx } from "clsx";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
+import { FC, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { CountrySelect } from "@/entities/country";
 import { useTranslations } from "@/shared/locale/translations";
 import { UserFormValues } from "../model/types";
+import { useGetUser } from "@/features/manage-user/model/use-get-user";
 
 type UserFormProps = {
   className?: string;
@@ -19,22 +21,40 @@ export const UserForm: FC<UserFormProps> = ({
   userId,
 }) => {
   const { t } = useTranslations();
+  const userQuery = useGetUser({userId})
 
+  console.log(userQuery);
   const {
     register,
     handleSubmit,
+    control,
+    reset,
     formState: { errors },
   } = useForm<UserFormValues>({
     defaultValues: {
       email: "",
-      fistName: "",
+      firstName: "",
       lastName: "",
       isDeleted: false,
       isBlocked: false,
       isVerified: false,
-      cca3: "",
+      countryCode: "",
     },
   });
+
+  useEffect(() => {
+    if (userQuery.data?.user) {
+      reset({
+        email: userQuery.data?.user?.email,
+        firstName: userQuery.data?.user?.firstName,
+        lastName: userQuery.data?.user?.lastName,
+        isDeleted: !!userQuery.data?.user?.deletedAt,
+        isBlocked: !!userQuery.data?.user?.blockedAt,
+        isVerified: !!userQuery.data?.user?.verifiedAt,
+        countryCode: userQuery.data?.user?.countryCode,
+      });
+    }
+  }, [userQuery.data?.user, reset]);
 
   const onSubmit = (data: UserFormValues) => {
     console.log(data);
@@ -54,15 +74,15 @@ export const UserForm: FC<UserFormProps> = ({
         <TextInput
           label={t("first_name")}
           placeholder={t("enter_first_name")}
-          {...register("fistName")}
+          {...register("firstName")}
         />
         <TextInput
           label={t("last_name")}
           placeholder={t("enter_last_name")}
           {...register("lastName")}
         />
-        {/* <Controller
-          name="countryId"
+        <Controller
+          name="countryCode"
           control={control}
           render={({ field }) => (
             <CountrySelect
@@ -70,10 +90,14 @@ export const UserForm: FC<UserFormProps> = ({
               onChangeCountry={field.onChange}
             />
           )}
-        /> */}
-        <Checkbox label="Is Deleted" {...register("isDeleted")} />
-        <Checkbox label="Is Blocked" {...register("isBlocked")} />
-        <Checkbox label="Is Verified" {...register("isVerified")} />
+        />
+        {
+          userId && <>
+            <Checkbox label="Is Deleted" {...register("isDeleted")} />
+            <Checkbox label="Is Blocked" {...register("isBlocked")} />
+            <Checkbox label="Is Verified" {...register("isVerified")} />
+          </>
+        }
         {/* <Controller
           name="roles"
           control={control}

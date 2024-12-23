@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4001 --turbopack ",
+    "dev": "next dev --turbopack ",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "proto:gen": "rimraf src/proto && proto-gen.sh",
+    "proto:gen": "rimraf src/shared/proto && proto-gen.sh",
     "build:proto": "rimraf src/shared/proto && mkdirp src/shared/proto && globstar -- grpc_tools_node_protoc --experimental_allow_proto3_optional --ts_proto_out=./src/shared/proto --ts_proto_opt=useExactTypes=false,outputTypeRegistry=false,outputServices=generic-definitions,outputServices=nice-grpc,stringEnums=true,oneof=unions-value,esModuleInterop=true --descriptor_set_out=./src/shared/proto/protoset.bin --include_imports -I ./proto \"./@(proto_deps|proto)/**/*.proto\"",
     "start:local": "cd envoy &&  docker compose up -d && cd .. && next dev -p 4001 --turbopack"
   },

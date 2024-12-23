@@ -44,7 +44,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
         isBlocked: undefined,
         isDeleted: undefined,
         isVerified: undefined,
-        search: "",
+        searchByEmail: "",
       },
       values: filterMapper.toFilters(searchParams),
     });
@@ -94,7 +94,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
           <TextInput
             rightSection={isPending ? <Loader size="xs" /> : null}
             placeholder={t("search")}
-            {...register("search")}
+            {...register("searchByEmail")}
             className="mb-4"
           />
           <ActionIcon size="lg" onClick={handlers.toggle}>

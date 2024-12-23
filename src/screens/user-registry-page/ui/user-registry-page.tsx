@@ -39,7 +39,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     pageSize: pagination.pageSize,
   });
 
-  const rows = usersQuery.data?.rows.map((user) => (
+  const rows = usersQuery.data?.users.map((user) => (
     <UserRow
       key={user.id}
       user={user}
@@ -51,13 +51,13 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
         </>
       }
       renderHideUser={(userId, checked) => (
-        <HideUserButton userId={userId} checked={checked} />
+        <HideUserButton className={'!justify-start'} userId={userId} checked={checked} />
       )}
       renderBlockUser={(userId, checked) => (
-        <BlockUserButton userId={userId} checked={checked} />
+        <BlockUserButton className={'!justify-start'} userId={userId} checked={checked} />
       )}
       renderVerifyUser={(userId, checked) => (
-        <VerifyUserButton userId={userId} checked={checked} />
+        <VerifyUserButton className={'!justify-start'} userId={userId} checked={checked} />
       )}
     />
   ));
@@ -76,7 +76,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
 
   return (
     <>
-      <div className={clsx("", className)}>
+      <div className={clsx("p-8", className)}>
         <div className="flex gap-4 justify-between">
           <UserRegistryFilters
             className="grow"
@@ -91,13 +91,13 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
           <Table.Thead className="bg-primary-200">
             <Table.Tr>
               <Table.Th>{t("email")}</Table.Th>
-              <Table.Th>{t("fist_name")}</Table.Th>
+              <Table.Th>{t("first_name")}</Table.Th>
               <Table.Th>{t("last_name")}</Table.Th>
-              <Table.Th>{t("cca3")}</Table.Th>
+              <Table.Th>{t("country_сode")}</Table.Th>
               <Table.Th>{t("registry_date")}</Table.Th>
+              <Table.Th>{t("verified")}</Table.Th>
               <Table.Th>{t("block")}</Table.Th>
               <Table.Th>{t("deleted")}</Table.Th>
-              <Table.Th>{t("verified")}</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

@@ -25,7 +25,7 @@ export const useCreateUser = () => {
 
           return {
             ...oldData,
-            rows: [...oldData.rows, userResponse.user],
+            users: [...oldData.users, userResponse.user],
           };
         },
       );

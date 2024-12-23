@@ -25,13 +25,13 @@ export const UserRow: FC<UserRowProps> = ({
   return (
     <Table.Tr className={clsx("", className)}>
       <Table.Td>{user.email}</Table.Td>
-      <Table.Td>{user.fistName}</Table.Td>
+      <Table.Td>{user.firstName}</Table.Td>
       <Table.Td>{user.lastName}</Table.Td>
-      <Table.Td>{user?.cca3}</Table.Td>
+      <Table.Td>{user?.countryCode}</Table.Td>
       <Table.Td>{dayjs(user.createdAt).format("DD.MM.YYYY")}</Table.Td>
-      <Table.Td>{renderVerifyUser(user.id, !!user.isVerified)}</Table.Td>
-      <Table.Td>{renderBlockUser(user.id, !!user.isBlocked)}</Table.Td>
-      <Table.Td>{renderHideUser(user.id, !!user.isDeleted)}</Table.Td>
+      <Table.Td>{renderVerifyUser(user.id, !!user.verifiedAt)}</Table.Td>
+      <Table.Td>{renderBlockUser(user.id, !!user.blockedAt)}</Table.Td>
+      <Table.Td>{renderHideUser(user.id, !!user.deletedAt)}</Table.Td>
       <Table.Td className="w-12">
         <Menu zIndex={100} closeOnItemClick={false}>
           <Menu.Target>

@@ -4,12 +4,12 @@ import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from "react-hot-toast";
+import { User } from "@/shared/proto/user/v1/user";
 import { ROUTES } from "@/shared/router";
 import { fetchClient } from "@/shared/utils/fetchClient";
 
 const RegisterPage = () => {
-  const [form, setForm] = useState({ email: '', password: '', name: '', lastname: '' });
+  const [form, setForm] = useState({ email: '', password: '', firstName: '', lastName: '' });
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -27,7 +27,7 @@ const RegisterPage = () => {
         message: 'Please check your email to verify your account.',
         color: 'teal',
       });
-      toast.success('Registration Successful. Please check your email to verify your account.', {duration: 5000})
+      //toast.success('Registration Successful. Please check your email to verify your account.', {duration: 5000})
       router.push(ROUTES.LOGIN)
 
     } catch (err) {
@@ -61,7 +61,7 @@ const RegisterPage = () => {
         name="name"
         type="text"
         placeholder="Name"
-        value={form.name}
+        value={form.firstName}
         onChange={handleChange}
         className="p-2 mb-2 border"
       />
@@ -69,7 +69,7 @@ const RegisterPage = () => {
         name="lastname"
         type="text"
         placeholder="Last Name"
-        value={form.lastname}
+        value={form.lastName}
         onChange={handleChange}
         className="p-2 mb-2 border"
       />

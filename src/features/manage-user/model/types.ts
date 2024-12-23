@@ -1,9 +1,7 @@
-export type UserFormValues = {
-  email: string;
-  fistName: string;
-  lastName: string;
-  cca3: string;
+import { User } from "@/shared/proto/user/v1/user";
+
+export interface UserFormValues extends Omit<User, 'createdAt' |'verifiedAt' |'blockedAt' |'deletedAt' > {
+  isVerified: boolean;
   isBlocked: boolean;
   isDeleted: boolean;
-  isVerified: boolean;
-};
+}

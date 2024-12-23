@@ -2,10 +2,11 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { User } from "@/shared/proto/user/v1/user";
+import { UpdateUserRequest, User } from "@/shared/proto/user/v1/user";
 import { UserForm } from "./user-form";
 import { UserFormValues } from "../model/types";
 import { useUpdateUser } from "../model/use-update-user";
+
 
 type UpdateUserModalProps = {
   className?: string;
@@ -24,8 +25,12 @@ export const UpdateUserModal: FC<UpdateUserModalProps> = ({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onUpdateUser = async (userData: UserFormValues) => {
-    // updateMutation.mutateAsync(userData);
-    onClose({} as User);
+  const updateUserRequest: UpdateUserRequest = {
+    ...userData,
+    id: userId
+  }
+   const userResponse = await updateMutation.mutateAsync(updateUserRequest);
+    onClose(userResponse.user);
   };
 
   return (

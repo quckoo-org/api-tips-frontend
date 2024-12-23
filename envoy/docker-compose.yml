@@ -6,5 +6,5 @@ services:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "8085:9901"
-      - "8084:8080"
-      - "8086:8081"
+      - "8084:8081"
+      - "8086:8080"

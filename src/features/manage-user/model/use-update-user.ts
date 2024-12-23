@@ -22,10 +22,10 @@ export const useUpdateUser = () => {
         { queryKey: [QUERY_KEYS.USERS] },
         (oldData: GetAllUsersResponse | undefined) => {
           if (!oldData) return oldData;
-
+          console.log(userResponse, oldData);
           return {
             ...oldData,
-            rows: oldData.rows.map((user) =>
+            users: oldData.users.map((user) =>
               user.id === userResponse?.user?.id ? userResponse?.user : user,
             ),
           };
