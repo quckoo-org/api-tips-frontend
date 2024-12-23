@@ -4,7 +4,6 @@ import { Select } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { useGetCountries } from "../model/use-get-countries";
 
 const countryCodesCCA3 = [
   "AFG", "ALB", "DZA", "ASM", "AND", "AGO", "AIA", "ATA", "ATG", "ARG", "ARM", "ABW", "AUS", "AUT", "AZE",
@@ -30,12 +29,14 @@ type CountrySelectProps = {
   className?: string;
   onChangeCountry: (id: string | undefined) => void;
   value?: string | undefined;
+  hideLabel?: boolean;
 };
 
 export const CountrySelect: FC<CountrySelectProps> = ({
   className,
   onChangeCountry,
   value,
+  hideLabel = false
 }) => {
   const { t } = useTranslations();
   //const countriesQuery = useGetCountries();
@@ -51,7 +52,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
 
   return (
     <Select
-      label={t("country")}
+      label={hideLabel ? undefined :t("country")}
       placeholder={t("select_country")}
       className={clsx("", className)}
       value={value?.toString() ?? null}

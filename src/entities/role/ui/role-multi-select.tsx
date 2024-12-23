@@ -1,10 +1,9 @@
 "use clients";
 
-import { Loader, MultiSelect } from "@mantine/core";
+import {  MultiSelect } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { useGetRoles } from "../model/use-get-roles";
 
 type RoleSelectProps = {
   className?: string;
@@ -18,7 +17,7 @@ export const RolesMultiSelect: FC<RoleSelectProps> = ({
   value,
 }) => {
   const { t } = useTranslations();
-  const rolesQuery = useGetRoles();
+  //const rolesQuery = useGetRoles();
 
   const handleChangeRole = (value?: string[]) => {
     if (!value) {
@@ -31,13 +30,13 @@ export const RolesMultiSelect: FC<RoleSelectProps> = ({
 
   return (
     <MultiSelect
-      disabled={rolesQuery.isLoading}
-      rightSection={rolesQuery.isLoading && <Loader size="xs" />}
+      //disabled={rolesQuery.isLoading}
+      //rightSection={rolesQuery.isLoading && <Loader size="xs" />}
       label={t("role")}
       placeholder={t("select_role")}
       className={clsx("", className)}
       value={value}
-      data={rolesQuery.data ?? []}
+      //data={rolesQuery.data ?? []}
       onChange={handleChangeRole}
     />
   );

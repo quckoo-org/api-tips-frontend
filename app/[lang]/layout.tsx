@@ -4,9 +4,9 @@ import "./globals.css";
 
 import { Provider } from "@/app/providers/provider";
 import { i18n, type Locale } from "@/config/i18n/i18n-config";
+import { AuthMe } from "@/features/auth";
 import { getDictionary } from "@/shared/locale/getDictionary";
 import Header from "@/shared/ui/Header";
-import { AuthMe } from "@/features/auth";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

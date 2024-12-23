@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { useGetCurrentUser } from "@/features/auth/model/use-get-current-user";
 import { authStore } from "@/shared/stores/AuthStore";
-import { Loader } from "@mantine/core";
 
 const AuthMe = () => {
   const currentUserQuery = useGetCurrentUser()

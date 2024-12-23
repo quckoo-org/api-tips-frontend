@@ -4,11 +4,9 @@ import { Menu, Button } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { usePathname, useRouter } from "next/navigation";
-import { TokenService } from "@/shared/lib/tokenService";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
-import { AuthMe } from "@/features/auth";
 
 const Header = observer(() => {
   const pathname = usePathname();

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
 import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { User } from "@/shared/proto/user/v1/user";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { ROUTES } from "@/shared/router";
 import { fetchClient } from "@/shared/utils/fetchClient";
 
+
 const RegisterPage = () => {
-  const [form, setForm] = useState({ email: '', password: '', firstName: '', lastName: '' });
-  const [error, setError] = useState('');
+  const [form, setForm] = useState({ email: "", password: "", firstName: "", lastName: "", countryCode: "" });
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,21 +19,20 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
     try {
-      await fetchClient.post('/auth/register', form);
+      await fetchClient.post("/auth/register", form);
       notifications.show({
-        title: 'Registration Successful',
-        message: 'Please check your email to verify your account.',
-        color: 'teal',
+        title: "Registration Successful",
+        message: "Please check your email to verify your account.",
+        color: "teal",
       });
       //toast.success('Registration Successful. Please check your email to verify your account.', {duration: 5000})
-      router.push(ROUTES.LOGIN)
+      router.push(ROUTES.LOGIN);
 
     } catch (err) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -58,7 +57,7 @@ const RegisterPage = () => {
         className="p-2 mb-2 border"
       />
       <input
-        name="name"
+        name="firstName"
         type="text"
         placeholder="Name"
         value={form.firstName}
@@ -66,13 +65,16 @@ const RegisterPage = () => {
         className="p-2 mb-2 border"
       />
       <input
-        name="lastname"
+        name="lastName"
         type="text"
         placeholder="Last Name"
         value={form.lastName}
         onChange={handleChange}
         className="p-2 mb-2 border"
       />
+      {/*<CountrySelect         className="mb-2"*/}
+      {/*                        onChangeCountry={(country) => setForm({ ...form, countryCode: country ?? "" })} hideLabel*/}
+      {/*               value={form.countryCode} />*/}
       <Button type="submit" className="p-2  text-white">Register</Button>
     </form>
   );

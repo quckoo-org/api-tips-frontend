@@ -25,7 +25,6 @@ export const LoginByEmail: FC<LoginByEmailProps> = () => {
     try {
       const { data } = await fetchClient.post('/auth/login', form);
       authStore.login(data.user);
-      console.log(data.user, data.accessToken);
       Cookies.set('accessToken', data.accessToken, {
         expires: 15 * 60 * 1000
       })

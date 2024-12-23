@@ -5,9 +5,9 @@ import { clsx } from "clsx";
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CountrySelect } from "@/entities/country";
+import { useGetUser } from "@/features/manage-user/model/use-get-user";
 import { useTranslations } from "@/shared/locale/translations";
 import { UserFormValues } from "../model/types";
-import { useGetUser } from "@/features/manage-user/model/use-get-user";
 
 type UserFormProps = {
   className?: string;
