@@ -34,7 +34,9 @@ export const Provider: FC<ProviderProps> = ({
           <GrpcClientsProvider>
             <MantineProvider theme={mantineTheme}>
               <ErrorBoundary errorComponent={ErrorPage}>
-                <AuthProvider>{children}</AuthProvider>
+                {/* <AuthProvider> */}
+                {children}
+                {/* </AuthProvider> */}
               </ErrorBoundary>
               {process.env.NODE_ENV === "development" && (
                 <ReactQueryDevtools initialIsOpen={false} />
