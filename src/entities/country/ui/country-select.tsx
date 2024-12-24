@@ -4,10 +4,10 @@ import { Select } from "@mantine/core";
 import clsx from "clsx";
 import { countries } from "countries-list";
 import i18nCountries from "i18n-iso-countries";
+import countriesUtils from "i18n-iso-countries";
 import { usePathname } from "next/navigation";
 import { FC, useMemo } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 i18nCountries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -47,7 +47,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
 
   const data = useMemo(() => {
     return Object.entries(countries).map(([code, country]) => ({
-      value: code,
+      value: countriesUtils.toAlpha3(code) ?? "",
       label: i18nCountries.getName(code, locale) || country.name,
     }));
   }, [locale]);

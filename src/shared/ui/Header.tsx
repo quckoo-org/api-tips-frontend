@@ -1,9 +1,11 @@
 "use client";
 
 import { Menu, Button } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { QUERY_KEYS } from "@/shared/lib/query-keys";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -12,11 +14,13 @@ const Header = observer(() => {
   const pathname = usePathname();
   const endOfPathName = pathname.split("/")[2];
   const router = useRouter();
-  console.log(authStore.user, "user");
+  const queryClient = useQueryClient()
   const isAuthPage = endOfPathName === "login" || pathname === "register";
+
   const logout = async () => {
     await fetchClient.post("/auth/logout");
     authStore.logout();
+    queryClient.removeQueries({queryKey: [QUERY_KEYS.CURRENT_USER]})
     router.push(ROUTES.HOME);
   };
 

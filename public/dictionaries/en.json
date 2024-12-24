@@ -6,6 +6,8 @@
   "enter_first_name": "Enter first name...",
   "email": "Email",
   "enter_email": "Enter enter email...",
+  "password": "Password",
+  "enter_password": "Enter password...",
   "invalid_email": "Invalid email",
   "last_name": "Last name",
   "enter_last_name": "Enter last name...",
@@ -34,5 +36,6 @@
   "password_is_required": "Password is required",
   "firstName_is_required": "First name is required",
   "lastName_is_required": "Last name is required",
-  "the_user_has_been_successfully_block": "The user has been successfully blocked"
+  "the_user_has_been_successfully_block": "The user has been successfully blocked",
+  "please_wait_loading": "Loading..."
 }
