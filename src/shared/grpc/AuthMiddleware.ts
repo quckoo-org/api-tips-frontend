@@ -1,5 +1,4 @@
 import { ClientError, ClientMiddleware, Metadata, Status } from "nice-grpc-web";
-import { toast } from "react-hot-toast";
 import { refreshToken } from "@/shared/grpc/refresh-token";
 
 export type AuthMiddlewareParams = {
@@ -39,7 +38,7 @@ export function AuthMiddleware({
         });
       }
       if (error instanceof ClientError) {
-        toast.error(error.details);
+        // toast.error(error.details);
         throw error;
       } else {
         throw error;

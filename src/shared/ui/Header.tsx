@@ -4,7 +4,6 @@ import { Menu, Button } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { usePathname, useRouter } from "next/navigation";
-import { TokenService } from "@/shared/lib/tokenService";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -20,13 +19,22 @@ const Header = observer(() => {
     authStore.logout();
     router.push(ROUTES.HOME)
   }
-  console.log(TokenService.getAccessToken());
+  console.log(authStore.user);
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
-      <Link href="/" className="text-xl font-bold">
-        Home
-      </Link>
-      { TokenService.getAccessToken()? (
+
+      <div>
+        <Link href="/" className="text-xl font-bold">
+          Home
+        </Link>
+        {
+          authStore.isAuthenticated &&
+          <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold ml-8">
+            Users
+          </Link>
+        }
+      </div>
+      { authStore.isAuthenticated? (
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
             <Button variant="subtle" className="text-white">

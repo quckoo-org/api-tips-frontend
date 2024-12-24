@@ -2,20 +2,16 @@
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 import { TokenService } from "@/shared/lib/tokenService";
+import { User } from "@/shared/proto/user/v1/user";
 
-interface User {
-  name?: string;
-  accessToken?: string | null;
-  email: string;
-}
+
 class AuthStore {
   user: User | null = null;
   isAuthenticated = false;
 
   constructor() {
-    makeAutoObservable(this);
-    if (typeof window !== "undefined") {
-    }
+    makeAutoObservable(this, {}, { autoBind: true });
+
   }
 
   login(user: User | null) {
@@ -32,6 +28,12 @@ class AuthStore {
   syncWithCookies() {
     const token = TokenService.getAccessToken();
     this.isAuthenticated = !!token;
+  }
+  setCurrentUser(currentUser: User) {
+    console.log(currentUser, this.user, 'asdsad');
+    this.user = currentUser;
+    this.isAuthenticated = true;
+
   }
 }
 
