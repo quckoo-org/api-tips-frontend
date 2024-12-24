@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { TokenService } from "@/shared/lib/tokenService";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -23,9 +23,7 @@ export const useLoginByEmail = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      Cookies.set("accessToken", data.accessToken, {
-        expires: 15 * 60 * 1000,
-      });
+      TokenService.setAccessToken(data.accessToken);
       authStore.login(data.user);
       router.push(ROUTES.HOME);
     },

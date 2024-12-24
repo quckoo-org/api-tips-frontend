@@ -6,11 +6,11 @@ export const useGetCurrentUser = () => {
   const { getCurrentUser } = useUsersClient();
 
   return useQuery({
-    queryKey: [QUERY_KEYS.USER],
+    queryKey: [QUERY_KEYS.CURRENT_USER],
     queryFn: async ({ signal }) => {
       const response = await getCurrentUser({}, { signal });
 
       return response;
     },
   });
-}
+};

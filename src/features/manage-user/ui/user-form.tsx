@@ -2,7 +2,7 @@
 
 import { Button, Checkbox, Flex, TextInput } from "@mantine/core";
 import { clsx } from "clsx";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CountrySelect } from "@/entities/country";
 import { useGetUser } from "@/features/manage-user/model/use-get-user";
@@ -21,14 +21,13 @@ export const UserForm: FC<UserFormProps> = ({
   userId,
 }) => {
   const { t } = useTranslations();
-  const userQuery = useGetUser({userId})
+  const userQuery = useGetUser({ userId });
 
   console.log(userQuery);
   const {
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm<UserFormValues>({
     defaultValues: {
@@ -40,21 +39,16 @@ export const UserForm: FC<UserFormProps> = ({
       isVerified: false,
       countryCode: "",
     },
+    values: {
+      email: userQuery.data?.user?.email ?? "",
+      firstName: userQuery.data?.user?.firstName ?? "",
+      lastName: userQuery.data?.user?.lastName ?? "",
+      isDeleted: !!userQuery.data?.user?.deletedAt,
+      isBlocked: !!userQuery.data?.user?.blockedAt,
+      isVerified: !!userQuery.data?.user?.verifiedAt,
+      countryCode: userQuery.data?.user?.countryCode,
+    },
   });
-
-  useEffect(() => {
-    if (userQuery.data?.user) {
-      reset({
-        email: userQuery.data?.user?.email,
-        firstName: userQuery.data?.user?.firstName,
-        lastName: userQuery.data?.user?.lastName,
-        isDeleted: !!userQuery.data?.user?.deletedAt,
-        isBlocked: !!userQuery.data?.user?.blockedAt,
-        isVerified: !!userQuery.data?.user?.verifiedAt,
-        countryCode: userQuery.data?.user?.countryCode,
-      });
-    }
-  }, [userQuery.data?.user, reset]);
 
   const onSubmit = (data: UserFormValues) => {
     console.log(data);
@@ -91,13 +85,13 @@ export const UserForm: FC<UserFormProps> = ({
             />
           )}
         />
-        {
-          userId && <>
+        {userId && (
+          <>
             <Checkbox label="Is Deleted" {...register("isDeleted")} />
             <Checkbox label="Is Blocked" {...register("isBlocked")} />
             <Checkbox label="Is Verified" {...register("isVerified")} />
           </>
-        }
+        )}
         {/* <Controller
           name="roles"
           control={control}

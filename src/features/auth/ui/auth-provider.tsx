@@ -1,8 +1,9 @@
 "use client";
-
 import { Loader, Text } from "@mantine/core";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useGetCurrentUser } from "@/entities/user";
+import { TokenService } from "@/shared/lib/tokenService";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES, routesConfig } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -11,10 +12,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const currentUser = useGetCurrentUser(0);
+  const currentUser = useGetCurrentUser();
   const [isInitialized, setInitialized] = useState(false);
+  const accessToken = TokenService.getAccessToken();
+
+  console.log({ accessToken, pathname });
 
   const checkAccess = useCallback(() => {
     const route = routesConfig.find((r) => r.path === pathname);
@@ -28,7 +30,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return false;
     }
 
-    if (route.isAdmin && (!currentUser.data || !currentUser.data.isAdmin)) {
+    // TODO CHECK IS ADMIN
+    if (route.isAdmin && (!currentUser.data || !currentUser.data.user)) {
       router.push(ROUTES.FORBIDDEN);
       return false;
     }
@@ -37,17 +40,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [currentUser.data, currentUser.isSuccess, pathname, router]);
 
   useEffect(() => {
-    if (currentUser.isLoading) {
+    if (!accessToken) {
+      router.push(ROUTES.LOGIN);
       return;
     }
 
     if (currentUser.isSuccess) {
-      authStore.login(currentUser.data);
+      authStore.login(currentUser.data.user ?? null);
+    }
+    
+    if (!isInitialized && !currentUser.isLoading) {
+      setInitialized(true);
     }
 
-    if (!isInitialized) {
-      setInitialized(true);
-    } else if (currentUser.isError) {
+    if (isInitialized && currentUser.isError) {
       router.push(ROUTES.LOGIN);
     } else {
       checkAccess();
@@ -61,9 +67,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     router,
     pathname,
     checkAccess,
+    accessToken,
   ]);
 
-  if (!isInitialized || currentUser.isLoading) {
+  if (
+    (!isInitialized && !!accessToken) ||
+    (currentUser.isLoading && !!accessToken)
+  ) {
     return (
       <div className="h-dvh flex items-center pt-8 flex-col">
         <Text>{t("please_wait_loading")}...</Text>
