@@ -6,6 +6,7 @@ export type RegisterReqT = {
   password: string;
   firstName: string;
   lastName: string;
+  countryCode: string;
 };
 
 export type RegisterErrorT = AxiosError<{ message: string }>;

@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
 import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { TokenService } from "@/shared/lib/tokenService";
 
 export const useGetCurrentUser = () => {
   const { getCurrentUser } = useUsersClient();
+  const accessToken = TokenService.getAccessToken();
 
   return useQuery({
     queryKey: [QUERY_KEYS.CURRENT_USER],
@@ -12,5 +14,6 @@ export const useGetCurrentUser = () => {
 
       return response;
     },
+    enabled: !!accessToken,
   });
 };
