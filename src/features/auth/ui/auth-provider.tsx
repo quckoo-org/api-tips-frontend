@@ -3,12 +3,10 @@ import { Loader, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetCurrentUser } from "@/entities/user";
+import { refreshToken } from "@/shared/grpc/refresh-token";
 import { TokenService } from "@/shared/lib/tokenService";
 import { useTranslations } from "@/shared/locale/translations";
 import { authStore } from "@/shared/stores/AuthStore";
-import { refreshToken } from "@/shared/grpc/refresh-token";
-import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslations();
@@ -17,7 +15,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const currentUser = useGetCurrentUser();
   const [isInitialized, setInitialized] = useState(false);
   const [accessToken, setAccessToken] = useState(TokenService.getAccessToken());
-  const queryClient = useQueryClient()
 
   console.log(currentUser);
 
@@ -77,11 +74,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     (async () => {
       if (!accessToken) {
         const { newAccessToken } = await refreshToken();
-        setAccessToken(newAccessToken)
+        setAccessToken(newAccessToken);
       }
-    })()
-    console.log(accessToken, 'ref');
-
+    })();
+    console.log(accessToken, "ref");
 
     if (currentUser.isSuccess) {
       authStore.login(currentUser.data.user ?? null);
