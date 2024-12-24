@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import Cookies from "js-cookie";
-import {  makeAutoObservable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { TokenService } from "@/shared/lib/tokenService";
 
 interface User {
   name?: string;
-  accessToken?:string | null;
+  accessToken?: string | null;
   email: string;
 }
 class AuthStore {
@@ -14,12 +14,8 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    if (typeof window !== 'undefined') {
-
+    if (typeof window !== "undefined") {
     }
-     //this.syncWithCookies();
-
-
   }
 
   login(user: User | null) {
@@ -30,7 +26,7 @@ class AuthStore {
   logout() {
     this.user = null;
     this.isAuthenticated = false;
-    Cookies.remove('accessToken')
+    Cookies.remove("accessToken");
   }
 
   syncWithCookies() {

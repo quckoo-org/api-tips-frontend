@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "custom_enums/v1/custom_enums.proto";
+import "custom_types/v1/order_direction.proto";
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc GetAllUsers (GetAllUsersRequest) returns (GetAllUsersResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc GetCurrentUser (GetCurrentUserRequest) returns (GetCurrentUserResponse);
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string country_code = 4;
+}
+
+message CreateUserResponse {
+  User user = 1;
+  optional string description = 2;
+  custom_enums.v1.OperationStatus status = 3;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+  optional string description = 2;
+  custom_enums.v1.OperationStatus status = 3;
+}
+
+message GetAllUsersRequest {
+  int64 page = 1;
+  int64 page_size = 2;
+  optional string search_by_email = 3;
+  optional bool is_blocked = 4;
+  optional bool is_deleted = 5;
+  optional bool is_verified = 6;
+  optional UserOrderBy order_by = 7;
+  optional custom_types.order_direction.v1.OrderDirection order = 8;
+}
+
+message GetAllUsersResponse {
+  repeated User users = 1;
+  int64 total_count = 2;
+  int64 current_page = 3;
+  int64 total_pages = 4;
+  optional string description = 5;
+  custom_enums.v1.OperationStatus status = 6;
+}
+
+message UpdateUserRequest {
+  int64 id = 1;
+  optional string email = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string country_code = 6;
+  optional bool is_deleted = 7;
+  optional bool is_blocked = 8;
+  optional bool is_verified = 9;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+  optional string description = 2;
+  custom_enums.v1.OperationStatus status = 3;
+}
+
+message GetCurrentUserRequest {}
+
+message GetCurrentUserResponse {
+  User user = 1;
+  optional string description = 2;
+  custom_enums.v1.OperationStatus status = 3;
+}
+
+message User {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  optional string country_code = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp blocked_at = 7;
+  google.protobuf.Timestamp deleted_at = 8;
+  google.protobuf.Timestamp verified_at = 9;
+}
+
+// prismaScheme
+enum UserOrderBy {
+  email = 0;
+  firstName = 1;
+  lastName = 2;
+  countryCode = 3;
+}

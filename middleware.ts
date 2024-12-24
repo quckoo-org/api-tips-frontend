@@ -1,10 +1,9 @@
+import { match as matchLocale } from "@formatjs/intl-localematcher";
+import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import { i18n } from "./config/i18n/i18n-config";
-
-import { match as matchLocale } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator";
 
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
@@ -23,6 +22,21 @@ function getLocale(request: NextRequest): string | undefined {
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
 
   return locale;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function checkAuth(
+  request: NextRequest,
+  locale?: string,
+): NextResponse | undefined {
+  const token = request.cookies.get("auth-token");
+
+  if (!token) {
+    const loginUrl = new URL(`${locale}/login`, request.nextUrl.origin);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return undefined;
 }
 
 export function middleware(request: NextRequest) {
@@ -45,10 +59,9 @@ export function middleware(request: NextRequest) {
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   );
 
+  const locale = getLocale(request);
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    const locale = getLocale(request);
-
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
     return NextResponse.redirect(
@@ -58,6 +71,17 @@ export function middleware(request: NextRequest) {
       ),
     );
   }
+
+  // if (pathname.startsWith("/login")) {
+  //   return NextResponse.next();
+  // }
+
+  // // Проверка авторизации для всех остальных маршрутов
+  // const authResponse = checkAuth(request);
+  // if (authResponse) return authResponse;
+
+  // // Пропускаем запрос дальше
+  // return NextResponse.next();
 }
 
 export const config = {
