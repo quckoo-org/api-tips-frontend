@@ -7,11 +7,11 @@ import {
 import { OperationStatus } from "../proto/custom_enums/v1/custom_enums";
 
 type ResponseT = {
-  status: OperationStatus;
-  details: string;
+  status?: OperationStatus;
+  details?: string;
 };
 
-export async function* errorMiddleware<Request, Response extends ResponseT>(
+export async function* errorMiddleware<Request, Response>(
   call: ClientMiddlewareCall<Request, Response>,
   options: CallOptions,
 ): AsyncGenerator<Response, void | Response, undefined> {
@@ -22,8 +22,10 @@ export async function* errorMiddleware<Request, Response extends ResponseT>(
   try {
     response = yield* call.next(request, options);
 
-    if (response?.status !== OperationStatus.OPERATION_STATUS_OK) {
-      throw new Error(response?.details);
+    if (
+      (response as ResponseT)?.status !== OperationStatus.OPERATION_STATUS_OK
+    ) {
+      throw new Error((response as ResponseT)?.details);
     }
 
     return response;
