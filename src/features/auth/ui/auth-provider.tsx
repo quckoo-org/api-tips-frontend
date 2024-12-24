@@ -16,8 +16,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isInitialized, setInitialized] = useState(false);
   const accessToken = TokenService.getAccessToken();
 
-  console.log(currentUser.isLoading, "loasdf");
-
   const getPathWithoutLocale = useCallback(() => {
     const pathParts = pathname.split("/").filter(Boolean);
     const localePattern = /^[a-z]{2}$/;
@@ -68,7 +66,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ) {
         router.push(ROUTES.LOGIN);
       }
-      setInitialized(true);
       return;
     }
 

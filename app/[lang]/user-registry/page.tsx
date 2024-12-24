@@ -1,11 +1,14 @@
 import { Suspense } from "react";
+import { AuthProvider } from "@/features/auth/ui/auth-provider";
 import { UserRegistryPage } from "@/screens/user-registry-page";
 
 const UserRegistry = async () => {
   return (
-    <Suspense>
-      <UserRegistryPage />
-    </Suspense>
+    <AuthProvider>
+      <Suspense>
+        <UserRegistryPage />
+      </Suspense>
+    </AuthProvider>
   );
 };
 
