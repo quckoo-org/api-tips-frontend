@@ -46,7 +46,7 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
       />
       <PasswordInput
         label={t("password")}
-        placeholder={t("password")}
+        placeholder={t("enter_password")}
         {...register("password", { required: t("password_is_required") })}
         error={errors.password?.message}
       />
