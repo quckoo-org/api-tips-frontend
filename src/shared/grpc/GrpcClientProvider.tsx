@@ -9,7 +9,7 @@ import { errorMiddleware } from "./errorMiddleware";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
-const channel = createChannel('https://beta.api-tips.api.quckoo.net');
+const channel = createChannel("https://beta.api-tips.api.quckoo.net");
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {

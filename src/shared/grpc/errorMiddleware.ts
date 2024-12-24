@@ -4,6 +4,12 @@ import {
   ClientMiddlewareCall,
   Status,
 } from "nice-grpc-web";
+import { OperationStatus } from "../proto/custom_enums/v1/custom_enums";
+
+type ResponseT = {
+  status?: OperationStatus;
+  details?: string;
+};
 
 export async function* errorMiddleware<Request, Response>(
   call: ClientMiddlewareCall<Request, Response>,
@@ -11,10 +17,16 @@ export async function* errorMiddleware<Request, Response>(
 ): AsyncGenerator<Response, void | Response, undefined> {
   const { request } = call;
 
-  let response: Awaited<Response> | null | void = null;
+  let response: Response | null | void = null;
 
   try {
     response = yield* call.next(request, options);
+
+    if (
+      (response as ResponseT)?.status !== OperationStatus.OPERATION_STATUS_OK
+    ) {
+      throw new Error((response as ResponseT)?.details);
+    }
 
     return response;
   } catch (error: unknown) {

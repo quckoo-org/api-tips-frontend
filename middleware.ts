@@ -24,6 +24,21 @@ function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function checkAuth(
+  request: NextRequest,
+  locale?: string,
+): NextResponse | undefined {
+  const token = request.cookies.get("auth-token");
+
+  if (!token) {
+    const loginUrl = new URL(`${locale}/login`, request.nextUrl.origin);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return undefined;
+}
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -44,10 +59,9 @@ export function middleware(request: NextRequest) {
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   );
 
+  const locale = getLocale(request);
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    const locale = getLocale(request);
-
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
     return NextResponse.redirect(
@@ -57,6 +71,17 @@ export function middleware(request: NextRequest) {
       ),
     );
   }
+
+  // if (pathname.startsWith("/login")) {
+  //   return NextResponse.next();
+  // }
+
+  // // Проверка авторизации для всех остальных маршрутов
+  // const authResponse = checkAuth(request);
+  // if (authResponse) return authResponse;
+
+  // // Пропускаем запрос дальше
+  // return NextResponse.next();
 }
 
 export const config = {

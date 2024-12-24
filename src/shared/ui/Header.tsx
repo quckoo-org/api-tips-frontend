@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Menu, Button } from '@mantine/core';
-import { observer } from 'mobx-react-lite';
-import Link from 'next/link';
+import { Menu, Button } from "@mantine/core";
+import { observer } from "mobx-react-lite";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -10,31 +10,29 @@ import { fetchClient } from "@/shared/utils/fetchClient";
 
 const Header = observer(() => {
   const pathname = usePathname();
-  const endOfPathName = pathname.split('/')[2]
-  const router = useRouter()
-
-  const isAuthPage = endOfPathName === 'login' || pathname === 'register';
+  const endOfPathName = pathname.split("/")[2];
+  const router = useRouter();
+  console.log(authStore.user, "user");
+  const isAuthPage = endOfPathName === "login" || pathname === "register";
   const logout = async () => {
-   await fetchClient.post('/auth/logout');
+    await fetchClient.post("/auth/logout");
     authStore.logout();
-    router.push(ROUTES.HOME)
-  }
-  console.log(authStore.user);
+    router.push(ROUTES.HOME);
+  };
+
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
-
       <div>
         <Link href="/" className="text-xl font-bold">
           Home
         </Link>
-        {
-          authStore.isAuthenticated &&
+        {authStore.isAuthenticated && (
           <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold ml-8">
             Users
           </Link>
-        }
+        )}
       </div>
-      { authStore.isAuthenticated? (
+      {authStore.isAuthenticated ? (
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
             <Button variant="subtle" className="text-white">
@@ -48,24 +46,18 @@ const Header = observer(() => {
       ) : (
         <div>
           {isAuthPage ? (
-            endOfPathName === 'login' ? (
+            endOfPathName === "login" ? (
               <Link href={ROUTES.REGISTER}>
-                <Button variant="outline">
-                  Register
-                </Button>
+                <Button variant="outline">Register</Button>
               </Link>
             ) : (
               <Link href={ROUTES.LOGIN}>
-                <Button variant="outline" >
-                  Login
-                </Button>
+                <Button variant="outline">Login</Button>
               </Link>
             )
           ) : (
             <Link href={ROUTES.LOGIN}>
-              <Button variant="filled" >
-                Login
-              </Button>
+              <Button variant="filled">Login</Button>
             </Link>
           )}
         </div>

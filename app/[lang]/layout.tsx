@@ -4,7 +4,6 @@ import "./globals.css";
 
 import { Provider } from "@/app/providers/provider";
 import { i18n, type Locale } from "@/config/i18n/i18n-config";
-import { AuthMe } from "@/features/auth";
 import { getDictionary } from "@/shared/locale/getDictionary";
 import Header from "@/shared/ui/Header";
 const geistSans = localFont({
@@ -40,7 +39,6 @@ export default async function RootLayout({
       >
         <Provider dictionary={dictionary} locale={lang}>
           <Header/>
-          <AuthMe/>
           {children}
         </Provider>
       </body>
