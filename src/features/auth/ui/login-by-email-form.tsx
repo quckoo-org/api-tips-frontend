@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, TextInput } from "@mantine/core";
+import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "@/shared/locale/translations";
@@ -44,7 +44,7 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
         {...register("email", { required: t("email_is_required") })}
         error={errors.email?.message}
       />
-      <TextInput
+      <PasswordInput
         label={t("password")}
         placeholder={t("password")}
         {...register("password", { required: t("password_is_required") })}

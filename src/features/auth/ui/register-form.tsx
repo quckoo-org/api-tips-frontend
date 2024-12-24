@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, TextInput } from "@mantine/core";
+import { Button, PasswordInput, TextInput } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -54,7 +54,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
           })}
           error={errors.email?.message}
         />
-        <TextInput
+        <PasswordInput
           label={t("Password")}
           placeholder={t("Password")}
           {...register("password", { required: t("password_is_required") })}
