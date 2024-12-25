@@ -24,7 +24,7 @@ export class TokenService {
       this.setAccessToken(newAccessToken, {
         expires: dayjs().add(15, "minute").toDate(),
       });
-      this.logger.debug({ newAccessToken }, "Refreshed token");
+      this.logger.debug("Refreshed token");
       return { newAccessToken };
     } catch (e) {
       this.logger.error(e, "Failed to refresh token...");
