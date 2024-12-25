@@ -13,9 +13,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const currentUser = useGetCurrentUser();
   const [isInitialized, setInitialized] = useState(false);
-  const [accessToken, setAccessToken] = useState(TokenService.getAccessToken());
-
-  console.log(currentUser);
+  const accessToken = TokenService.getAccessToken();
 
   // const getPathWithoutLocale = useCallback(() => {
   //   const pathParts = pathname.split("/").filter(Boolean);
@@ -70,13 +68,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //   setInitialized(true);
     //   return;
     // }
-    (async () => {
-      if (!accessToken) {
-        const { newAccessToken } = await TokenService.refreshToken();
-        setAccessToken(newAccessToken);
-      }
-    })();
-    console.log(accessToken, "ref");
 
     if (currentUser.isSuccess) {
       authStore.login(currentUser.data.user ?? null);

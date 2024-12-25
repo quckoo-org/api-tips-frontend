@@ -21,7 +21,7 @@ export class TokenService {
       const {
         data: { newAccessToken },
       } = await fetchClient.post("/auth/refresh");
-      TokenService.setAccessToken(newAccessToken, {
+      this.setAccessToken(newAccessToken, {
         expires: dayjs().add(15, "minute").toDate(),
       });
       this.logger.debug({ newAccessToken }, "Refreshed token");
