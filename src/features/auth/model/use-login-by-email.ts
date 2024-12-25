@@ -25,7 +25,7 @@ export const useLoginByEmail = () => {
     },
     onSuccess: (data) => {
       TokenService.setAccessToken(data.accessToken, {
-        expires: dayjs().add(30, "minute").toDate(),
+        expires: dayjs().add(15, "minute").toDate(),
       });
       authStore.login(data.user);
       router.push(ROUTES.HOME);
