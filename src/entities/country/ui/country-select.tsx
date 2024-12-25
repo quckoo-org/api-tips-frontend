@@ -56,6 +56,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
     <Select
       label={hideLabel ? undefined : t("country")}
       placeholder={t("select_country")}
+      searchable={true}
       className={clsx("", className)}
       value={value?.toString() ?? null}
       error={error}
