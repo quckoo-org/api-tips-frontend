@@ -3,7 +3,6 @@ import { Loader, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetCurrentUser } from "@/entities/user";
-import { refreshToken } from "@/shared/grpc/refresh-token";
 import { TokenService } from "@/shared/lib/tokenService";
 import { useTranslations } from "@/shared/locale/translations";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -73,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // }
     (async () => {
       if (!accessToken) {
-        const { newAccessToken } = await refreshToken();
+        const { newAccessToken } = await TokenService.refreshToken();
         setAccessToken(newAccessToken);
       }
     })();

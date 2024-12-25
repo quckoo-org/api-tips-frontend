@@ -1,5 +1,5 @@
 import { ClientError, ClientMiddleware, Metadata, Status } from "nice-grpc-web";
-import { refreshToken } from "@/shared/grpc/refresh-token";
+import { TokenService } from "@/shared/lib/tokenService";
 
 export type AuthMiddlewareParams = {
   getAccessToken: (signal?: AbortSignal) => string | undefined;
@@ -15,7 +15,6 @@ export function AuthMiddleware({
       "Authorization",
       `Bearer ${token}`,
     );
-
     try {
       const response = yield* call.next(call.request, {
         ...options,
@@ -29,13 +28,17 @@ export function AuthMiddleware({
         error.code === Status.UNAUTHENTICATED
       ) {
         // Здесь логика обновления токена
-        await refreshToken();
-
+        const { newAccessToken } = await TokenService.refreshToken();
+        const newMetadata = Metadata(options.metadata).set(
+          "Authorization",
+          `Bearer ${newAccessToken}`,
+        );
         // Повторяем запрос с обновленным токеном
-        return yield* call.next(call.request, {
+        const response = yield* call.next(call.request, {
           ...options,
-          metadata,
+          metadata: newMetadata,
         });
+        return response;
       }
       if (error instanceof ClientError) {
         // toast.error(error.details);
