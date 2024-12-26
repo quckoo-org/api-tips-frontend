@@ -3,6 +3,7 @@
 import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
+import { GrpcError } from "@/shared/grpc/grpc-error";
 import { useTranslations } from "@/shared/locale/translations";
 import { CreateUserRequest, User } from "@/shared/proto/user/v1/user";
 import { UserForm } from "./user-form";
@@ -19,14 +20,20 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslations();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const createMutation = useCreateUser();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onCreateUser = async (userData: UserFormValues) => {
 
-    //TODO: fix
-    createMutation.mutateAsync(userData as CreateUserRequest);
-    onClose({} as User);
+  console.log(createMutation.error?.description, "descs");
+
+  const onCreateUser = async (userData: UserFormValues) => {
+    const request: CreateUserRequest = {
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      countryCode: userData.countryCode,
+    };
+    const userResponse = await createMutation.mutateAsync(request);
+
+    onClose(userResponse.user);
   };
 
   return (
@@ -36,7 +43,10 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
       onClose={onClose}
       className={clsx("", className)}
     >
-      <UserForm onSuccess={onCreateUser} />
+      <UserForm
+        onSuccess={onCreateUser}
+        error={createMutation.error?.description}
+      />
     </Modal>
   );
 };
