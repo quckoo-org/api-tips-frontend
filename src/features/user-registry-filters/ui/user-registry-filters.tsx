@@ -50,8 +50,6 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
       values: filterMapper.toFilters(searchParams) as UserRegistryFiltersT,
     });
 
-  console.log(watch(), "watch");
-
   const debouncedSubmit = useDebouncedCallback((data: UserRegistryFiltersT) => {
     const filters = {
       ...data,
@@ -156,9 +154,6 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
             control={control}
             name="isDeleted"
             render={({ field }) => {
-              const _value = handleMapToSelectValue(field.value);
-              console.log(field.value, "fv");
-              console.log(_value);
               return (
                 <Select
                   {...field}

@@ -25,7 +25,6 @@ export const UserForm: FC<UserFormProps> = ({
   const { t } = useTranslations();
   const userQuery = useGetUser({ userId });
 
-  console.log(userQuery);
   const {
     register,
     handleSubmit,
@@ -53,8 +52,6 @@ export const UserForm: FC<UserFormProps> = ({
   });
 
   const onSubmit = (data: UserFormValues) => {
-    console.log(data);
-    console.log(userId);
     onSuccess(data);
   };
 

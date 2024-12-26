@@ -22,11 +22,9 @@ export async function* errorMiddleware<Request, Response>(
 
   try {
     response = yield* call.next(request, options);
-    console.log(response, "response");
     if (
       (response as ResponseT)?.status !== OperationStatus.OPERATION_STATUS_OK
     ) {
-      console.log(response, "response in err");
       throw new GrpcError(
         "error",
         (response as ResponseT)?.status,
