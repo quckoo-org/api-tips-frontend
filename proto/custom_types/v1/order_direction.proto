@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package custom_types.order_direction.v1;
+
+enum OrderDirection {
+  asc = 0;
+  desc = 1;
+}

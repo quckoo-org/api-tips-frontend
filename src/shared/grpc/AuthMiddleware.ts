@@ -1,5 +1,5 @@
-import { ClientError, ClientMiddleware, Metadata } from "nice-grpc-web";
-import { toast } from "react-hot-toast";
+import { ClientError, ClientMiddleware, Metadata, Status } from "nice-grpc-web";
+import { TokenService } from "@/shared/lib/tokenService";
 
 export type AuthMiddlewareParams = {
   getAccessToken: (signal?: AbortSignal) => string | undefined;
@@ -15,7 +15,6 @@ export function AuthMiddleware({
       "Authorization",
       `Bearer ${token}`,
     );
-
     try {
       const response = yield* call.next(call.request, {
         ...options,
@@ -24,8 +23,26 @@ export function AuthMiddleware({
 
       return response;
     } catch (error) {
+      if (
+        error instanceof ClientError &&
+        error.code === Status.UNAUTHENTICATED
+      ) {
+        // Здесь логика обновления токена
+        const { newAccessToken } = await TokenService.refreshToken();
+        const newMetadata = Metadata(options.metadata).set(
+          "Authorization",
+          `Bearer ${newAccessToken}`,
+        );
+        // Повторяем запрос с обновленным токеном
+        const response = yield* call.next(call.request, {
+          ...options,
+          metadata: newMetadata,
+        });
+        return response;
+      }
       if (error instanceof ClientError) {
-        toast.error(error.details);
+        // toast.error(error.details);
+        throw error;
       } else {
         throw error;
       }

@@ -8,6 +8,7 @@ import { FC, ReactNode, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Locale } from "@/config/i18n/i18n-config";
 import { mantineTheme } from "@/config/theme/mantineTheme.config";
+import { AuthProvider } from "@/features/auth/ui/auth-provider";
 import ErrorPage from "@/screens/error-page/error-page";
 import { GrpcClientsProvider } from "@/shared/grpc/GrpcClientProvider";
 import { getDictionary } from "@/shared/locale/getDictionary";
@@ -33,7 +34,7 @@ export const Provider: FC<ProviderProps> = ({
           <GrpcClientsProvider>
             <MantineProvider theme={mantineTheme}>
               <ErrorBoundary errorComponent={ErrorPage}>
-                {children}
+                <AuthProvider>{children}</AuthProvider>
               </ErrorBoundary>
               {process.env.NODE_ENV === "development" && (
                 <ReactQueryDevtools initialIsOpen={false} />

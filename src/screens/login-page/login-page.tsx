@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { FC } from "react";
 
-import { LoginByEmail } from "@/features/login-by-email";
+import { LoginByEmailForm } from "@/features/auth";
 
 type LoginPageProps = {
   className?: string;
@@ -10,8 +10,7 @@ type LoginPageProps = {
 export const LoginPage: FC<LoginPageProps> = ({ className }) => {
   return (
     <div className={clsx("", className)}>
-      {/*<Test />*/}
-      <LoginByEmail />
+      <LoginByEmailForm />
     </div>
   );
 };

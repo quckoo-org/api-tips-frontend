@@ -5,16 +5,18 @@ import { useMemo } from "use-memo-one";
 
 import { AuthMiddleware } from "./AuthMiddleware";
 import { GrpcClientsContextValue, grpcClientsContext } from "./context";
+import { errorMiddleware } from "./errorMiddleware";
 import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib/tokenService";
 
-const channel = createChannel('https://beta.api-tips.api.quckoo.net');
+const channel = createChannel("https://beta.api-tips.api.quckoo.net");
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
-      .use(retryMiddleware);
+      .use(retryMiddleware)
+      .use(errorMiddleware);
 
     clientFactory = clientFactory.use(
       AuthMiddleware({ getAccessToken: TokenService.getAccessToken }),
@@ -43,5 +45,3 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
     </grpcClientsContext.Provider>
   );
 };
-
-GrpcClientsProvider.displayName = "GrpcClientsProvider";
