@@ -19,14 +19,18 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslations();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const createMutation = useCreateUser();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onCreateUser = async (userData: UserFormValues) => {
 
-    //TODO: fix
-    createMutation.mutateAsync(userData as CreateUserRequest);
-    onClose({} as User);
+  const onCreateUser = async (userData: UserFormValues) => {
+    const request: CreateUserRequest = {
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      countryCode: userData.countryCode,
+    };
+    const userResponse = await createMutation.mutateAsync(request);
+
+    onClose(userResponse.user);
   };
 
   return (
@@ -36,7 +40,10 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
       onClose={onClose}
       className={clsx("", className)}
     >
-      <UserForm onSuccess={onCreateUser} />
+      <UserForm
+        onSuccess={onCreateUser}
+        error={createMutation.error?.description}
+      />
     </Modal>
   );
 };

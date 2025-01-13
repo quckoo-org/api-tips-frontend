@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
+import { GrpcError } from "@/shared/grpc/grpc-error";
 import { QUERY_KEYS } from "@/shared/lib/query-keys";
 import {
   CreateUserRequest,
@@ -11,7 +12,7 @@ export const useCreateUser = () => {
   const { createUser } = useUsersClient();
   const queryClient = useQueryClient();
 
-  return useMutation<CreateUserResponse, unknown, CreateUserRequest>({
+  return useMutation<CreateUserResponse, GrpcError, CreateUserRequest>({
     mutationFn: async (req) => {
       const response = await createUser(req);
 

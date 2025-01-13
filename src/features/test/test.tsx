@@ -41,7 +41,6 @@ const Test = () => {
   const sendReqeust = () => {
     pingpongMutation.mutate({ ping: value } as PingPongRequest, {
       onSuccess: (data) => {
-        console.log(data);
         setResponseValue(data.pong);
       },
     });
