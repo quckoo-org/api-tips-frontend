@@ -5,6 +5,7 @@ export const enum ROUTES {
   REGISTER = "/register",
   VERIFY = "/verify",
   FORBIDDEN = "/forbidden",
+  TARIFFS= "/tariffs",
 }
 
 export const routesConfig: Array<{
@@ -39,6 +40,11 @@ export const routesConfig: Array<{
   },
   {
     path: ROUTES.USER_REGISTRY,
+    requiresAuth: true,
+    isAdmin: false,
+  },
+  {
+    path: ROUTES.TARIFFS,
     requiresAuth: true,
     isAdmin: false,
   },
