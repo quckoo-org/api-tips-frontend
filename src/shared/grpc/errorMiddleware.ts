@@ -58,7 +58,8 @@ export async function* errorMiddleware<Request, Response>(
           throw new ServerError(
             OperationStatus.OPERATION_STATUS_NOT_PERMITTED,
             e,
-            "Нет доступа для выполнения операции",
+            "",
+            e.details,
           );
         default:
           throw new ServerError(

@@ -16,6 +16,7 @@ import { UserRegistryFilters } from "@/features/user-registry-filters";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
 import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import List from "@/shared/ui/list";
 import { UserRegistryPageSkeleton } from "./user-registry-page-skeleton";
 
 type UserRegistryPageProps = {
@@ -33,40 +34,47 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
 
   const usersQuery = useGetUsers(filtersResult);
 
-  const rows = usersQuery.data?.users.map((user) => (
-    <UserRow
-      key={user.id}
-      user={user}
-      actions={
-        <>
-          <MenuItem onClick={() => updateModal.updateUser(user.id)}>
-            {t("update_user")}
-          </MenuItem>
-        </>
-      }
-      renderHideUser={(userId, checked) => (
-        <HideUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
-        />
-      )}
-      renderBlockUser={(userId, checked) => (
-        <BlockUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
-        />
-      )}
-      renderVerifyUser={(userId, checked) => (
-        <VerifyUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
+  const rows = (
+    <List
+      page={pagination.page}
+      pageSize={pagination.pageSize}
+      items={usersQuery.data?.users}
+      itemToRender={(user) => (
+        <UserRow
+          key={user.id}
+          user={user}
+          actions={
+            <>
+              <MenuItem onClick={() => updateModal.updateUser(user.id)}>
+                {t("update_user")}
+              </MenuItem>
+            </>
+          }
+          renderHideUser={(userId, checked) => (
+            <HideUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
+          renderBlockUser={(userId, checked) => (
+            <BlockUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
+          renderVerifyUser={(userId, checked) => (
+            <VerifyUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
         />
       )}
     />
-  ));
+  );
 
   const handleSubmitFilters = (data: Partial<GetUsersRequest_Filter>) => {
     setFiltersResult(data);

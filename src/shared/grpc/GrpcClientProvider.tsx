@@ -15,12 +15,11 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
-      .use(retryMiddleware)
-      .use(errorMiddleware);
+      .use(retryMiddleware);
 
-    clientFactory = clientFactory.use(
-      AuthMiddleware({ getAccessToken: TokenService.getAccessToken }),
-    );
+    clientFactory = clientFactory
+      .use(AuthMiddleware({ getAccessToken: TokenService.getAccessToken }))
+      .use(errorMiddleware);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const clients = new Map<object, Client<any>>();

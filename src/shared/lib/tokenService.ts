@@ -1,4 +1,9 @@
-import { getCookie, OptionsType, setCookie } from "cookies-next/client";
+import {
+  getCookie,
+  OptionsType,
+  setCookie,
+  deleteCookie,
+} from "cookies-next/client";
 import dayjs from "dayjs";
 import { Logger } from "pino";
 import { rootLogger } from "@/shared/logger/logger";
@@ -28,6 +33,7 @@ export class TokenService {
       this.logger.debug("Refreshed token " + newAccessToken);
       return { newAccessToken };
     } catch (e) {
+      deleteCookie("jwt");
       this.logger.error(e, "Failed to refresh token...");
       throw e;
     }
