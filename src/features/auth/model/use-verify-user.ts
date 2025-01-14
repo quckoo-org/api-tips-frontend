@@ -19,7 +19,7 @@ export const useVerifyUser = () => {
         }
 
         // Запрос на бэкенд для верификации
-        await fetchClient.get("/auth/verify-email" + "?token=" + token);
+        await fetchClient.get("/api/auth/verify-email" + "?token=" + token);
         toast.success("Email verified successfully.", { duration: 5000 });
 
         // Редирект на логин при успешной верификации

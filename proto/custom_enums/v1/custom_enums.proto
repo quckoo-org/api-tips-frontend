@@ -1,6 +1,16 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+    
+  Owner: 
+    dev team
+*/
 
 syntax = "proto3";
-package custom_enums.v1;
+package api.tips.custom_enums.v1;
+option csharp_namespace = "ApiTips.CustomEnums.V1";
 
 /*
  * Статусы операций

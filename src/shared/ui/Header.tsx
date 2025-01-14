@@ -14,13 +14,13 @@ const Header = observer(() => {
   const pathname = usePathname();
   const endOfPathName = pathname.split("/")[2];
   const router = useRouter();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const isAuthPage = endOfPathName === "login" || pathname === "register";
 
   const logout = async () => {
-    await fetchClient.post("/auth/logout");
+    await fetchClient.post("/api/auth/logout");
     authStore.logout();
-    queryClient.removeQueries({queryKey: [QUERY_KEYS.CURRENT_USER]})
+    queryClient.removeQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
     router.push(ROUTES.HOME);
   };
 

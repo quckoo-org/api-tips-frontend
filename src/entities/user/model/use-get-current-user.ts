@@ -1,16 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+export const useGetCurrentUser = (token: string | undefined) => {
+  // decode the logged in user
+  console.log(token);
+  function parseJwt(token: string | undefined) {
+    if (!token) {
+      return;
+    }
 
-export const useGetCurrentUser = () => {
-  const { getCurrentUser } = useUsersClient();
-  return useQuery({
-    queryKey: [QUERY_KEYS.CURRENT_USER],
-    queryFn: async ({ signal }) => {
-      const response = await getCurrentUser({}, { signal });
+    const base64Url = token.split(".")[1];
+    console.log(base64Url);
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  }
 
-      return response;
-    },
-    retry: 1,
-  });
+  // loggedin user
+  const user = parseJwt(token);
+  return user;
 };

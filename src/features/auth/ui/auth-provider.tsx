@@ -11,8 +11,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  const currentUser = useGetCurrentUser();
-  const [isInitialized, setInitialized] = useState(false);
+  const currentUser = useGetCurrentUser(TokenService.getAccessToken());
+  const [isInitialized, setInitialized] = useState(true);
   const accessToken = TokenService.getAccessToken();
 
   // const getPathWithoutLocale = useCallback(() => {
@@ -68,36 +68,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //   setInitialized(true);
     //   return;
     // }
-
-    if (currentUser.isSuccess) {
-      authStore.login(currentUser.data.user ?? null);
+    if (!accessToken) {
+      TokenService.refreshToken();
     }
 
-    if (!isInitialized && !currentUser.isLoading) {
+    if (currentUser) {
+      authStore.login(currentUser ?? null);
+    }
+
+    if (!isInitialized) {
       setInitialized(true);
     }
 
     // if (isInitialized && !currentUser.data?.user) {
     //   router.push(ROUTES.LOGIN);
     // }
-
     // if (isInitialized && currentUser.data) {
     //   checkAccess();
     // }
-  }, [
-    currentUser.isSuccess,
-    currentUser.isLoading,
-    currentUser.isError,
-    currentUser.data,
-    isInitialized,
-    router,
-    pathname,
-    //checkAccess,
-    accessToken,
-    //getPathWithoutLocale,
-  ]);
+  }, [isInitialized, router, pathname, accessToken, currentUser]);
 
-  if (!isInitialized || currentUser.isLoading) {
+  if (!isInitialized) {
     return (
       <div className="h-dvh flex items-center pt-8 flex-col">
         <Text>{t("please_wait_loading")}...</Text>

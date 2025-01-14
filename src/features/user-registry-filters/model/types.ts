@@ -1,6 +1,3 @@
-import { GetAllUsersRequest } from "@/shared/proto/user/v1/user";
+import { GetUsersRequest } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
-export type UserRegistryFiltersT = Omit<
-  GetAllUsersRequest,
-  "page" | "pageSize"
->;
+export type UserRegistryFiltersT = Omit<GetUsersRequest, "page" | "pageSize">;

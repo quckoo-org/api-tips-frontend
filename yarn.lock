@@ -4117,6 +4117,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-sha256@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "js-sha256@npm:0.11.0"
+  checksum: 10c0/90980fe01ca01fbd166751fb16c4caa09c1ab997e8bf77c0764cc05c772c6044946f4c1b3bad266ce78357280d2131d3dc0cf2dd7646e78272996bd4d590aa4f
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -6778,6 +6785,7 @@ __metadata:
     husky: "npm:^9.1.7"
     i18n-iso-countries: "npm:^7.13.0"
     js-cookie: "npm:^3.0.5"
+    js-sha256: "npm:^0.11.0"
     lint-staged: "npm:^15.2.10"
     lodash.isempty: "npm:^4.4.0"
     lucide-react: "npm:^0.468.0"

@@ -17,12 +17,11 @@ import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { createFilterMapper } from "@/shared/lib/create-filter-mapper";
 import { useTranslations } from "@/shared/locale/translations";
-import { GetAllUsersRequest } from "@/shared/proto/user/v1/user";
-import { UserRegistryFiltersT } from "../model/types";
+import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 type UserRegistryFiltersProps = {
   className?: string;
-  onSubmit: (data: UserRegistryFiltersT) => void;
+  onSubmit: (data: GetUsersRequest_Filter) => void;
   isPending: boolean;
 };
 
@@ -37,33 +36,38 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
 
   const router = useRouter();
 
-  const filterMapper = createFilterMapper<GetAllUsersRequest>();
-  const { handleSubmit, register, watch, control } =
-    useForm<UserRegistryFiltersT>({
-      defaultValues: {
-        isBlocked: undefined,
-        isDeleted: undefined,
-        isVerified: undefined,
-        searchByEmail: "",
-      },
-      values: filterMapper.toFilters(searchParams),
-    });
+  const filterMapper = createFilterMapper<GetUsersRequest_Filter>();
+  const { handleSubmit, register, watch, control } = useForm<
+    Partial<GetUsersRequest_Filter>
+  >({
+    defaultValues: {
+      isBlocked: undefined,
+      isDeleted: undefined,
+      isVerified: undefined,
+      email: "",
+    },
+    values: filterMapper.toFilters(searchParams),
+  });
 
   console.log(watch(), "watch");
 
-  const debouncedSubmit = useDebouncedCallback((data: UserRegistryFiltersT) => {
-    const queryString = filterMapper.toSearchParams(data);
-    router.push(`?${queryString}`);
-    onSubmit(data);
-  }, 300);
+  const debouncedSubmit = useDebouncedCallback(
+    (data: GetUsersRequest_Filter) => {
+      const queryString = filterMapper.toSearchParams(data);
+      router.push(`?${queryString}`);
+      onSubmit(data);
+    },
+    300,
+  );
 
-  const handleSubmitForm = (data: UserRegistryFiltersT) => {
+  // eslint-disable-next-line
+  const handleSubmitForm = (data: Partial<GetUsersRequest_Filter>) => {
     const filteredData = Object.fromEntries(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(data).filter(([_, value]) => value !== undefined),
     );
 
-    debouncedSubmit(filteredData);
+    debouncedSubmit(filteredData as unknown as GetUsersRequest_Filter);
   };
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
     //@ts-ignore
     const subscription = watch((data) => handleSubmit(handleSubmitForm)(data));
     return () => subscription.unsubscribe();
-  }, [handleSubmit, watch]);
+  }, [handleSubmit, handleSubmitForm, watch]);
 
   const handleMapToFilters = (value: string | null) => {
     return value === "true" ? true : value === "false" ? false : undefined;
@@ -94,7 +98,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
           <TextInput
             rightSection={isPending ? <Loader size="xs" /> : null}
             placeholder={t("search")}
-            {...register("searchByEmail")}
+            {...register("email")}
             className="mb-4"
           />
           <ActionIcon size="lg" onClick={handlers.toggle}>

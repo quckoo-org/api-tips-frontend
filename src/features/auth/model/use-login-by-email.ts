@@ -17,14 +17,15 @@ export const useLoginByEmail = () => {
   return useMutation<LoginByEmailResT, LoginByEmailErrorT, LoginByEmailReqT>({
     mutationFn: async (req) => {
       const response = await fetchClient.post<LoginByEmailResT>(
-        "/auth/login",
+        "/api/auth/login",
         req,
       );
 
       return response.data;
     },
     onSuccess: (data) => {
-      TokenService.setAccessToken(data.accessToken, {
+      console.log(data);
+      TokenService.setAccessToken(data.Jwt, {
         expires: dayjs().add(15, "minute").toDate(),
       });
       authStore.login(data.user);

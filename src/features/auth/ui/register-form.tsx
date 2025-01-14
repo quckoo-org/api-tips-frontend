@@ -23,10 +23,11 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterReqT>({
-    defaultValues: { email: "", firstName: "", lastName: "", password: "" },
+    defaultValues: { email: "", firstname: "", lastname: "", password: "" },
   });
 
   const onSubmit = async (req: RegisterReqT) => {
+    console.log(req);
     registerMutation.mutateAsync(req);
   };
 
@@ -63,24 +64,24 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
         <TextInput
           label={t("first_name")}
           placeholder={t("first_name")}
-          {...register("firstName", { required: t("firstName_is_required") })}
-          error={errors.firstName?.message}
+          {...register("firstname", { required: t("firstName_is_required") })}
+          error={errors.firstname?.message}
         />
         <TextInput
           label={t("last_name")}
           placeholder={t("last_name")}
-          {...register("lastName", { required: t("lastName_is_required") })}
-          error={errors.lastName?.message}
+          {...register("lastname", { required: t("lastName_is_required") })}
+          error={errors.lastname?.message}
         />
         <Controller
-          name="countryCode"
+          name="cca3"
           control={control}
           rules={{ required: t("country_is_required") }}
           render={({ field }) => (
             <CountrySelect
               value={field.value}
               onChangeCountry={field.onChange}
-              error={errors.countryCode?.message}
+              error={errors.cca3?.message}
             />
           )}
         />

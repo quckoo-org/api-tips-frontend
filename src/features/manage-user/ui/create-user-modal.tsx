@@ -4,7 +4,10 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { CreateUserRequest, User } from "@/shared/proto/user/v1/user";
+import {
+  AddUserRequest,
+  User,
+} from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { UserForm } from "./user-form";
 import { UserFormValues } from "../model/types";
 import { useCreateUser } from "../model/use-create-user";
@@ -23,9 +26,8 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   const createMutation = useCreateUser();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onCreateUser = async (userData: UserFormValues) => {
-
     //TODO: fix
-    createMutation.mutateAsync(userData as CreateUserRequest);
+    createMutation.mutateAsync({ rolesIds: [], ...userData } as AddUserRequest);
     onClose({} as User);
   };
 

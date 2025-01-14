@@ -5,7 +5,7 @@ export const useVerifyUser = () => {
 
   const handleVerifyUser = async (id: number, value: boolean) => {
     await mutation.mutateAsync(
-      { id, isVerified: value },
+      { userId: id, isVerified: value, rolesIds: [] },
       {
         onSuccess: () => {
           //toast.success(t("the_user_has_been_successfully_verify"));

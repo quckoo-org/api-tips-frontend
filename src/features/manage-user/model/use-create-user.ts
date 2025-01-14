@@ -1,26 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
+import { useAccessClient } from "@/shared/grpc/clients/use-user-client";
 import { QUERY_KEYS } from "@/shared/lib/query-keys";
 import {
-  CreateUserRequest,
-  CreateUserResponse,
-  GetAllUsersResponse,
-} from "@/shared/proto/user/v1/user";
+  AddUserRequest,
+  AddUserResponse,
+  GetUsersResponse,
+} from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useCreateUser = () => {
-  const { createUser } = useUsersClient();
+  const { addUser } = useAccessClient();
   const queryClient = useQueryClient();
 
-  return useMutation<CreateUserResponse, unknown, CreateUserRequest>({
+  return useMutation<AddUserResponse, unknown, AddUserRequest>({
     mutationFn: async (req) => {
-      const response = await createUser(req);
+      const response = await addUser(req);
 
       return response;
     },
     onSuccess: (userResponse) => {
       queryClient.setQueriesData(
         { queryKey: [QUERY_KEYS.USERS] },
-        (oldData: GetAllUsersResponse | undefined) => {
+        (oldData: GetUsersResponse | undefined) => {
           if (!oldData || !userResponse.user) return oldData;
 
           return {

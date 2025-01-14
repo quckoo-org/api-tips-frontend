@@ -1,4 +1,4 @@
-import { User } from "@/shared/proto/user/v1/user";
+import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export interface UserFormValues
   extends Omit<

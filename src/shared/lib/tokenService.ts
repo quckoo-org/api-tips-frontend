@@ -8,23 +8,24 @@ export class TokenService {
   private static logger: Logger = rootLogger.child({ name: "TokenService" });
 
   static getAccessToken(): string | undefined {
-    return getCookie("accessToken");
+    return getCookie("jwt");
   }
 
   static setAccessToken(value: string, options?: OptionsType): void {
-    setCookie("accessToken", value, options);
+    setCookie("jwt", value, options);
   }
 
   static refreshToken = async () => {
     try {
       this.logger.debug("Refreshing token");
       const {
-        data: { newAccessToken },
-      } = await fetchClient.post("/auth/refresh");
+        data: { Jwt: newAccessToken },
+      } = await fetchClient.post("/api/auth/refresh");
       this.setAccessToken(newAccessToken, {
-        expires: dayjs().add(15, "minute").toDate(),
+        expires: dayjs().add(60, "minute").toDate(),
+        domain: "",
       });
-      this.logger.debug("Refreshed token");
+      this.logger.debug("Refreshed token " + newAccessToken);
       return { newAccessToken };
     } catch (e) {
       this.logger.error(e, "Failed to refresh token...");

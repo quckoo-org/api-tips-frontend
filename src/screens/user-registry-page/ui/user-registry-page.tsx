@@ -12,13 +12,10 @@ import {
   useUpdateUserModal,
   VerifyUserButton,
 } from "@/features/manage-user";
-import {
-  UserRegistryFilters,
-  UserRegistryFiltersT,
-} from "@/features/user-registry-filters";
+import { UserRegistryFilters } from "@/features/user-registry-filters";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
-import { UserRegistryPageError } from "./user-registry-page-error";
+import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { UserRegistryPageSkeleton } from "./user-registry-page-skeleton";
 
 type UserRegistryPageProps = {
@@ -30,14 +27,11 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   const pagination = usePagination();
   const createModal = useCreateUserModal();
   const updateModal = useUpdateUserModal();
-  const [filtersResult, setFiltersResult] = useState<UserRegistryFiltersT>();
+  const [filtersResult, setFiltersResult] =
+    useState<Partial<GetUsersRequest_Filter>>();
   // const { sortValue, handleChangeSort } = useSort();
 
-  const usersQuery = useGetUsers({
-    ...filtersResult,
-    page: pagination.page,
-    pageSize: pagination.pageSize,
-  });
+  const usersQuery = useGetUsers(filtersResult);
 
   const rows = usersQuery.data?.users.map((user) => (
     <UserRow
@@ -51,27 +45,35 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
         </>
       }
       renderHideUser={(userId, checked) => (
-        <HideUserButton className={'!justify-start'} userId={userId} checked={checked} />
+        <HideUserButton
+          className={"!justify-start"}
+          userId={userId}
+          checked={checked}
+        />
       )}
       renderBlockUser={(userId, checked) => (
-        <BlockUserButton className={'!justify-start'} userId={userId} checked={checked} />
+        <BlockUserButton
+          className={"!justify-start"}
+          userId={userId}
+          checked={checked}
+        />
       )}
       renderVerifyUser={(userId, checked) => (
-        <VerifyUserButton className={'!justify-start'} userId={userId} checked={checked} />
+        <VerifyUserButton
+          className={"!justify-start"}
+          userId={userId}
+          checked={checked}
+        />
       )}
     />
   ));
 
-  const handleSubmitFilters = (data: UserRegistryFiltersT) => {
+  const handleSubmitFilters = (data: Partial<GetUsersRequest_Filter>) => {
     setFiltersResult(data);
   };
 
   if (usersQuery.isLoading) {
     return <UserRegistryPageSkeleton className={className} />;
-  }
-
-  if (usersQuery.isError) {
-    return <UserRegistryPageError className={className} />;
   }
 
   return (
@@ -104,12 +106,20 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
         <Pagination
+          total={
+            usersQuery.data?.users.length
+              ? usersQuery.data?.users.length / pagination.pageSize
+              : 0
+          }
           disabled={usersQuery.isPending}
           value={pagination.page}
           onChange={(page) => {
-            pagination.handlePageChange(page, usersQuery.data?.totalPages);
+            pagination.handlePageChange(
+              page,
+              usersQuery.data!.users.length / pagination.pageSize,
+            );
           }}
-          total={usersQuery.data?.totalPages ?? 0}
+          // total={usersQuery.data?.totalPages ?? 0}
         />
       </div>
       {createModal.modal}

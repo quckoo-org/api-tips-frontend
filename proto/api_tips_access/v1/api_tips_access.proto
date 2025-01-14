@@ -1,0 +1,797 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner:
+    dev team
+
+  Methods:
+    - GetUsers ( Получение списка пользователей с ролями )
+    - GetUser ( Получение пользователя по идентификатору  )
+    - AddUser ( Создание пользователя и присвоение ему ролей )
+    - UpdateUser ( Обновление пользователя )
+
+    - GetRoles ( Получение списка ролей с разрешениями )
+    - GetRole ( Получение роли с разрешениями и пермишенами )
+    - AddRole ( Создание новой роли и назначение ей разрешений )
+    - UpdateRole ( Обновление роли (обновление списка разрешений) )
+    - DeleteRole ( Удаление роли )
+
+    - GetPermissions ( Получение списка разрешений с методами )
+    - GetPermission ( Получение разрешения с методами )
+    - AddPermission ( Создание нового разрешения и назначение ему методов )
+    - UpdatePermission ( Обновление разрешения (обновление списка методов) )
+    - DeletePermission ( Удаление разрешения )
+
+    - GetMethods ( Получение списка методов )
+    - AddMethod ( Создание нового метода )
+    - UpdateMethod ( Обновление существующего метода )
+    - DeleteMethod ( Удаление метода )
+*/
+
+syntax = "proto3";
+package api.tips.api_access.v1;
+option csharp_namespace = "ApiTips.Api.Access.V1";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import 'custom_enums/v1/custom_enums.proto';
+import 'general_entities/v1/general_entities.proto';
+
+service ApiTipsAccessService {
+  // Пользователи
+
+  /*
+   * Получение списка пользователей с ролями
+   */
+  rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
+
+  /*
+   * Получение пользователя по идентификатору
+   */
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+
+  /*
+   * Создание пользователя и присвоение ему ролей
+   */
+  rpc AddUser (AddUserRequest) returns (AddUserResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление пользователя
+   */
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  // Роли
+
+  /*
+   * Получение списка ролей с разрешениями
+   */
+  rpc GetRoles (GetRolesRequest) returns (GetRolesResponse);
+
+  /*
+   * Получение роли с разрешениями и пермишенами
+   */
+  rpc GetRole (GetRoleRequest) returns (GetRoleResponse);
+
+  /*
+   * Создание новой роли и назначение ей разрешений
+   */
+  rpc AddRole (AddRoleRequest) returns (AddRoleResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление роли (обновление списка разрешений)
+   */
+  rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Удаление роли
+   */
+  rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  // Разрешения
+
+  /*
+   * Получение списка разрешений с методами
+   */
+  rpc GetPermissions (GetPermissionsRequest) returns (GetPermissionsResponse);
+
+  /*
+   * Получение разрешения с методами
+   */
+  rpc GetPermission (GetPermissionRequest) returns (GetPermissionResponse);
+
+  /*
+   * Создание нового разрешения и назначение ему методов
+   */
+  rpc AddPermission (AddPermissionRequest) returns (AddPermissionResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление разрешения (обновление списка методов)
+   */
+  rpc UpdatePermission (UpdatePermissionRequest) returns (UpdatePermissionResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Удаление разрешения
+   */
+  rpc DeletePermission (DeletePermissionRequest) returns (DeletePermissionResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  // Методы
+
+  /*
+   * Получение списка методов
+   */
+  rpc GetMethods (GetMethodsRequest) returns (GetMethodsResponse);
+
+  /*
+   * Создание нового метода
+   */
+  rpc AddMethod (AddMethodRequest) returns (AddMethodResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление существующего метода
+   */
+  rpc UpdateMethod (UpdateMethodRequest) returns (UpdateMethodResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Удаление метода
+   */
+  rpc DeleteMethod (DeleteMethodRequest) returns (DeleteMethodResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+}
+
+/*
+ * Запрос - получение пользователя по идентификатору
+ */
+message GetUserRequest {
+  google.protobuf.Int64Value user_id = 1;
+}
+
+/*
+ * Ответ - получение пользователя по идентификатору
+ */
+message GetUserResponse {
+  /*
+   * Пользователь
+   */
+  optional User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение списка пользователей с ролями
+ */
+message GetUsersRequest {
+  /*
+   * Фильтр вхождений поиска пользователей
+   */
+  optional Filter filter = 1;
+
+  /*
+   * Сущность фильтра поиска пользователей
+   */
+  message Filter {
+    google.protobuf.StringValue email = 2;
+    google.protobuf.BoolValue is_blocked = 3;
+    google.protobuf.BoolValue is_deleted = 4;
+    google.protobuf.BoolValue is_verified = 5;
+  }
+}
+
+/*
+ * Ответ - получение списка пользователей с ролями
+ */
+message GetUsersResponse {
+  /*
+   * Пользователи
+   */
+  repeated User users = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание пользователя
+ */
+message AddUserRequest {
+  /*
+   * Почта пользователя
+   */
+  string email = 1;
+
+  /*
+   * Имя пользователя
+   */
+  string first_name = 2;
+
+  /*
+   * Фамилия пользователя
+   */
+  string last_name = 3;
+
+  /*
+   * Код страны пользователя (ISO 3166-1 alpha-3)
+   */
+  string cca3 = 4;
+
+  /*
+   * Список идентификаторов ролей
+   */
+  repeated int64 roles_ids = 5;
+
+}
+
+/*
+ * Ответ - создание пользователя
+ */
+message AddUserResponse {
+  /*
+   * Пользователь
+   */
+  optional User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание пользователя
+ */
+message UpdateUserRequest {
+  /*
+   * Идентификатор обновляемого пользователя
+   */
+  google.protobuf.Int64Value user_id = 1;
+
+  /*
+   * Почта пользователя
+   */
+  optional string email = 2;
+
+  /*
+   * Имя пользователя
+   */
+  optional string first_name = 3;
+
+  /*
+   * Фамилия пользователя
+   */
+  optional string last_name = 4;
+
+  /*
+   * Код страны пользователя (ISO 3166-1 alpha-3)
+   */
+  optional string cca3 = 5;
+
+  /*
+   * Маркер на удаление пользователя
+   */
+  optional bool is_deleted = 6;
+
+  /*
+   * Маркер на блокировку пользователя
+   */
+  optional bool is_blocked = 7;
+
+  /*
+   * Маркер на верификацию пользователя
+   */
+  optional bool is_verified = 8;
+
+  /*
+   * Список идентификаторов ролей
+   */
+  repeated int64 roles_ids = 9;
+}
+
+/*
+ * Ответ - создание пользователя
+ */
+message UpdateUserResponse {
+  /*
+   * Пользователь
+   */
+  User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение списка ролей с разрешениями
+ */
+message GetRolesRequest {
+}
+
+/*
+ * Ответ - получение списка ролей с разрешениями
+ */
+message GetRolesResponse {
+  /*
+   * Список ролей
+   */
+  repeated Role roles = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение роли с разрешениями и пермишенами
+ */
+message GetRoleRequest {
+  google.protobuf.Int64Value role_id = 1;
+}
+
+/*
+ * Ответ - получение роли с разрешениями и пермишенами
+ */
+message GetRoleResponse {
+  /*
+   * Роль
+   */
+  optional Role role = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание роли
+ */
+
+message AddRoleRequest {
+  /*
+   * Наименование роли
+   */
+  string name = 1;
+
+  /*
+   * Список идентификаторов разрешений
+   */
+  repeated int64 permissions_ids = 2;
+}
+
+/*
+ * Ответ - создание роли
+ */
+message AddRoleResponse {
+  /*
+   * Роль
+   */
+  optional Role role = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - обновление роли
+ */
+message UpdateRoleRequest {
+  /*
+   * Идентификатор обновляемой роли
+   */
+  google.protobuf.Int64Value role_id = 1;
+
+  /*
+   * Наименование роли
+   */
+  optional string name = 2;
+
+  /*
+   * Список идентификаторов разрешений
+   */
+  repeated int64 permissions_ids = 3;
+}
+
+/*
+ * Ответ - обновление роли
+ */
+message UpdateRoleResponse {
+  /*
+   * Роль
+   */
+  optional Role role = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - удаление роли
+ */
+message DeleteRoleRequest {
+  /*
+   * Идентификатор удаляемой роли
+   */
+  google.protobuf.Int64Value role_id = 1;
+}
+
+/*
+ * Ответ - удаление роли
+ */
+message DeleteRoleResponse {
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение списка разрешений с методами
+ */
+message GetPermissionsRequest {
+}
+
+/*
+ * Ответ - получение списка разрешений с методами
+ */
+message GetPermissionsResponse {
+  /*
+   * Список разрешений
+   */
+  repeated Permission permissions = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение разрешения с методами
+ */
+message GetPermissionRequest {
+  google.protobuf.Int64Value permission_id = 1;
+}
+
+/*
+ * Ответ - получение разрешения с методами
+ */
+message GetPermissionResponse {
+  /*
+   * Разрешение
+   */
+  optional Permission permission = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание разрешения
+ */
+message AddPermissionRequest {
+  /*
+   * Наименование разрешения
+   */
+  string name = 1;
+
+  /*
+   * Список идентификаторов методов
+   */
+  repeated int64 methods_ids = 2;
+}
+
+/*
+ * Ответ - создание разрешения
+ */
+message AddPermissionResponse {
+  /*
+   * Разрешение
+   */
+  optional Permission permission = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - обновление разрешения
+ */
+message UpdatePermissionRequest {
+  /*
+   * Идентификатор обновляемого разрешения
+   */
+  google.protobuf.Int64Value permission_id = 1;
+
+  /*
+   * Наименование разрешения
+   */
+  optional string name = 2;
+
+  /*
+   * Список идентификаторов методов
+   */
+  repeated int64 methods_ids = 3;
+}
+
+/*
+ * Ответ - обновление разрешения
+ */
+message UpdatePermissionResponse {
+  /*
+   * Разрешение
+   */
+  optional Permission permission = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - удаление разрешения
+ */
+message DeletePermissionRequest {
+  /*
+   * Идентификатор удаляемого разрешения
+   */
+  google.protobuf.Int64Value permission_id = 1;
+}
+
+/*
+ * Ответ - удаление разрешения
+ */
+message DeletePermissionResponse {
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение списка методов
+ */
+message GetMethodsRequest {
+}
+
+/*
+ * Ответ - получение списка методов
+ */
+message GetMethodsResponse {
+  /*
+   * Список методов
+   */
+  repeated Method methods = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание метода
+ */
+message AddMethodRequest {
+  /*
+   * Наименование метода
+   */
+  string name = 1;
+}
+
+/*
+ * Ответ - создание метода
+ */
+message AddMethodResponse {
+  /*
+   * Метод
+   */
+  optional Method method = 1;
+
+  /*
+   * ��ета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - обновление метода
+ */
+message UpdateMethodRequest {
+  /*
+   * Идентификатор обновляемого метода
+   */
+  google.protobuf.Int64Value method_id = 1;
+
+  /*
+   * Наименование метода
+   */
+  optional string name = 2;
+}
+
+/*
+ * Ответ - обновление метода
+ */
+message UpdateMethodResponse {
+  /*
+   * Метод
+   */
+  optional Method method = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - удаление метода
+ */
+message DeleteMethodRequest {
+  /*
+   * Идентификатор удаляемого метода
+   */
+  google.protobuf.Int64Value method_id = 1;
+}
+
+/*
+ * Ответ - удаление метода
+ */
+message DeleteMethodResponse {
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+
+/* ---------- Entities ---------- */
+
+/*
+ * Сущность пользователя
+ */
+message User {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 id = 1;
+
+  /*
+   * Почта пользователя
+   */
+  string email = 2;
+
+  /*
+   * Имя пользователя
+   */
+  string first_name = 3;
+
+  /*
+   * Фамилия пользователя
+   */
+  string last_name = 4;
+
+  /*
+   * Код страны пользователя (ISO 3166-1 alpha-3)
+   */
+  string cca3 = 5;
+
+  /*
+   * Дата создания
+   */
+  google.protobuf.Timestamp created_at = 6;
+
+  /*
+   * Дата блокировки
+   */
+  google.protobuf.Timestamp blocked_at = 7;
+
+  /*
+   * Дата удаления
+   */
+  google.protobuf.Timestamp deleted_at = 8;
+
+  /*
+   * Дата верификации
+   */
+  google.protobuf.Timestamp verified_at = 9;
+
+  /*
+   * Список ролей пользователя
+   */
+  repeated Role roles = 10;
+}
+
+/*
+ * Описание Роли
+ */
+message Role {
+  /*
+   * Идентификатор роли
+   */
+  int64 id = 1;
+
+  /*
+   * Наименование роли
+   */
+  string name = 2;
+
+  /*
+   * Список разрешений для роли
+   */
+  repeated Permission permissions = 3;
+}
+
+/*
+ * Описание разрешения
+ */
+message Permission {
+  /*
+   * Идентификатор разрешения
+   */
+  int64 id = 1;
+
+  /*
+   * Наименование разрешения
+   */
+  string name = 2;
+
+  /*
+   * Список методов для разрешения
+   */
+  repeated Method methods = 3;
+}
+
+/*
+ * Описание метода
+ */
+message Method {
+  /*
+   * Идентификатор метода
+   */
+  int64 id = 1;
+
+  /*
+   * название метода
+   */
+  string name = 2;
+}
