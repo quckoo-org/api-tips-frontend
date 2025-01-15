@@ -4,11 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createFilterMapper } from "../lib/create-filter-mapper";
 
-export const usePagination = () => {
+export const usePagination = (itemsCount: number | undefined) => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
   const mounded = useRef(false);
   const searchParams = useSearchParams();
+  const totalPages = itemsCount ? itemsCount / pageSize : 0;
 
   const filterMapper = createFilterMapper<{
     page: number;
@@ -31,11 +32,13 @@ export const usePagination = () => {
         setPage(filters.page);
       }
     }
+    // eslint-disable-next-line
   }, []);
 
   return {
     page,
     pageSize,
     handlePageChange,
+    totalPages,
   };
 };

@@ -1,14 +1,3 @@
-import { Timestamp } from "@/shared/proto/google/protobuf/timestamp";
+import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 
-export type TariffT = {
-  id: number;
-  startDate: string;
-  endDate: string;
-  name: string;
-  freeRequests: number;
-  paidRequests: number;
-  totalRequests: number;
-  cost: number;
-  totalCost: number;
-  isHidden: Timestamp | null;
-};
+export type TariffT = Tariff;

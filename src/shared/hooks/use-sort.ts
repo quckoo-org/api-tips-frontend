@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { OrderDirection } from "@/shared/proto/custom_types/v1/order_direction";
 
+export enum OrderDirection {
+  asc = "asc",
+  desc = "desc",
+}
 export type SortItemT<T> = {
   value: T;
 };

@@ -1,0 +1,276 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner:
+    dev team
+
+  Methods:
+    - GetTariffs ( Получение списка тарифов )
+    - GetTariff ( Получение тарифа )
+    - AddTariff ( Создание тарифа )
+    - UpdateTariff ( Обновление тарифа )
+*/
+
+syntax = "proto3";
+package api.tips.tariff.v1;
+option csharp_namespace = "ApiTips.Api.Tariff.V1";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import 'custom_enums/v1/custom_enums.proto';
+import 'custom_types/v1/decimal.proto';
+import 'general_entities/v1/general_entities.proto';
+
+service ApiTipsTariffService {
+  /*
+   * Получение списка тарифов
+   */
+  rpc GetTariffs (GetTariffsRequest) returns (GetTariffsResponse);
+
+  /*
+   * Получение тарифа
+   */
+  rpc GetTariff (GetTariffRequest) returns (GetTariffResponse);
+
+  /*
+   * Создание тарифа
+   */
+  rpc AddTariff (AddTariffRequest) returns (AddTariffResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление тарифа
+   */
+  rpc UpdateTariff (UpdateTariffRequest) returns (UpdateTariffResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+}
+
+/*
+ * Запрос - получение списка тарифов
+ */
+message GetTariffsRequest {
+  /*
+   * Фильтр вхождений поиска тарифов
+   */
+  optional Filter filter = 1;
+
+  /*
+   * Сущность фильтра поиска тарифов
+   */
+  message Filter {
+    google.protobuf.BoolValue is_hidden = 1;
+  }
+}
+
+/*
+ * Ответ - получение списка тарифов
+ */
+message GetTariffsResponse {
+  /*
+   * Тарифы
+   */
+  repeated Tariff tariffs = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение тарифа по идентификатору
+ */
+message GetTariffRequest {
+  google.protobuf.Int64Value tariff_id = 1;
+}
+
+/*
+ * Ответ - получение тарифа по идентификатору
+ */
+message GetTariffResponse {
+  /*
+   * Тариф
+   */
+  optional Tariff tariff = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание тарифа
+ */
+message AddTariffRequest {
+  /*
+   * Название тарифа
+   */
+  string name = 1;
+
+  /*
+   * Количество бесплатных подсказок
+   */
+  optional int64 free_tips_count = 2;
+
+  /*
+   * Количество оплаченных подсказок
+   */
+  optional int64 paid_tips_count = 3;
+
+  /*
+   * Общая стоимость
+   */
+  api.tips.custom_types.v1.Decimal total_price = 4;
+
+  /*
+   * Дата начала действия
+   */
+  google.protobuf.Timestamp start_date = 5;
+
+  /*
+   * Дата окончания действия
+   */
+  optional google.protobuf.Timestamp end_date = 6;
+
+  /*
+   * Признак сокрытия тарифа
+   */
+  optional bool is_hidden = 7;
+}
+
+/*
+ * Ответ - создание тарифа
+ */
+message AddTariffResponse {
+  /*
+   * Пользователь
+   */
+  optional Tariff tariff = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - обновление тарифа
+ */
+message UpdateTariffRequest {
+  /*
+  * Идентификатор тарифа
+  */
+  int64 id = 1;
+  /*
+   * Название тарифа
+   */
+  optional string name = 2;
+
+  /*
+   * Количество бесплатных подсказок
+   */
+  optional int64 free_tips_count = 3;
+
+  /*
+   * Количество оплаченных подсказок
+   */
+  optional int64 paid_tips_count = 4;
+
+  /*
+   * Общая стоимость
+   */
+  optional api.tips.custom_types.v1.Decimal total_price = 5;
+
+  /*
+   * Дата начала действия
+   */
+  optional google.protobuf.Timestamp start_date = 6;
+
+  /*
+   * Дата окончания действия
+   */
+  optional google.protobuf.Timestamp end_date = 7;
+
+  /*
+   * Признак сокрытия тарифа
+   */
+  optional bool is_hidden = 8;
+}
+
+/*
+ * Ответ - обновление тарифа
+ */
+message UpdateTariffResponse {
+  /*
+   * Тариф
+   */
+  optional Tariff tariff = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/* ---------- Entities ---------- */
+
+/*
+ * Сущность тарифа
+ */
+message Tariff {
+  /*
+   * Идентификатор тарифа
+   */
+  int64 id = 1;
+
+  /*
+   * Название тарифа
+   */
+  string name = 2;
+
+  /*
+   * Стоимость одной подсказки
+   */
+  api.tips.custom_types.v1.Decimal tip_price = 3;
+
+  /*
+   * Количество бесплатных подсказок
+   */
+  int64 free_tips_count = 4;
+
+  /*
+   * Количество оплаченных подсказок
+   */
+  int64 paid_tips_count = 5;
+
+  /*
+   * Общее количество подсказок
+   */
+  int64 total_tips_count = 6;
+
+  /*
+   * Общая стоимость
+   */
+  api.tips.custom_types.v1.Decimal total_price = 7;
+
+  /*
+   * Дата начала действия
+   */
+  google.protobuf.Timestamp start_date = 8;
+
+  /*
+   * Дата окончания действия
+   */
+  google.protobuf.Timestamp end_date = 9;
+
+  /*
+   * Дата сокрытия тарифа
+   */
+  google.protobuf.Timestamp hidden_at = 10;
+}

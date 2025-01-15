@@ -5,6 +5,7 @@ import { DatePickerInput } from "@mantine/dates";
 import { clsx } from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { createDecimal } from "@/shared/lib/decimal/createDecimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { TariffFormValues } from "../model/types";
 
@@ -27,14 +28,14 @@ export const TariffForm: FC<TariffFormProps> = ({
     formState: { errors },
   } = useForm<TariffFormValues>({
     defaultValues: {
-      startDate: null,
-      endDate: null,
+      startDate: undefined,
+      endDate: undefined,
       name: "",
-      freeRequests: 0,
-      paidRequests: 0,
-      totalRequests: 0,
-      cost: 0,
-      totalCost: 0,
+      freeTipsCount: 0,
+      paidTipsCount: 0,
+      totalTipsCount: 0,
+      tipPrice: createDecimal(),
+      totalPrice: createDecimal(),
     },
   });
 
@@ -82,27 +83,27 @@ export const TariffForm: FC<TariffFormProps> = ({
         <TextInput
           label={t("free_requests")}
           placeholder={t("enter_free_requests")}
-          {...register("freeRequests")}
+          {...register("freeTipsCount")}
         />
         <TextInput
           label={t("paid_requests")}
           placeholder={t("enter_paid_requests")}
-          {...register("paidRequests")}
+          {...register("paidTipsCount")}
         />
         <TextInput
           label={t("total_requests")}
           placeholder={t("enter_total_requests")}
-          {...register("totalRequests")}
+          {...register("totalTipsCount")}
         />
         <TextInput
           label={t("cost")}
           placeholder={t("enter_cost")}
-          {...register("cost")}
+          {...register("tipPrice")}
         />
         <TextInput
           label={t("total_cost")}
           placeholder={t("enter_total_cost")}
-          {...register("totalCost")}
+          {...register("totalPrice")}
         />
         <Button type="submit">Submit</Button>
       </Flex>

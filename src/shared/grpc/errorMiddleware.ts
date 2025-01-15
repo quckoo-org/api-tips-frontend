@@ -65,18 +65,14 @@ export async function* errorMiddleware<Request, Response>(
           throw new ServerError(
             OperationStatus.OPERATION_STATUS_UNSPECIFIED,
             e,
+            "",
             e.details,
           );
       }
     } else if (e instanceof ServerError) {
       switch (e.status) {
         case OperationStatus.OPERATION_STATUS_UNSPECIFIED:
-          throw new ServerError(
-            e.status,
-            e.pureError,
-            "Unspecified error",
-            e.statusDescription,
-          );
+          throw new ServerError(e.status, e.pureError, "", e.statusDescription);
         case OperationStatus.OPERATION_STATUS_ERROR:
           throw new ServerError(e.status, e.pureError, "", e.statusDescription);
         case OperationStatus.OPERATION_STATUS_NOT_PERMITTED:

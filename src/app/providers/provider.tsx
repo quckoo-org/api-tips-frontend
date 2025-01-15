@@ -37,7 +37,7 @@ export const Provider: FC<ProviderProps> = ({
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: false,
+            retry: 1,
             refetchOnWindowFocus: false,
           },
         },

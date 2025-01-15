@@ -28,7 +28,7 @@ type UserRegistryPageProps = {
 
 export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   const { t } = useTranslations();
-  const pagination = usePagination();
+
   const createModal = useCreateUserModal();
   const updateModal = useUpdateUserModal();
   const [filtersResult, setFiltersResult] = useState<GetUsersRequest_Filter>({
@@ -38,7 +38,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     email: "",
   });
   const { sortValue, handleChangeSort } = useSort<UserOrderBy>();
-
+  //TODO: sorting
   const usersQuery = useGetUsers({
     ...(filtersResult.isDeleted !== undefined
       ? { isDeleted: filtersResult.isDeleted }
@@ -50,9 +50,8 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
       ? { isVerified: filtersResult.isVerified }
       : {}),
     ...(filtersResult.email !== "" ? { email: filtersResult.email } : {}),
-    ...(sortValue?.order ? { order: sortValue.order } : {}),
-    ...(sortValue?.value ? { orderBy: sortValue.value } : {}),
   });
+  const pagination = usePagination(usersQuery.data?.users.length);
 
   const rows = (
     <List
@@ -181,20 +180,12 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
         <Pagination
-          total={
-            usersQuery.data?.users.length
-              ? usersQuery.data?.users.length / pagination.pageSize
-              : 0
-          }
+          total={pagination.totalPages}
           disabled={usersQuery.isPending}
           value={pagination.page}
           onChange={(page) => {
-            pagination.handlePageChange(
-              page,
-              usersQuery.data!.users.length / pagination.pageSize,
-            );
+            pagination.handlePageChange(page, pagination.totalPages);
           }}
-          // total={usersQuery.data?.totalPages ?? 0}
         />
       </div>
       {createModal.modal}
