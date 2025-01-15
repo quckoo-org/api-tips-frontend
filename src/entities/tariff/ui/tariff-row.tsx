@@ -29,7 +29,7 @@ export const TariffRow: FC<TariffRowProps> = ({
       <Table.Td>{tariff.paidTipsCount}</Table.Td>
       <Table.Td>{fromDecimal(tariff.totalPrice)}</Table.Td>
       <Table.Td>{fromDecimal(tariff.totalPrice)}</Table.Td>
-      <Table.Td>{renderHideTariff(tariff.id, !!tariff.isHidden)}</Table.Td>
+      <Table.Td>{renderHideTariff(tariff.id, !!tariff.hiddenAt)}</Table.Td>
       <Table.Td className="w-12">
         <Menu zIndex={100} closeOnItemClick={false}>
           <Menu.Target>

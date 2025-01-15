@@ -1,8 +1,7 @@
 import { Table } from "@mantine/core";
 import { SortAsc, SortDesc } from "lucide-react";
 import { ReactNode } from "react";
-import { SortItemT } from "@/shared/hooks/use-sort";
-import { OrderDirection } from "@/shared/proto/custom_types/v1/order_direction";
+import { OrderDirection, SortItemT } from "@/shared/hooks/use-sort";
 
 type SortThProps<T> = {
   onSort: (value: SortItemT<T>) => void;
