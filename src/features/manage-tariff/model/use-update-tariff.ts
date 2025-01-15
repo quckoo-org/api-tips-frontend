@@ -24,7 +24,7 @@ export const useUpdateTariff = () => {
 
           return {
             ...oldData,
-            rows: oldData.tariffs.map((tariff) =>
+            tariffs: oldData.tariffs.map((tariff) =>
               tariff.id === tariffResponse?.tariff?.id
                 ? tariffResponse?.tariff
                 : tariff,

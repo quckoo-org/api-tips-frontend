@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const currentUser = useGetCurrentUser(TokenService.getAccessToken());
   const [isInitialized, setIsInitialized] = useState(true);
-  const accessToken = TokenService.getAccessToken();
 
   const getPathWithoutLocale = useCallback(() => {
     const pathParts = pathname.split("/").filter(Boolean);
@@ -27,47 +26,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return "/" + pathParts.join("/");
   }, [pathname]);
 
-  const checkAccess = useCallback(() => {
-    const pathWithoutLocale = getPathWithoutLocale();
-    const route = routesConfig.find((r) => r.path === pathWithoutLocale);
+  const checkAccess = useCallback(
+    (accessToken?: string) => {
+      const pathWithoutLocale = getPathWithoutLocale();
+      const route = routesConfig.find((r) => r.path === pathWithoutLocale);
 
-    if (!route) {
-      router.push(ROUTES.HOME);
+      if (!route) {
+        router.push(ROUTES.HOME);
+        setIsInitialized(true);
+        return false;
+      }
+
+      if (route.requiresAuth && !accessToken) {
+        router.push(ROUTES.LOGIN);
+        setIsInitialized(true);
+        return false;
+      }
+
+      // TODO CHECK IS ADMIN
+      // if (route.isAdmin && (!currentUser.data || !currentUser.data.user)) {
+      //   router.push(ROUTES.FORBIDDEN);
+      //   return false;
+      // }
       setIsInitialized(true);
-      return false;
-    }
-
-    if (route.requiresAuth && !accessToken) {
-      router.push(ROUTES.LOGIN);
-      setIsInitialized(true);
-      return false;
-    }
-
-    // TODO CHECK IS ADMIN
-    // if (route.isAdmin && (!currentUser.data || !currentUser.data.user)) {
-    //   router.push(ROUTES.FORBIDDEN);
-    //   return false;
-    // }
-    setIsInitialized(true);
-    return true;
-  }, [accessToken, getPathWithoutLocale, router]);
+      return true;
+    },
+    [getPathWithoutLocale, router],
+  );
 
   useEffect(() => {
-    if (!accessToken) {
-      TokenService.refreshToken();
-    }
+    (async () => {
+      if (!TokenService.getAccessToken()) {
+        const { newAccessToken } = await TokenService.refreshToken(checkAccess);
+        checkAccess(newAccessToken);
+      }
+    })();
 
     if (currentUser) {
       authStore.login(currentUser ?? null);
     }
-
-    if (!isInitialized) {
-      setIsInitialized(true);
-    }
-    if (isInitialized && currentUser) {
-      checkAccess();
-    }
-  }, [isInitialized, router, pathname, accessToken, currentUser, checkAccess]);
+  }, [router, pathname, currentUser, checkAccess]);
 
   if (!isInitialized) {
     return (

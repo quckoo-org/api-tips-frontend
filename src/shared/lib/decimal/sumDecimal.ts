@@ -6,7 +6,7 @@ export const sumDecimal = (
   value1: Decimal | undefined,
   value2: Decimal | undefined,
   value3?: Decimal | undefined,
-  afterDecimal: number = 9,
+  afterDecimal: number = 2,
 ): Decimal => {
   if (!value1 && !value2 && !value3) {
     return { units: 0, nanos: 0 };

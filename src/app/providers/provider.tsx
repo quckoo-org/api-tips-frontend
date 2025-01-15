@@ -42,26 +42,11 @@ export const Provider: FC<ProviderProps> = ({
           },
         },
         queryCache: new QueryCache({
-          onError: (e, query) => {
-            if (
-              e instanceof ServerError &&
-              query.meta?.message &&
-              e.status === query.meta.status
-            ) {
-              const error = e as ServerError;
-              toast.error(() => <div>{error.statusDescription}</div>, {
-                id: "queryDeltaServerError" + error.message,
-                duration: 5000,
-              });
-
-              return;
-            }
-
+          onError: (e) => {
             if (e instanceof ServerError) {
               const error = e as ServerError;
               toast.error(() => <div>{error.statusDescription}</div>, {
-                id: "queryDeltaServerError" + error.message,
-                duration: 5000,
+                id: "queryServerError" + error.message,
               });
             }
           },
@@ -75,7 +60,6 @@ export const Provider: FC<ProviderProps> = ({
                   "mutationDeltaServerError" +
                   error.message +
                   error.statusDescription,
-                duration: 5000,
               });
             }
           },

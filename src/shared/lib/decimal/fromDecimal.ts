@@ -1,6 +1,6 @@
 import { Decimal } from "@/shared/proto/custom_types/v1/decimal";
 
-export const fromDecimal = (money: Decimal | undefined, afterDecimal = 9) => {
+export const fromDecimal = (money: Decimal | undefined, afterDecimal = 2) => {
   if (!money || (money.units === 0 && money.nanos === 0)) {
     return 0;
   }

@@ -4,6 +4,7 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { TariffT } from "@/entities/tariff";
+import { toDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { TariffForm } from "./tariff-form";
 import { TariffFormValues } from "../model/types";
@@ -22,7 +23,11 @@ export const CreateTariffModal: FC<CreateTariffModalProps> = ({
   const createMutation = useCreateTariff();
 
   const onCreateTariff = async (tariffData: TariffFormValues) => {
-    createMutation.mutateAsync(tariffData);
+    const response = await createMutation.mutateAsync({
+      ...tariffData,
+      totalPrice: toDecimal(tariffData.totalPrice),
+    });
+    onClose(response.tariff);
   };
 
   return (

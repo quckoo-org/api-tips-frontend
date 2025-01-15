@@ -9,7 +9,7 @@ export const usePagination = (itemsCount: number | undefined) => {
   const pageSize = 10;
   const mounded = useRef(false);
   const searchParams = useSearchParams();
-  const totalPages = itemsCount ? itemsCount / pageSize : 0;
+  const totalPages = itemsCount ? Math.ceil(itemsCount / pageSize) : 0;
 
   const filterMapper = createFilterMapper<{
     page: number;

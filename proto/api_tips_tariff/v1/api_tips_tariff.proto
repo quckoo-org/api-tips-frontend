@@ -164,9 +164,10 @@ message AddTariffResponse {
  */
 message UpdateTariffRequest {
   /*
-  * Идентификатор тарифа
-  */
-  int64 id = 1;
+   * Идентификатор тарифа
+   */
+  int64 tariff_id = 1;
+
   /*
    * Название тарифа
    */
@@ -237,22 +238,22 @@ message Tariff {
   /*
    * Стоимость одной подсказки
    */
-  api.tips.custom_types.v1.Decimal tip_price = 3;
+  optional api.tips.custom_types.v1.Decimal tip_price = 3;
 
   /*
    * Количество бесплатных подсказок
    */
-  int64 free_tips_count = 4;
+  optional int64 free_tips_count = 4;
 
   /*
    * Количество оплаченных подсказок
    */
-  int64 paid_tips_count = 5;
+  optional int64 paid_tips_count = 5;
 
   /*
    * Общее количество подсказок
    */
-  int64 total_tips_count = 6;
+  optional int64 total_tips_count = 6;
 
   /*
    * Общая стоимость
@@ -273,4 +274,9 @@ message Tariff {
    * Дата сокрытия тарифа
    */
   google.protobuf.Timestamp hidden_at = 10;
+
+  /*
+   * Валюта тарифа, ISO 4217
+   */
+  string currency = 11;
 }

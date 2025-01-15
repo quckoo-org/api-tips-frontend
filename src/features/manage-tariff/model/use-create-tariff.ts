@@ -24,11 +24,7 @@ export const useCreateTariff = () => {
 
           return {
             ...oldData,
-            rows: oldData.tariffs.map((tariff) =>
-              tariff.id === tariffResponse?.tariff?.id
-                ? tariffResponse?.tariff
-                : tariff,
-            ),
+            tariffs: [...oldData.tariffs, tariffResponse.tariff],
           };
         },
       );

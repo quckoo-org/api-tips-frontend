@@ -39,7 +39,7 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
           tariff={tariff}
           actions={
             <>
-              <MenuItem onClick={() => updateModal.updateTariff(tariff.id)}>
+              <MenuItem onClick={() => updateModal.updateTariff(tariff)}>
                 {t("update_tariff")}
               </MenuItem>
             </>
@@ -51,6 +51,8 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
       )}
     />
   );
+
+  console.log(pagination, tariffsQuery.data?.tariffs);
 
   if (tariffsQuery.isLoading) {
     return <TariffsPageSkeleton className={className} />;
