@@ -22,7 +22,6 @@ export const useUpdateUser = () => {
         { queryKey: [QUERY_KEYS.USERS] },
         (oldData: GetUsersResponse | undefined) => {
           if (!oldData) return oldData;
-          console.log(userResponse, oldData);
           return {
             ...oldData,
             users: oldData.users.map((user) =>

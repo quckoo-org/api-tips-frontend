@@ -661,6 +661,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^7.15.1":
+  version: 7.16.0
+  resolution: "@mantine/dates@npm:7.16.0"
+  dependencies:
+    clsx: "npm:^2.1.1"
+  peerDependencies:
+    "@mantine/core": 7.16.0
+    "@mantine/hooks": 7.16.0
+    dayjs: ">=1.0.0"
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+  checksum: 10c0/5537de588a0301c9532fa45a8c9eba8ceb4ad9d37c6e25873f08a13061632c5ae471672ef82b7138eb5fca77e9a4117b4999c2ef0b248b080a65a7e4e8a2738a
+  languageName: node
+  linkType: hard
+
 "@mantine/hooks@npm:^7.14.1":
   version: 7.14.1
   resolution: "@mantine/hooks@npm:7.14.1"
@@ -6760,6 +6775,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.6.0"
     "@formatjs/intl-localematcher": "npm:^0.5.8"
     "@mantine/core": "npm:^7.14.1"
+    "@mantine/dates": "npm:^7.15.1"
     "@mantine/hooks": "npm:^7.14.1"
     "@mantine/notifications": "npm:^7.15.1"
     "@tanstack/react-query": "npm:^5.61.4"

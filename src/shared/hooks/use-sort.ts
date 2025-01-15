@@ -1,13 +1,11 @@
 import { useState } from "react";
+import { OrderDirection } from "@/shared/proto/custom_types/v1/order_direction";
 
 export type SortItemT<T> = {
-  label: string;
   value: T;
-  id: number;
 };
 
-export type OrderType = "asc" | "desc";
-export type SortValueT<T> = { value: T; order: OrderType };
+export type SortValueT<T> = { value: T; order: OrderDirection };
 
 // Хук для сортировки в него нужно передать тип который будет содержать варианты строк с сортировкой.
 // Создать массив вариантов сортировки и тоже прокинуть туда тип
@@ -22,19 +20,23 @@ export const useSort = <T>() => {
 
   const handleChangeSort = (item: SortItemT<T>) => {
     if (!sortValue) {
-      setSortValue({ value: item.value, order: "asc" });
+      setSortValue({ value: item.value, order: OrderDirection.asc });
       return;
     }
 
     if (sortValue.value === item.value) {
-      setSortValue({
-        value: item.value,
-        order: sortValue.order === "asc" ? "desc" : "asc",
-      });
+      if (sortValue.order === OrderDirection.asc) {
+        setSortValue({
+          value: item.value,
+          order: OrderDirection.desc,
+        });
+      } else {
+        setSortValue(null);
+      }
       return;
     }
 
-    setSortValue({ value: item.value, order: "asc" });
+    setSortValue({ value: item.value, order: OrderDirection.asc });
   };
 
   return {

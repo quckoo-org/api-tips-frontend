@@ -23,12 +23,14 @@ type UserRegistryFiltersProps = {
   className?: string;
   onSubmit: (data: GetUsersRequest_Filter) => void;
   isPending: boolean;
+  result: GetUsersRequest_Filter;
 };
 
 export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
   className,
   onSubmit,
   isPending,
+  result,
 }) => {
   const [opened, handlers] = useDisclosure();
   const searchParams = useSearchParams();
@@ -36,24 +38,28 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
 
   const router = useRouter();
 
-  const filterMapper = createFilterMapper<GetUsersRequest_Filter>();
-  const { handleSubmit, register, watch, control } = useForm<
-    Partial<GetUsersRequest_Filter>
-  >({
-    defaultValues: {
-      isBlocked: undefined,
-      isDeleted: undefined,
-      isVerified: undefined,
-      email: "",
-    },
-    values: filterMapper.toFilters(searchParams),
-  });
-
-  console.log(watch(), "watch");
+  const filterMapper = createFilterMapper();
+  const { handleSubmit, register, watch, control } =
+    useForm<GetUsersRequest_Filter>({
+      defaultValues: {
+        isBlocked: undefined,
+        isDeleted: result.isDeleted ?? undefined,
+        isVerified: undefined,
+        email: "",
+      },
+      values: filterMapper.toFilters(searchParams) as GetUsersRequest_Filter,
+    });
 
   const debouncedSubmit = useDebouncedCallback(
     (data: GetUsersRequest_Filter) => {
-      const queryString = filterMapper.toSearchParams(data);
+      const filters = {
+        ...data,
+        isVerified: data.isVerified ?? undefined,
+        isBlocked: data.isBlocked ?? undefined,
+        isDeleted: data.isDeleted ?? undefined,
+      };
+
+      const queryString = filterMapper.toSearchParams(filters);
       router.push(`?${queryString}`);
       onSubmit(data);
     },
@@ -65,9 +71,9 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
     const filteredData = Object.fromEntries(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(data).filter(([_, value]) => value !== undefined),
-    );
+    ) as unknown as GetUsersRequest_Filter;
 
-    debouncedSubmit(filteredData as unknown as GetUsersRequest_Filter);
+    debouncedSubmit(filteredData);
   };
 
   useEffect(() => {
@@ -78,7 +84,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
   }, [handleSubmit, handleSubmitForm, watch]);
 
   const handleMapToFilters = (value: string | null) => {
-    return value === "true" ? true : value === "false" ? false : undefined;
+    return value === "true" ? true : value === "false" ? false : null;
   };
 
   const handleMapToSelectValue = (value: boolean | undefined) => {

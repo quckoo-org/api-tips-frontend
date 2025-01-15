@@ -16,7 +16,7 @@ export const createFilterMapper = <
     toFilters: (searchParams: URLSearchParams): Partial<T> => {
       const filters: Partial<T> = {};
       searchParams.forEach((value, key) => {
-        // Преобразуем значение в string | boolean и приводим к T[keyof T]
+        // Если значение равно 'undefined' (пустое), превращаем его в null
         filters[key as keyof T] = (
           value === "true" ? true : value === "false" ? false : value
         ) as T[keyof T];
@@ -33,10 +33,13 @@ export const createFilterMapper = <
       const queryObject: Record<string, string> = Object.entries(filters)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, value]) => value !== undefined) // Убираем undefined
-        .reduce((acc, [key, value]) => {
-          acc[key] = String(value); // Преобразуем boolean и другие типы в строку
-          return acc;
-        }, {} as Record<string, string>);
+        .reduce(
+          (acc, [key, value]) => {
+            acc[key] = String(value); // Преобразуем boolean и другие типы в строку
+            return acc;
+          },
+          {} as Record<string, string>,
+        );
       return new URLSearchParams(queryObject).toString();
     },
   };
