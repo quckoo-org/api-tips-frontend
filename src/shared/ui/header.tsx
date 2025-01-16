@@ -23,7 +23,7 @@ const Header = observer(() => {
     queryClient.removeQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
     router.push(ROUTES.HOME);
   };
-
+  console.log(authStore);
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
       <div>

@@ -37,7 +37,7 @@ export const TariffForm: FC<TariffFormProps> = ({
       freeTipsCount: tariff?.freeTipsCount,
       paidTipsCount: tariff?.paidTipsCount,
       totalTipsCount: tariff?.totalTipsCount,
-      tipPrice: fromDecimal(tariff?.tipPrice) || undefined,
+      // tipPrice: fromDecimal(tariff?.tipPrice) || undefined,
       totalPrice: fromDecimal(tariff?.totalPrice) || undefined,
       isHidden: !!tariff?.hiddenAt,
     },
@@ -108,24 +108,6 @@ export const TariffForm: FC<TariffFormProps> = ({
           )}
         />
         <Controller
-          name="tipPrice"
-          control={control}
-          rules={{ required: t("tip_price_is_required") }}
-          render={({ field }) => (
-            <NumberInput
-              label={t("tip_price")}
-              withAsterisk
-              hideControls
-              allowNegative={false}
-              decimalScale={2}
-              value={field.value}
-              placeholder={t("enter_tip_price")}
-              onChange={field.onChange}
-              error={errors.tipPrice?.message}
-            />
-          )}
-        />
-        <Controller
           name="totalPrice"
           control={control}
           rules={{ required: t("total_price_is_required") }}
@@ -158,14 +140,14 @@ export const TariffForm: FC<TariffFormProps> = ({
           )}
         />
         <Controller
-          name="freeTipsCount"
+          name="paidTipsCount"
           control={control}
           render={({ field }) => (
             <NumberInput
               label={t("paid_requests")}
               hideControls
               allowNegative={false}
-              value={field.value}
+              value={field.value as number}
               placeholder={t("enter_paid_requests")}
               onChange={field.onChange}
             />

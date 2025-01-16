@@ -12,6 +12,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
+  const [accessToken, setAccessToken] = useState<string | undefined>(
+    TokenService.getAccessToken(),
+  );
   const currentUser = useGetCurrentUser(TokenService.getAccessToken());
   const [isInitialized, setIsInitialized] = useState(true);
 
@@ -59,13 +62,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!TokenService.getAccessToken()) {
         const { newAccessToken } = await TokenService.refreshToken(checkAccess);
         checkAccess(newAccessToken);
+        setAccessToken(newAccessToken);
       }
     })();
 
-    if (currentUser) {
+    if (currentUser && accessToken) {
       authStore.login(currentUser ?? null);
     }
-  }, [router, pathname, currentUser, checkAccess]);
+  }, [router, pathname, currentUser, checkAccess, isInitialized, accessToken]);
 
   if (!isInitialized) {
     return (
