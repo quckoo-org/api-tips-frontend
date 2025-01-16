@@ -13,7 +13,7 @@ import { FC, ReactNode, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Locale } from "@/config/i18n/i18n-config";
 import { mantineTheme } from "@/config/theme/mantineTheme.config";
-import { AuthProvider } from "@/features/auth/ui/auth-provider";
+import { AuthProvider } from "@/features/auth";
 import ErrorPage from "@/screens/error-page/error-page";
 import { ServerError } from "@/shared/grpc/errorMiddleware";
 import { GrpcClientsProvider } from "@/shared/grpc/GrpcClientProvider";

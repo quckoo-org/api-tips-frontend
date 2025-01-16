@@ -1,5 +1,3 @@
-;
-
 export const useGetRoles = () => {
   // const { getAllRoles } = useRolesClient();
   //

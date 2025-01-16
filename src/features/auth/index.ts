@@ -1,4 +1,5 @@
 export { LoginByEmailForm } from "./ui/login-by-email-form";
+export { AuthProvider } from "./ui/auth-provider";
 
 export { RegisterForm } from "./ui/register-form";
 
