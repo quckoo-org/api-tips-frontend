@@ -133,6 +133,17 @@
               [
                 "shared",
                 {
+                  "segment": "hooks"
+                }
+              ]
+            ],
+            "allow": "*.(ts|tsx)"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
                   "segment": "lib"
                 }
               ]
@@ -156,6 +167,72 @@
                 "shared",
                 {
                   "segment": "ui"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "grpc"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "locale"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "logger"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "proto"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "stores"
+                }
+              ]
+            ],
+            "allow": "**"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
+                  "segment": "utils"
                 }
               ]
             ],

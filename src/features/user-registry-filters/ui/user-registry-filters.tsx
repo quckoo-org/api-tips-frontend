@@ -77,7 +77,7 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
     //@ts-ignore
     const subscription = watch((data) => handleSubmit(handleSubmitForm)(data));
     return () => subscription.unsubscribe();
-  }, [handleSubmit, watch]);
+  }, [handleSubmit, handleSubmitForm, watch]);
 
   const handleMapToFilters = (value: string | null) => {
     return value === "true" ? true : value === "false" ? false : null;
