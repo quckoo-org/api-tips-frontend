@@ -152,6 +152,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               value={field.value}
               placeholder={t("enter_free_requests")}
               onChange={field.onChange}
+              allowDecimal={false}
             />
           )}
         />
@@ -166,6 +167,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               value={field.value as number}
               placeholder={t("enter_paid_requests")}
               onChange={field.onChange}
+              allowDecimal={false}
             />
           )}
         />
@@ -180,6 +182,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               value={field.value}
               placeholder={t("enter_total_requests")}
               onChange={field.onChange}
+              allowDecimal={false}
             />
           )}
         />
