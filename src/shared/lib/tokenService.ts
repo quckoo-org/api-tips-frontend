@@ -1,4 +1,9 @@
-import { getCookie, OptionsType, setCookie } from "cookies-next/client";
+import {
+  getCookie,
+  OptionsType,
+  setCookie,
+  deleteCookie,
+} from "cookies-next/client";
 import dayjs from "dayjs";
 import { Logger } from "pino";
 import { rootLogger } from "@/shared/logger/logger";
@@ -8,26 +13,31 @@ export class TokenService {
   private static logger: Logger = rootLogger.child({ name: "TokenService" });
 
   static getAccessToken(): string | undefined {
-    return getCookie("accessToken");
+    return getCookie("jwt");
   }
 
-  static setAccessToken(value: string, options?: OptionsType): void {
-    setCookie("accessToken", value, options);
+  static async setAccessToken(value: string, options?: OptionsType) {
+    setCookie("jwt", value, options);
   }
 
-  static refreshToken = async () => {
+  // eslint-disable-next-line
+  static refreshToken = async (onError?: () => any) => {
     try {
       this.logger.debug("Refreshing token");
       const {
-        data: { newAccessToken },
-      } = await fetchClient.post("/auth/refresh");
-      this.setAccessToken(newAccessToken, {
-        expires: dayjs().add(15, "minute").toDate(),
+        data: { Jwt: newAccessToken },
+      } = await fetchClient.post("/api/auth/refresh");
+      await this.setAccessToken(newAccessToken, {
+        expires: dayjs().add(60, "minute").toDate(),
       });
-      this.logger.debug("Refreshed token");
+      this.logger.debug("Refreshed token " + newAccessToken);
       return { newAccessToken };
     } catch (e) {
+      deleteCookie("jwt");
       this.logger.error(e, "Failed to refresh token...");
+      if (onError) {
+        onError();
+      }
       throw e;
     }
   };

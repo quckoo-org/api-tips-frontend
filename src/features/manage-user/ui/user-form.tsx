@@ -38,7 +38,7 @@ export const UserForm: FC<UserFormProps> = ({
       isDeleted: false,
       isBlocked: false,
       isVerified: false,
-      countryCode: "",
+      cca3: "",
     },
     values: {
       email: userQuery.data?.user?.email ?? "",
@@ -47,7 +47,8 @@ export const UserForm: FC<UserFormProps> = ({
       isDeleted: !!userQuery.data?.user?.deletedAt,
       isBlocked: !!userQuery.data?.user?.blockedAt,
       isVerified: !!userQuery.data?.user?.verifiedAt,
-      countryCode: userQuery.data?.user?.countryCode ?? "",
+      cca3: (userQuery.data?.user?.cca3 as string) ?? "",
+      roles: [],
     },
   });
 
@@ -84,14 +85,14 @@ export const UserForm: FC<UserFormProps> = ({
           error={errors.lastName?.message}
         />
         <Controller
-          name="countryCode"
+          name="cca3"
           control={control}
           rules={{ required: t("country_is_required") }}
           render={({ field }) => (
             <CountrySelect
               value={field.value}
               onChangeCountry={field.onChange}
-              error={errors.countryCode?.message}
+              error={errors.cca3?.message}
             />
           )}
         />

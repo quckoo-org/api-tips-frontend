@@ -5,7 +5,7 @@ export const enum ROUTES {
   REGISTER = "/register",
   VERIFY = "/verify",
   FORBIDDEN = "/forbidden",
-  TARIFFS= "/tariffs",
+  TARIFFS = "/tariffs",
 }
 
 export const routesConfig: Array<{

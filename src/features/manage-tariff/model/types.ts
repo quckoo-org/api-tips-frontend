@@ -1,10 +1,8 @@
-export type TariffFormValues = {
-  startDate: Date | null;
-  endDate: Date | null;
-  name: string;
-  freeRequests: number;
-  paidRequests: number;
-  totalRequests: number;
-  cost: number;
-  totalCost: number;
-};
+import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
+
+export interface TariffFormValues
+  extends Omit<Tariff, "id" | "isHidden" | "tipPrice" | "totalPrice"> {
+  isHidden: boolean;
+  tipPrice: number;
+  totalPrice: number;
+}

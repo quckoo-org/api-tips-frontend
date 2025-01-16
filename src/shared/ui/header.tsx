@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -14,16 +14,15 @@ const Header = observer(() => {
   const pathname = usePathname();
   const endOfPathName = pathname.split("/")[2];
   const router = useRouter();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const isAuthPage = endOfPathName === "login" || pathname === "register";
 
   const logout = async () => {
-    await fetchClient.post("/auth/logout");
+    await fetchClient.post("/api/auth/logout");
     authStore.logout();
-    queryClient.removeQueries({queryKey: [QUERY_KEYS.CURRENT_USER]})
+    queryClient.removeQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
     router.push(ROUTES.HOME);
   };
-
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
       <div>
@@ -33,6 +32,11 @@ const Header = observer(() => {
         {authStore.isAuthenticated && (
           <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold ml-8">
             Users
+          </Link>
+        )}
+        {authStore.isAuthenticated && (
+          <Link href={ROUTES.TARIFFS} className="text-xl font-bold ml-8">
+            Tariffs
           </Link>
         )}
       </div>

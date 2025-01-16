@@ -1,8 +1,8 @@
 "use client";
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
-import { TokenService } from "@/shared/lib/tokenService";
-import { User } from "@/shared/proto/user/v1/user";
+import { TokenService } from "@/shared/lib";
+import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 class AuthStore {
   user: User | null = null;
@@ -20,7 +20,7 @@ class AuthStore {
   logout() {
     this.user = null;
     this.isAuthenticated = false;
-    Cookies.remove("accessToken");
+    Cookies.remove("jwt");
   }
 
   syncWithCookies() {

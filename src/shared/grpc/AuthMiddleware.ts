@@ -1,5 +1,5 @@
 import { ClientError, ClientMiddleware, Metadata, Status } from "nice-grpc-web";
-import { TokenService } from "@/shared/lib/tokenService";
+import { TokenService } from "@/shared/lib";
 
 export type AuthMiddlewareParams = {
   getAccessToken: (signal?: AbortSignal) => string | undefined;

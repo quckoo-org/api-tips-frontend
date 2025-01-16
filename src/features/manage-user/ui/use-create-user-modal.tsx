@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User } from "@/shared/proto/user/v1/user";
+import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { CreateUserModal } from "./create-user-modal";
 
 export const useCreateUserModal = () => {

@@ -27,7 +27,7 @@ defaults:
 
 jobs:
   check_environment:
-    runs-on: 'ubuntu-latest'
+    runs-on: 'self-hosted'
     if: ${{ always() && !(contains(needs.*.result, 'failure')) && !cancelled() }}
     outputs:
       status: ${{ join(steps.*.conclusion) }}

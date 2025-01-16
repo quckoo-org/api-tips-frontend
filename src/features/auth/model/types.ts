@@ -1,12 +1,12 @@
 import { AxiosError } from "axios";
-import { User } from "@/shared/proto/user/v1/user";
+import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export type RegisterReqT = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  countryCode: string;
+  firstname: string;
+  lastname: string;
+  cca3: string;
 };
 
 export type RegisterErrorT = AxiosError<{ message: string }>;
@@ -18,7 +18,7 @@ export type LoginByEmailReqT = {
 
 export type LoginByEmailResT = {
   user: User;
-  accessToken: string;
+  Jwt: string;
 };
 
 export type LoginByEmailErrorT = AxiosError<{ message: string }>;

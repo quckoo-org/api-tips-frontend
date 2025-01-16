@@ -4,7 +4,10 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { CreateUserRequest, User } from "@/shared/proto/user/v1/user";
+import {
+  AddUserRequest,
+  User,
+} from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { UserForm } from "./user-form";
 import { UserFormValues } from "../model/types";
 import { useCreateUser } from "../model/use-create-user";
@@ -20,17 +23,10 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
 }) => {
   const { t } = useTranslations();
   const createMutation = useCreateUser();
-
   const onCreateUser = async (userData: UserFormValues) => {
-    const request: CreateUserRequest = {
-      email: userData.email,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      countryCode: userData.countryCode,
-    };
-    const userResponse = await createMutation.mutateAsync(request);
-
-    onClose(userResponse.user);
+    //TODO: fix
+    createMutation.mutateAsync({ rolesIds: [], ...userData } as AddUserRequest);
+    onClose({} as User);
   };
 
   return (
@@ -40,10 +36,7 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
       onClose={onClose}
       className={clsx("", className)}
     >
-      <UserForm
-        onSuccess={onCreateUser}
-        error={createMutation.error?.description}
-      />
+      <UserForm onSuccess={onCreateUser} />
     </Modal>
   );
 };
