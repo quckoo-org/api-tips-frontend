@@ -268,12 +268,12 @@ message Tariff {
   /*
    * Дата окончания действия
    */
-  google.protobuf.Timestamp end_date = 9;
+  optional google.protobuf.Timestamp end_date = 9;
 
   /*
    * Дата сокрытия тарифа
    */
-  google.protobuf.Timestamp hidden_at = 10;
+  optional google.protobuf.Timestamp hidden_at = 10;
 
   /*
    * Валюта тарифа, ISO 4217

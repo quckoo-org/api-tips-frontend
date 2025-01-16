@@ -2,8 +2,7 @@ import { ActionIcon, Menu, Table } from "@mantine/core";
 import clsx from "clsx";
 import { EllipsisIcon } from "lucide-react";
 import { FC, ReactNode } from "react";
-import { formatDate } from "@/shared/lib";
-import { fromDecimal } from "@/shared/lib/decimal";
+import { formatDate, fromDecimal } from "@/shared/lib";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 
 type TariffRowProps = {

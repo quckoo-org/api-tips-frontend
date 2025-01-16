@@ -52,8 +52,6 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
     />
   );
 
-  console.log(pagination, tariffsQuery.data?.tariffs);
-
   if (tariffsQuery.isLoading) {
     return <TariffsPageSkeleton className={className} />;
   }
@@ -82,8 +80,8 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
               <Table.Th>{t("free_requests")}</Table.Th>
               <Table.Th>{t("paid_requests")}</Table.Th>
               <Table.Th>{t("total_requests")}</Table.Th>
-              <Table.Th>{t("cost")}</Table.Th>
-              <Table.Th>{t("total_cost")}</Table.Th>
+              <Table.Th>{t("tip_price")}</Table.Th>
+              <Table.Th>{t("total_price")}</Table.Th>
               <Table.Th>{t("hidden")}</Table.Th>
               <Table.Th />
             </Table.Tr>

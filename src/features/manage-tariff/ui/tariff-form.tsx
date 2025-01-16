@@ -1,12 +1,19 @@
 "use client";
 
-import { Button, Checkbox, Flex, NumberInput, TextInput } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  NumberInput,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { clsx } from "clsx";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { fromDecimal } from "@/shared/lib";
 import dayjs from "@/shared/lib/dayjs-in";
-import { fromDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { TariffFormValues } from "../model/types";
@@ -15,14 +22,28 @@ type TariffFormProps = {
   className?: string;
   tariff?: Tariff;
   onSuccess: (tariff: TariffFormValues) => void;
+  isLoading?: boolean;
 };
 
 export const TariffForm: FC<TariffFormProps> = ({
   className,
   onSuccess,
   tariff,
+  isLoading,
 }) => {
   const { t } = useTranslations();
+  const [showUnchangedError, setShowUnchangedError] = useState<boolean>(false);
+  const defaultValues: Partial<TariffFormValues> = {
+    startDate: tariff?.startDate,
+    endDate: tariff?.endDate,
+    name: tariff?.name,
+    freeTipsCount: tariff?.freeTipsCount,
+    paidTipsCount: tariff?.paidTipsCount,
+    totalTipsCount: tariff?.totalTipsCount,
+    // tipPrice: fromDecimal(tariff?.tipPrice) || undefined,
+    totalPrice: fromDecimal(tariff?.totalPrice) || undefined,
+    isHidden: !!tariff?.hiddenAt,
+  };
   const {
     control,
     register,
@@ -30,24 +51,19 @@ export const TariffForm: FC<TariffFormProps> = ({
     watch,
     formState: { errors },
   } = useForm<TariffFormValues>({
-    defaultValues: {
-      startDate: tariff?.startDate,
-      endDate: tariff?.endDate,
-      name: tariff?.name,
-      freeTipsCount: tariff?.freeTipsCount,
-      paidTipsCount: tariff?.paidTipsCount,
-      totalTipsCount: tariff?.totalTipsCount,
-      // tipPrice: fromDecimal(tariff?.tipPrice) || undefined,
-      totalPrice: fromDecimal(tariff?.totalPrice) || undefined,
-      isHidden: !!tariff?.hiddenAt,
-    },
+    defaultValues,
   });
 
-  const startDate = watch("startDate");
-  const endDate = watch("endDate");
+  const currentValues = watch();
 
   const onSubmit = (data: TariffFormValues) => {
-    console.log(data);
+    const isUnchanged =
+      JSON.stringify(currentValues) === JSON.stringify(defaultValues);
+    if (isUnchanged) {
+      setShowUnchangedError(true);
+      return;
+    }
+    setShowUnchangedError(false);
     onSuccess(data);
   };
 
@@ -68,8 +84,8 @@ export const TariffForm: FC<TariffFormProps> = ({
             required: t("pick_start_date_required"),
             validate: {
               validInterval: (value) =>
-                !endDate ||
-                dayjs(value).isBefore(dayjs(endDate), "day") ||
+                !currentValues.endDate ||
+                dayjs(value).isBefore(dayjs(currentValues.endDate), "day") ||
                 "Start date must be before end date",
             },
           }}
@@ -92,8 +108,8 @@ export const TariffForm: FC<TariffFormProps> = ({
             validate: {
               afterStart: (value) =>
                 !value ||
-                !startDate ||
-                dayjs(value).isAfter(dayjs(startDate), "day") ||
+                !currentValues.startDate ||
+                dayjs(value).isAfter(dayjs(currentValues.startDate), "day") ||
                 "End date must be after start date",
             },
           }}
@@ -168,7 +184,14 @@ export const TariffForm: FC<TariffFormProps> = ({
           )}
         />
         <Checkbox label="Is Hidden" {...register("isHidden")} />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" loading={isLoading}>
+          Submit
+        </Button>
+        {showUnchangedError && (
+          <Text className="text-center text-sm text-red-600">
+            No changes detected. Please modify at least one field to submit.
+          </Text>
+        )}
       </Flex>
     </form>
   );

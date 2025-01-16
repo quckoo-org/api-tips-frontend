@@ -4,7 +4,7 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { TariffT } from "@/entities/tariff";
-import { toDecimal } from "@/shared/lib/decimal";
+import { toDecimal } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { TariffForm } from "./tariff-form";
 import { TariffFormValues } from "../model/types";
@@ -37,7 +37,10 @@ export const CreateTariffModal: FC<CreateTariffModalProps> = ({
       onClose={onClose}
       className={clsx("", className)}
     >
-      <TariffForm onSuccess={onCreateTariff} />
+      <TariffForm
+        onSuccess={onCreateTariff}
+        isLoading={createMutation.isPending}
+      />
     </Modal>
   );
 };
