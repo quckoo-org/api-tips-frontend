@@ -1,4 +1,5 @@
 {
+  "submit": "Submit",
   "hello": "Hello",
   "sing_in": "Sing in",
   "user_registry": "User registry",
@@ -59,7 +60,9 @@
   "hidden": "Hidden",
   "pick_start_date": "Enter start date",
   "pick_start_date_required": "Start date is required",
+  "start_date_range_validation": "Start date must be before end date",
   "pick_end_date": "Enter end date",
+  "end_date_range_validation": "End date must be after start date",
   "name_is_required": "Name is required",
   "create_tariff": "Create tariff"
 }

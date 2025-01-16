@@ -86,7 +86,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               validInterval: (value) =>
                 !currentValues.endDate ||
                 dayjs(value).isBefore(dayjs(currentValues.endDate), "day") ||
-                "Start date must be before end date",
+                t("start_date_range_validation"),
             },
           }}
           render={({ field }) => (
@@ -110,7 +110,7 @@ export const TariffForm: FC<TariffFormProps> = ({
                 !value ||
                 !currentValues.startDate ||
                 dayjs(value).isAfter(dayjs(currentValues.startDate), "day") ||
-                "End date must be after start date",
+                t("end_date_range_validation"),
             },
           }}
           render={({ field }) => (
@@ -188,7 +188,7 @@ export const TariffForm: FC<TariffFormProps> = ({
         />
         <Checkbox label="Is Hidden" {...register("isHidden")} />
         <Button type="submit" loading={isLoading}>
-          Submit
+          {t("submit")}
         </Button>
         {showUnchangedError && (
           <Text className="text-center text-sm text-red-600">

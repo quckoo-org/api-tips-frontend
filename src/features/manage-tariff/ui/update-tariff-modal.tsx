@@ -3,7 +3,6 @@
 import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
-import { TariffT } from "@/entities/tariff";
 import { toDecimal } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
@@ -13,7 +12,7 @@ import { useUpdateTariff } from "../model/use-update-tariff";
 
 type UpdateTariffModalProps = {
   className?: string;
-  onClose: (tariff?: TariffT) => void;
+  onClose: (tariff?: Tariff) => void;
   tariff: Tariff;
 };
 
@@ -49,22 +48,3 @@ export const UpdateTariffModal: FC<UpdateTariffModalProps> = ({
     </Modal>
   );
 };
-
-//
-// const onUpdateTariff = async (tariffData: TariffFormValues) => {
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   const { endDate, ...tarifаDataWithoutEndDate } = tariffData;
-//   const tariffDataRequest = tariffData.endDate
-//     ? {
-//       ...tariffData,
-//       tariffId: tariff.id,
-//       totalPrice: toDecimal(tariffData.totalPrice),
-//     }
-//     : {
-//       ...tarifаDataWithoutEndDate,
-//       tariffId: tariff.id,
-//       totalPrice: toDecimal(tariffData.totalPrice),
-//     };
-//   const response = await updateMutation.mutateAsync(tariffDataRequest);
-//   onClose(response.tariff);
-// };

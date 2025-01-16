@@ -3,16 +3,16 @@
 import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
-import { TariffT } from "@/entities/tariff";
 import { toDecimal } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
+import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { TariffForm } from "./tariff-form";
 import { TariffFormValues } from "../model/types";
 import { useCreateTariff } from "../model/use-create-tariff";
 
 type CreateTariffModalProps = {
   className?: string;
-  onClose: (tariff?: TariffT) => void;
+  onClose: (tariff?: Tariff) => void;
 };
 
 export const CreateTariffModal: FC<CreateTariffModalProps> = ({
