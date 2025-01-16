@@ -22,9 +22,7 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslations();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const createMutation = useCreateUser();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onCreateUser = async (userData: UserFormValues) => {
     //TODO: fix
     createMutation.mutateAsync({ rolesIds: [], ...userData } as AddUserRequest);

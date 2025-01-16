@@ -22,10 +22,8 @@ export const UpdateUserModal: FC<UpdateUserModalProps> = ({
   userId,
 }) => {
   const { t } = useTranslations();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateMutation = useUpdateUser();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onUpdateUser = async (userData: UserFormValues) => {
     const updateUserRequest: UpdateUserRequest = {
       ...userData,
@@ -33,8 +31,7 @@ export const UpdateUserModal: FC<UpdateUserModalProps> = ({
       rolesIds: [],
     };
     const userResponse = await updateMutation.mutateAsync(updateUserRequest);
-    console.log(userResponse);
-    onClose();
+    onClose(userResponse.user);
   };
 
   return (

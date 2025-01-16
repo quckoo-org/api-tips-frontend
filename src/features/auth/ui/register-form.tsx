@@ -27,7 +27,6 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
   });
 
   const onSubmit = async (req: RegisterReqT) => {
-    console.log(req);
     registerMutation.mutateAsync(req);
   };
 

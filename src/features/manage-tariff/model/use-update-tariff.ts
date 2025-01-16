@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTariffsClient } from "@/shared/grpc/clients/use-tariffs-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 import {
   GetTariffsResponse,
   UpdateTariffRequest,

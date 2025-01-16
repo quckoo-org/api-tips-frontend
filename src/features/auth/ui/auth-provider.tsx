@@ -3,7 +3,7 @@ import { Loader, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useGetCurrentUser } from "@/entities/user";
-import { TokenService } from "@/shared/lib/tokenService";
+import { TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES, routesConfig } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAccessClient } from "@/shared/grpc/clients/use-user-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 import {
   AddUserRequest,
   AddUserResponse,

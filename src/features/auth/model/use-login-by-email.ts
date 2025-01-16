@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { TokenService } from "@/shared/lib/tokenService";
+import { TokenService } from "@/shared/lib";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -24,7 +24,6 @@ export const useLoginByEmail = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
       TokenService.setAccessToken(data.Jwt, {
         expires: dayjs().add(15, "minute").toDate(),
       });

@@ -24,7 +24,6 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-// eslint-disable-next-line @next/next/no-async-client-component
 export default async function RootLayout({
   children,
   params,

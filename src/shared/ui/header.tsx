@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
@@ -23,7 +23,6 @@ const Header = observer(() => {
     queryClient.removeQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
     router.push(ROUTES.HOME);
   };
-  console.log(authStore);
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
       <div>

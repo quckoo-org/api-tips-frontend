@@ -18,7 +18,6 @@ export const TariffRow: FC<TariffRowProps> = ({
   actions,
   renderHideTariff,
 }) => {
-  console.log(tariff, "tt");
   return (
     <Table.Tr className={clsx("", className)}>
       <Table.Td>{formatDate(tariff.startDate)}</Table.Td>

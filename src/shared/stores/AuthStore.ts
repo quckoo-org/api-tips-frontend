@@ -1,7 +1,7 @@
 "use client";
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
-import { TokenService } from "@/shared/lib/tokenService";
+import { TokenService } from "@/shared/lib";
 import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 class AuthStore {

@@ -102,7 +102,7 @@
                 }
               ]
             ],
-            "allow": "*/index.ts"
+            "allow": "index.ts"
           },
           {
             "target": [
@@ -110,17 +110,6 @@
                 "shared",
                 {
                   "segment": "hooks"
-                }
-              ]
-            ],
-            "allow": "*.(ts|tsx)"
-          },
-          {
-            "target": [
-              [
-                "shared",
-                {
-                  "segment": "lib"
                 }
               ]
             ],

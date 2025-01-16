@@ -12,7 +12,6 @@ export const useGetCurrentUser = (token: string | undefined) => {
 
   // loggedin user
   const user = parseJwt(token);
-  console.log(user);
 
   return user;
 };

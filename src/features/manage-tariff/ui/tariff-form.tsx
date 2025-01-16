@@ -13,7 +13,7 @@ import { clsx } from "clsx";
 import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { fromDecimal } from "@/shared/lib";
-import dayjs from "@/shared/lib/dayjs-in";
+import { dayjs } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { TariffFormValues } from "../model/types";

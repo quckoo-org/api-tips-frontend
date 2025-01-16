@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { createFilterMapper } from "../lib/create-filter-mapper";
+import { createFilterMapper } from "../lib";
 
 export const usePagination = (itemsCount: number | undefined) => {
   const [page, setPage] = useState(1);
