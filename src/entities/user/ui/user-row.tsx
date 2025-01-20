@@ -28,6 +28,9 @@ export const UserRow: FC<UserRowProps> = ({
       <Table.Td>{user.firstName}</Table.Td>
       <Table.Td>{user.lastName}</Table.Td>
       <Table.Td>{user?.cca3}</Table.Td>
+      <Table.Td className={"max-w-52"}>
+        {user.roles.map((role) => role.name).join(", ")}
+      </Table.Td>
       <Table.Td>{formatDate(user.createdAt)}</Table.Td>
       <Table.Td>{renderVerifyUser(user.id, !!user.verifiedAt)}</Table.Td>
       <Table.Td>{renderBlockUser(user.id, !!user.blockedAt)}</Table.Td>

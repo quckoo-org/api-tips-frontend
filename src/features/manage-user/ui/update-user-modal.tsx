@@ -28,7 +28,7 @@ export const UpdateUserModal: FC<UpdateUserModalProps> = ({
     const updateUserRequest: UpdateUserRequest = {
       ...userData,
       userId: userId,
-      rolesIds: [],
+      rolesIds: userData.roles.map((role) => role.id),
     };
     const userResponse = await updateMutation.mutateAsync(updateUserRequest);
     onClose(userResponse.user);

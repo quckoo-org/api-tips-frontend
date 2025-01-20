@@ -6,12 +6,14 @@ import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { QUERY_KEYS } from "@/shared/lib";
+import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { fetchClient } from "@/shared/utils/fetchClient";
 
 const Header = observer(() => {
   const pathname = usePathname();
+  const { t } = useTranslations();
   const endOfPathName = pathname.split("/")[2];
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -29,6 +31,11 @@ const Header = observer(() => {
         <Link href="/" className="text-xl font-bold">
           Home
         </Link>
+        {authStore.isAuthenticated && (
+          <Link href={ROUTES.ADMINISTRATION} className="text-xl font-bold ml-8">
+            {t("administration")}
+          </Link>
+        )}
         {authStore.isAuthenticated && (
           <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold ml-8">
             Users

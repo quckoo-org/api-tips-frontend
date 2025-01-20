@@ -24,9 +24,11 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({
   const { t } = useTranslations();
   const createMutation = useCreateUser();
   const onCreateUser = async (userData: UserFormValues) => {
-    //TODO: fix
-    createMutation.mutateAsync({ rolesIds: [], ...userData } as AddUserRequest);
-    onClose({} as User);
+    const response = await createMutation.mutateAsync({
+      rolesIds: userData.roles.map((role) => role.id),
+      ...userData,
+    } as AddUserRequest);
+    onClose(response.user);
   };
 
   return (

@@ -96,12 +96,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   );
 
   const handleSubmitFilters = (data: GetUsersRequest_Filter) => {
-    pagination.handlePageChange(
-      1,
-      usersQuery.data?.users.length
-        ? usersQuery.data?.users.length / pagination.pageSize
-        : 0,
-    );
+    pagination.handlePageChange(1, pagination.pageSize);
     setFiltersResult(data);
   };
 
@@ -170,6 +165,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
               >
                 {t("country_сode")}
               </SortTh>
+              <Table.Th>{t("user_roles")}</Table.Th>
               <Table.Th>{t("registry_date")}</Table.Th>
               <Table.Th>{t("verified")}</Table.Th>
               <Table.Th>{t("block")}</Table.Th>

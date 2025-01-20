@@ -454,6 +454,10 @@ message DeleteRoleRequest {
  */
 message DeleteRoleResponse {
   /*
+   * Идентификатор удалённой роли
+   */
+  optional google.protobuf.Int64Value role_id = 1;
+  /*
    * Мета информация ответа
    */
   api.tips.general_entities.v1.GeneralResponse response = 10;
@@ -582,6 +586,10 @@ message DeletePermissionRequest {
  */
 message DeletePermissionResponse {
   /*
+   * Идентификатор удалённого разрешения
+   */
+  optional google.protobuf.Int64Value permission_id = 1;
+  /*
    * Мета информация ответа
    */
   api.tips.general_entities.v1.GeneralResponse response = 10;
@@ -677,6 +685,10 @@ message DeleteMethodRequest {
  * Ответ - удаление метода
  */
 message DeleteMethodResponse {
+  /*
+   * Идентификатор удалённого метода
+   */
+  optional google.protobuf.Int64Value method_id = 1;
   /*
    * Мета информация ответа
    */
