@@ -84,6 +84,7 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
               <Table.Th>{t("total_price")}</Table.Th>
               <Table.Th>{t("hidden")}</Table.Th>
               <Table.Th />
+              <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>
