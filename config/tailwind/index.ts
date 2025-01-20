@@ -1,3 +1,3 @@
-export type { ColorT, TailwindThemeT } from "./types";
+export type { TailwindThemeT, TailwindColorsT } from "./types";
 
 export { typedTwConfig } from "./config";

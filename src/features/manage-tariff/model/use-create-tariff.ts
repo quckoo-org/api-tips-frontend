@@ -4,6 +4,7 @@ import { QUERY_KEYS } from "@/shared/lib";
 import {
   AddTariffRequest,
   GetTariffsResponse,
+  Tariff,
 } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 
 export const useCreateTariff = () => {
@@ -17,14 +18,16 @@ export const useCreateTariff = () => {
       return response;
     },
     onSuccess: (tariffResponse) => {
-      queryClient.setQueriesData(
+      queryClient.setQueriesData<GetTariffsResponse>(
         { queryKey: [QUERY_KEYS.TARIFFS] },
-        (oldData: GetTariffsResponse | undefined) => {
-          if (!oldData) return oldData;
+        (oldData) => {
+          if (!oldData) return undefined;
 
           return {
             ...oldData,
-            tariffs: [...oldData.tariffs, tariffResponse.tariff],
+            tariffs: [...oldData.tariffs, tariffResponse.tariff].filter(
+              (tariff): tariff is Tariff => tariff !== undefined,
+            ),
           };
         },
       );
