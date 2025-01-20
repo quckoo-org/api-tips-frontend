@@ -1,16 +1,95 @@
+import { rem } from "@mantine/core";
 import type { Config } from "tailwindcss";
-import { colors } from "./config/tailwind/colors";
-import { fontWeight } from "./config/tailwind/fontWeight";
 
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", "./app/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./config/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
-      colors: colors,
-      screens: {
-        xs: "480px",
+      colors: {
+        primary: {
+          50: "#faf5ff",
+          100: "#f3e8ff",
+          200: "#e9d5ff",
+          300: "#d8b4fe",
+          400: "#c084fc",
+          500: "#a855f7",
+          600: "#9333ea",
+          700: "#7e22ce",
+          800: "#6b21a8",
+          900: "#581c87",
+          950: "#3b0764",
+        },
+        blue: {
+          50: "",
+          100: "#E0F2FE",
+          200: "",
+          300: "",
+          400: "",
+          500: "#5D9EFF",
+          600: "",
+          700: "#1B5FF4",
+          800: "",
+          900: "",
+        },
       },
-      fontWeight: fontWeight,
+      screens: {
+        xl: { max: "1279px" },
+        lg: { max: "1023px" },
+        md: { max: "767px" },
+        sm: { max: "639px" },
+      },
+      borderRadius: {
+        xs: rem(12),
+        sm: rem(16),
+        lg: rem(18),
+        xl: rem(24),
+      },
+      fontSize: {
+        xs: rem(12),
+        "2xs": rem(14),
+        sm: rem(16),
+        md: rem(20),
+        lg: rem(22),
+        xl: rem(24),
+        "3xl": rem(32),
+        "4xl": rem(37),
+        "5xl": rem(48),
+        "6xl": rem(70),
+        "7xl": rem(90),
+      },
+      lineHeight: {
+        xs: rem(18),
+        sm: rem(20),
+        md: rem(24),
+        xl: rem(28.8),
+        "2xl": rem(36),
+        "4xl": rem(41),
+        "4.5xl": rem(48),
+        "5xl": rem(57.6),
+        "6xl": rem(82),
+        "7xl": rem(99),
+      },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(90deg, #C937F3 0%, #4F66FF 61.36%, #1EFBF2 122.73%)",
+      },
+      fontWeight: {
+        thin: "100",
+        hairline: "100",
+        extralight: "200",
+        light: "300",
+        normal: "480",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
+        "extra-bold": "800",
+        black: "900",
+      },
     },
   },
   plugins: [],
