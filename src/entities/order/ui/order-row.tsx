@@ -2,7 +2,7 @@ import { ActionIcon, Menu, Table } from "@mantine/core";
 import clsx from "clsx";
 import { EllipsisIcon } from "lucide-react";
 import { FC, ReactNode } from "react";
-import dayjs from "@/shared/lib/dayjs-in";
+import { dayjs } from "@/shared/lib";
 import { OrderT } from "../model/types";
 
 type UserRowProps = {

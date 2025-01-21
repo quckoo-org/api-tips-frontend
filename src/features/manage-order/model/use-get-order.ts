@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useOrdersClient } from "@/shared/grpc/clients/use-order-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 // import { GetOrderRequest } from "@/shared/proto/user/v1/user";
 //TODO MOCK TYPE
 type GetOrderRequest = {

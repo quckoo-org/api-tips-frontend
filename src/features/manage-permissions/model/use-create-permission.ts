@@ -4,6 +4,7 @@ import { QUERY_KEYS } from "@/shared/lib";
 import {
   AddPermissionRequest,
   GetPermissionsResponse,
+  Permission,
 } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useCreatePermission = () => {
@@ -27,7 +28,10 @@ export const useCreatePermission = () => {
             permissions: [
               ...oldData.permissions,
               permissionResponse.permission,
-            ],
+            ].filter(
+              (permission): permission is Permission =>
+                permission !== undefined,
+            ),
           };
         },
       );

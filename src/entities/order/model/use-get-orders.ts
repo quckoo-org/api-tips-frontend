@@ -3,7 +3,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { OrderT } from "@/entities/order";
 import { useOrdersClient } from "@/shared/grpc/clients/use-order-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
 // import {
 //   GetAllOrdersRequest,
 //   GetAllOrdersResponse,
