@@ -5,4 +5,7 @@ export const QUERY_KEYS = {
   CURRENT_USER: "current_user",
   COUNTRIES: "countries",
   ROLES: "roles",
+  ORDERS: "orders",
+  PERMISSIONS: "permissions",
+  METHODS: "methods",
 };
