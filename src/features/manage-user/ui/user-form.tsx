@@ -5,6 +5,7 @@ import { clsx } from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CountrySelect } from "@/entities/country";
+import { RolesMultiSelect } from "@/entities/role";
 import { useGetUser } from "@/features/manage-user/model/use-get-user";
 import { useTranslations } from "@/shared/locale/translations";
 import { UserFormValues } from "../model/types";
@@ -39,6 +40,7 @@ export const UserForm: FC<UserFormProps> = ({
       isBlocked: false,
       isVerified: false,
       cca3: "",
+      roles: [],
     },
     values: {
       email: userQuery.data?.user?.email ?? "",
@@ -48,7 +50,7 @@ export const UserForm: FC<UserFormProps> = ({
       isBlocked: !!userQuery.data?.user?.blockedAt,
       isVerified: !!userQuery.data?.user?.verifiedAt,
       cca3: (userQuery.data?.user?.cca3 as string) ?? "",
-      roles: [],
+      roles: userQuery.data?.user?.roles ?? [],
     },
   });
 
@@ -96,6 +98,18 @@ export const UserForm: FC<UserFormProps> = ({
             />
           )}
         />
+        <Controller
+          name="roles"
+          control={control}
+          rules={{ required: t("roles_is_required") }}
+          render={({ field }) => (
+            <RolesMultiSelect
+              value={field.value}
+              onChangeRole={field.onChange}
+              error={errors.roles?.message}
+            />
+          )}
+        />
         {userId && (
           <>
             <Checkbox label="Is Deleted" {...register("isDeleted")} />
@@ -103,17 +117,6 @@ export const UserForm: FC<UserFormProps> = ({
             <Checkbox label="Is Verified" {...register("isVerified")} />
           </>
         )}
-        {/* <Controller
-          name="roles"
-          control={control}
-          rules={{ required: "At least one role is required" }}
-          render={({ field }) => (
-            <RolesMultiSelect
-              value={field.value}
-              onChangeRole={field.onChange}
-            />
-          )}
-        /> */}
         <Button type="submit">Submit</Button>
       </Flex>
     </form>

@@ -4,9 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createFilterMapper } from "../lib";
 
-export const usePagination = (itemsCount: number | undefined) => {
+export const usePagination = (
+  itemsCount: number | undefined,
+  pageSize: number = 10,
+) => {
   const [page, setPage] = useState(1);
-  const pageSize = 10;
   const mounded = useRef(false);
   const searchParams = useSearchParams();
   const totalPages = itemsCount ? Math.ceil(itemsCount / pageSize) : 0;
