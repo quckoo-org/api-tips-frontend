@@ -7,3 +7,5 @@ export const twConfig = resolveConfig(tailwindConfig);
 export const typedTwConfig = twConfig as unknown as {
   theme: TailwindThemeT;
 };
+
+export default tailwindConfig;

@@ -1,24 +1,13 @@
 import "@mantine/core/styles.css";
-import { Container } from "@mantine/core";
-import localFont from "next/font/local";
 import "./globals.css";
 import "@mantine/dates/styles.css";
-
+import { Inter } from "next/font/google";
 import { Provider } from "@/app/providers/provider";
+import { UiProvider } from "@/app/providers/ui-provider";
 import { i18n, type Locale } from "@/config/i18n/i18n-config";
 import { getDictionary } from "@/shared/locale/getDictionary";
-import Header from "@/shared/ui/header";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -36,14 +25,9 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <Provider dictionary={dictionary} locale={lang}>
-          <Header />
-          <Container className="p-4" size="xl">
-            {children}
-          </Container>
+          <UiProvider>{children}</UiProvider>
         </Provider>
       </body>
     </html>
