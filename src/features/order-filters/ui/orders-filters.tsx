@@ -7,7 +7,7 @@ import { ListFilterIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { createFilterMapper } from "@/shared/lib/create-filter-mapper";
+import { createFilterMapper } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { OrdersFiltersT } from "../model/types";
 

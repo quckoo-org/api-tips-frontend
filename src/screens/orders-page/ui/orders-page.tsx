@@ -30,7 +30,7 @@ type OrdersPageProps = {
 
 export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
   const { t } = useTranslations();
-  const pagination = usePagination();
+  const pagination = usePagination(10, 10);
   const updateModal = useUpdateOrderModal();
   const createModal = useCreateOrderModal();
   const [filtersResult, setFiltersResult] = useState<OrdersFiltersT>();

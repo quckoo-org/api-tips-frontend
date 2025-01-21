@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
 import { RolesTable, PermissionsTable, MethodsTable } from "@/widgets";
 
-const AdministrationPage: FC = () => {
+export const AdministrationPage: FC = () => {
   const { t } = useTranslations();
   return (
     <Tabs defaultValue="roles">
@@ -25,5 +25,3 @@ const AdministrationPage: FC = () => {
     </Tabs>
   );
 };
-
-export default AdministrationPage;

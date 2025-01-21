@@ -4,6 +4,7 @@ import { QUERY_KEYS } from "@/shared/lib";
 import {
   AddMethodRequest,
   GetMethodsResponse,
+  Method,
 } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useCreateMethod = () => {
@@ -24,7 +25,9 @@ export const useCreateMethod = () => {
 
           return {
             ...oldData,
-            methods: [...oldData.methods, methodsResponse.method],
+            methods: [...oldData.methods, methodsResponse.method].filter(
+              (method): method is Method => method !== undefined,
+            ),
           };
         },
       );

@@ -4,6 +4,7 @@ import { QUERY_KEYS } from "@/shared/lib";
 import {
   AddRoleRequest,
   GetRolesResponse,
+  Role,
 } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useCreateRole = () => {
@@ -24,7 +25,9 @@ export const useCreateRole = () => {
 
           return {
             ...oldData,
-            roles: [...oldData.roles, roleResponse.role],
+            roles: [...oldData.roles, roleResponse.role].filter(
+              (role): role is Role => role !== undefined,
+            ),
           };
         },
       );
