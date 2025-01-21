@@ -115,7 +115,7 @@ export const TariffForm: FC<TariffFormProps> = ({
           }}
           render={({ field }) => (
             <DatePickerInput
-              label={t("pick_end_date")}
+              label={t("end_date")}
               placeholder={t("pick_end_date")}
               value={field.value}
               onChange={field.onChange}
@@ -138,6 +138,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               placeholder={t("enter_total_price")}
               onChange={field.onChange}
               error={errors.totalPrice?.message}
+              prefix={tariff?.currency + " "}
             />
           )}
         />
@@ -186,7 +187,7 @@ export const TariffForm: FC<TariffFormProps> = ({
             />
           )}
         />
-        <Checkbox label="Is Hidden" {...register("isHidden")} />
+        <Checkbox label={t("deleted")} {...register("isHidden")} />
         <Button type="submit" loading={isLoading}>
           {t("submit")}
         </Button>
