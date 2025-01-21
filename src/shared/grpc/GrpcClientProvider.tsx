@@ -7,7 +7,7 @@ import { AuthMiddleware } from "./AuthMiddleware";
 import { GrpcClientsContextValue, grpcClientsContext } from "./context";
 import { errorMiddleware } from "./errorMiddleware";
 import { loggerMiddleware } from "./loggerMiddleware";
-import { TokenService } from "../lib/tokenService";
+import { TokenService } from "../lib";
 
 const channel = createChannel(
   process.env.NEXT_PUBLIC_API_URL ?? "https://beta.api-tips.api.quckoo.net",
@@ -17,12 +17,11 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
-      .use(retryMiddleware)
-      .use(errorMiddleware);
+      .use(retryMiddleware);
 
-    clientFactory = clientFactory.use(
-      AuthMiddleware({ getAccessToken: TokenService.getAccessToken }),
-    );
+    clientFactory = clientFactory
+      .use(AuthMiddleware({ getAccessToken: TokenService.getAccessToken }))
+      .use(errorMiddleware);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const clients = new Map<object, Client<any>>();

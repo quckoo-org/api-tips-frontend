@@ -32,7 +32,7 @@ export const clientErrorWrapper = (accessFn: (...args: any) => any) => {
 
       return res;
     } catch (e) {
-      console.log({ e }, "erererr");
+      console.log({ e });
       if (e instanceof ClientError) {
         switch (e.code) {
           case Status.PERMISSION_DENIED:

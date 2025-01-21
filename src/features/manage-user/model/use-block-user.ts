@@ -5,7 +5,7 @@ export const useBlockUser = () => {
 
   const handleBlockUser = async (id: number, value: boolean) => {
     await mutation.mutateAsync(
-      { id, isBlocked: value },
+      { userId: id, isBlocked: value, rolesIds: [] },
       {
         onSuccess: () => {
           //toast.success(t("the_user_has_been_successfully_block"));

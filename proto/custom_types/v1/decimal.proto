@@ -1,0 +1,22 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner:
+    dev team
+*/
+
+syntax = "proto3";
+package api.tips.custom_types.v1;
+option csharp_namespace = "ApiTips.CustomTypes.V1";
+
+message Decimal {
+
+  /* Целая часть суммы. */
+  int64 units = 1;
+
+  /* Десятичные доли суммы. */
+  sfixed32 nanos = 2;
+}

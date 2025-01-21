@@ -5,6 +5,7 @@ import { clsx } from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CountrySelect } from "@/entities/country";
+import { RolesMultiSelect } from "@/entities/role";
 import { useGetUser } from "@/features/manage-user/model/use-get-user";
 import { useTranslations } from "@/shared/locale/translations";
 import { UserFormValues } from "../model/types";
@@ -38,7 +39,8 @@ export const UserForm: FC<UserFormProps> = ({
       isDeleted: false,
       isBlocked: false,
       isVerified: false,
-      countryCode: "",
+      cca3: "",
+      roles: [],
     },
     values: {
       email: userQuery.data?.user?.email ?? "",
@@ -47,7 +49,8 @@ export const UserForm: FC<UserFormProps> = ({
       isDeleted: !!userQuery.data?.user?.deletedAt,
       isBlocked: !!userQuery.data?.user?.blockedAt,
       isVerified: !!userQuery.data?.user?.verifiedAt,
-      countryCode: userQuery.data?.user?.countryCode ?? "",
+      cca3: (userQuery.data?.user?.cca3 as string) ?? "",
+      roles: userQuery.data?.user?.roles ?? [],
     },
   });
 
@@ -84,14 +87,26 @@ export const UserForm: FC<UserFormProps> = ({
           error={errors.lastName?.message}
         />
         <Controller
-          name="countryCode"
+          name="cca3"
           control={control}
           rules={{ required: t("country_is_required") }}
           render={({ field }) => (
             <CountrySelect
               value={field.value}
               onChangeCountry={field.onChange}
-              error={errors.countryCode?.message}
+              error={errors.cca3?.message}
+            />
+          )}
+        />
+        <Controller
+          name="roles"
+          control={control}
+          rules={{ required: t("roles_is_required") }}
+          render={({ field }) => (
+            <RolesMultiSelect
+              value={field.value}
+              onChangeRole={field.onChange}
+              error={errors.roles?.message}
             />
           )}
         />
@@ -102,17 +117,6 @@ export const UserForm: FC<UserFormProps> = ({
             <Checkbox label="Is Verified" {...register("isVerified")} />
           </>
         )}
-        {/* <Controller
-          name="roles"
-          control={control}
-          rules={{ required: "At least one role is required" }}
-          render={({ field }) => (
-            <RolesMultiSelect
-              value={field.value}
-              onChangeRole={field.onChange}
-            />
-          )}
-        /> */}
         <Button type="submit">Submit</Button>
       </Flex>
     </form>

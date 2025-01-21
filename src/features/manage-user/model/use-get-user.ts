@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
-import {  GetUserRequest } from "@/shared/proto/user/v1/user";
+import { useAccessClient } from "@/shared/grpc/clients/use-user-client";
+import { QUERY_KEYS } from "@/shared/lib";
+import { GetUserRequest } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useGetUser = (req: Partial<GetUserRequest>) => {
-  const { getUser } = useUsersClient();
+  const { getUser } = useAccessClient();
 
   return useQuery({
     queryKey: [QUERY_KEYS.USER, req],
@@ -15,4 +15,4 @@ export const useGetUser = (req: Partial<GetUserRequest>) => {
       return response;
     },
   });
-}
+};

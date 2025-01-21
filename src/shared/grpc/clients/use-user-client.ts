@@ -1,6 +1,6 @@
-import { UserServiceDefinition } from "@/shared/proto/user/v1/user";
+import { ApiTipsAccessServiceDefinition } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { useGrpcClient } from "../useGrpcClient";
 
-export const useUsersClient = () => {
-  return useGrpcClient(UserServiceDefinition);
+export const useAccessClient = () => {
+  return useGrpcClient(ApiTipsAccessServiceDefinition);
 };

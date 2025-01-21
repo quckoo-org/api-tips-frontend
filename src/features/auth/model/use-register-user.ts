@@ -11,7 +11,7 @@ export const useRegisterUser = () => {
 
   return useMutation<unknown, RegisterErrorT, RegisterReqT>({
     mutationFn: async (req) => {
-      const response = await fetchClient.post("/auth/register", req);
+      const response = await fetchClient.post("/api/auth/register", req);
 
       return response;
     },

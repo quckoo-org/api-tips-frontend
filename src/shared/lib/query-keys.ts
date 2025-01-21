@@ -6,4 +6,6 @@ export const QUERY_KEYS = {
   COUNTRIES: "countries",
   ROLES: "roles",
   ORDERS: "orders",
+  PERMISSIONS: "permissions",
+  METHODS: "methods",
 };

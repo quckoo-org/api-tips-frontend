@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    output: "standalone",
+  output: "standalone",
+  experimental: {
+    esmExternals: true,
+  },
 };
 
 export default nextConfig;

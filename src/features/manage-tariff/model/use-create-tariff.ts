@@ -1,30 +1,30 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTariffsClient } from "@/shared/grpc/clients/use-tariffs-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
+import {
+  AddTariffRequest,
+  GetTariffsResponse,
+} from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 
 export const useCreateTariff = () => {
-  const { createTariff } = useTariffsClient();
+  const { addTariff } = useTariffsClient();
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, unknown, unknown>({
-    mutationFn: async (req) => {
-      const response = await createTariff(req);
+  return useMutation({
+    mutationFn: async (req: AddTariffRequest) => {
+      const response = await addTariff(req);
 
       return response;
     },
-    onSuccess: () => {
+    onSuccess: (tariffResponse) => {
       queryClient.setQueriesData(
         { queryKey: [QUERY_KEYS.TARIFFS] },
-        (oldData: unknown | undefined) => {
+        (oldData: GetTariffsResponse | undefined) => {
           if (!oldData) return oldData;
 
           return {
             ...oldData,
-            // rows: oldData.rows.map((tariff) =>
-            //   tariff.id === tariffResponse?.tariff?.id
-            //     ? tariffResponse?.tariff
-            //     : tariff,
-            // ),
+            tariffs: [...oldData.tariffs, tariffResponse.tariff],
           };
         },
       );

@@ -1,5 +1,5 @@
-import { Container } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { Container } from "@mantine/core";
 import localFont from "next/font/local";
 import "./globals.css";
 import "@mantine/dates/styles.css";
@@ -7,7 +7,7 @@ import "@mantine/dates/styles.css";
 import { Provider } from "@/app/providers/provider";
 import { i18n, type Locale } from "@/config/i18n/i18n-config";
 import { getDictionary } from "@/shared/locale/getDictionary";
-import Header from "@/shared/ui/Header";
+import Header from "@/shared/ui/header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,7 +24,6 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-// eslint-disable-next-line @next/next/no-async-client-component
 export default async function RootLayout({
   children,
   params,

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { TariffT } from "@/entities/tariff";
+import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { CreateTariffModal } from "./create-tariff-modal";
 
 export function useCreateTariffModal() {
   const [modalProps, setModalProps] = useState<{
-    onClose: (tariff?: TariffT) => void;
+    onClose: (tariff?: Tariff) => void;
   }>();
 
   const modal = modalProps ? <CreateTariffModal {...modalProps} /> : undefined;
 
   const createTariff = () => {
-    return new Promise<TariffT | undefined>((res) => {
+    return new Promise<Tariff | undefined>((res) => {
       setModalProps({
         onClose: (tariff) => {
           res(tariff);

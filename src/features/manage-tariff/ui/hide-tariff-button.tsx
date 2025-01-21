@@ -18,7 +18,7 @@ export const HideTariffButton: FC<HideTariffButtonProps> = ({
 
   return (
     <div
-      className={clsx("flex justify-center items-center relative", className)}
+      className={clsx("flex justify-start items-center relative", className)}
     >
       {isLoading ? (
         <Loader size="xs" />

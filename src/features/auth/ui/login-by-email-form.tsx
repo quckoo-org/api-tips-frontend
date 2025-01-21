@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { sha256 } from "js-sha256";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "@/shared/locale/translations";
@@ -24,7 +25,13 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
   });
 
   const onSubmit = async (req: LoginByEmailReqT) => {
-    loginMutation.mutateAsync(req);
+    const { password, ...resReq } = req;
+    const hashedPassword = sha256(password);
+    const finalRequest: LoginByEmailReqT = {
+      password: hashedPassword,
+      ...resReq,
+    };
+    loginMutation.mutateAsync(finalRequest);
   };
 
   return (

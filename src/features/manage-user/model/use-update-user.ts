@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUsersClient } from "@/shared/grpc/clients/use-user-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { useAccessClient } from "@/shared/grpc/clients/use-user-client";
+import { QUERY_KEYS } from "@/shared/lib";
 import {
-  GetAllUsersResponse,
+  GetUsersResponse,
   UpdateUserRequest,
   UpdateUserResponse,
-} from "@/shared/proto/user/v1/user";
+} from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 export const useUpdateUser = () => {
-  const { updateUser } = useUsersClient();
+  const { updateUser } = useAccessClient();
   const queryClient = useQueryClient();
 
   return useMutation<UpdateUserResponse, unknown, UpdateUserRequest>({
@@ -20,7 +20,7 @@ export const useUpdateUser = () => {
     onSuccess: (userResponse) => {
       queryClient.setQueriesData(
         { queryKey: [QUERY_KEYS.USERS] },
-        (oldData: GetAllUsersResponse | undefined) => {
+        (oldData: GetUsersResponse | undefined) => {
           if (!oldData) return oldData;
           return {
             ...oldData,

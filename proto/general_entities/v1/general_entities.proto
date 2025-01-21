@@ -1,0 +1,31 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner:
+    dev team
+*/
+
+syntax = "proto3";
+package api.tips.general_entities.v1;
+option csharp_namespace = "ApiTips.GeneralEntities.V1";
+
+import "google/protobuf/wrappers.proto";
+import 'custom_enums/v1/custom_enums.proto';
+
+/*
+ * Сущность ответа
+ */
+message GeneralResponse {
+  /*
+   * Код ответа
+   */
+  custom_enums.v1.OperationStatus status = 1;
+
+  /*
+   * Описание ответа
+   */
+  google.protobuf.StringValue description = 2;
+}

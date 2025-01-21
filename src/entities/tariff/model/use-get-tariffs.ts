@@ -2,15 +2,16 @@
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTariffsClient } from "@/shared/grpc/clients/use-tariffs-client";
-import { QUERY_KEYS } from "@/shared/lib/query-keys";
+import { QUERY_KEYS } from "@/shared/lib";
+import { GetTariffsRequest } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 
-export const useGetTariffs = (req: unknown) => {
-  const { getAllTariffs } = useTariffsClient();
+export const useGetTariffs = (req: GetTariffsRequest) => {
+  const { getTariffs } = useTariffsClient();
 
-  return useQuery<unknown>({
+  return useQuery({
     queryKey: [QUERY_KEYS.TARIFFS, req],
     queryFn: async ({ signal }) => {
-      const response = await getAllTariffs(req, { signal });
+      const response = await getTariffs(req, { signal });
 
       return response;
     },

@@ -12,6 +12,7 @@ import {
 } from "@/features/manage-tariff";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
+import List from "@/shared/ui/list";
 import { TariffsPageError } from "./tariffs-page-error";
 import { TariffsPageSkeleton } from "./tariffs-page-skeleton";
 
@@ -23,31 +24,33 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
   const crateModal = useCreateTariffModal();
   const updateModal = useUpdateTariffModal();
   const { t } = useTranslations();
-  const pagination = usePagination();
 
-  const tariffsQuery = useGetTariffs({
-    page: pagination.page,
-    pageSize: pagination.pageSize,
-  });
+  const tariffsQuery = useGetTariffs({});
+  const pagination = usePagination(tariffsQuery.data?.tariffs.length);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const rows = tariffsQuery.data?.rows.map((tariff) => (
-    <TariffRow
-      key={tariff.id}
-      tariff={tariff}
-      actions={
-        <>
-          <MenuItem onClick={() => updateModal.updateTariff(tariff.id)}>
-            {t("update_tariff")}
-          </MenuItem>
-        </>
-      }
-      renderHideTariff={(tariffId, checked) => (
-        <HideTariffButton tariffId={tariffId} checked={checked} />
+  const rows = (
+    <List
+      page={pagination.page}
+      pageSize={pagination.pageSize}
+      items={tariffsQuery.data?.tariffs}
+      itemToRender={(tariff) => (
+        <TariffRow
+          key={tariff.id}
+          tariff={tariff}
+          actions={
+            <>
+              <MenuItem onClick={() => updateModal.updateTariff(tariff)}>
+                {t("update_tariff")}
+              </MenuItem>
+            </>
+          }
+          renderHideTariff={(tariffId, checked) => (
+            <HideTariffButton tariffId={tariffId} checked={checked} />
+          )}
+        />
       )}
     />
-  ));
+  );
 
   if (tariffsQuery.isLoading) {
     return <TariffsPageSkeleton className={className} />;
@@ -77,9 +80,10 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
               <Table.Th>{t("free_requests")}</Table.Th>
               <Table.Th>{t("paid_requests")}</Table.Th>
               <Table.Th>{t("total_requests")}</Table.Th>
-              <Table.Th>{t("cost")}</Table.Th>
-              <Table.Th>{t("total_cost")}</Table.Th>
+              <Table.Th>{t("tip_price")}</Table.Th>
+              <Table.Th>{t("total_price")}</Table.Th>
               <Table.Th>{t("hidden")}</Table.Th>
+              <Table.Th />
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
@@ -89,13 +93,9 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
           disabled={tariffsQuery.isPending}
           value={pagination.page}
           onChange={(page) => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            pagination.handlePageChange(page, tariffsQuery.data?.totalPages);
+            pagination.handlePageChange(page, pagination.totalPages);
           }}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          total={tariffsQuery.data?.totalPages ?? 0}
+          total={pagination.totalPages ?? 0}
         />
       </div>
       {crateModal.modal}

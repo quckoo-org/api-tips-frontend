@@ -7,6 +7,7 @@ export const enum ROUTES {
   FORBIDDEN = "/forbidden",
   TARIFFS = "/tariffs",
   ORDERS = "/orders",
+  ADMINISTRATION = "/administration",
 }
 
 export const routesConfig: Array<{
@@ -51,6 +52,11 @@ export const routesConfig: Array<{
   },
   {
     path: ROUTES.ORDERS,
+    requiresAuth: true,
+    isAdmin: true,
+  },
+  {
+    path: ROUTES.ADMINISTRATION,
     requiresAuth: true,
     isAdmin: true,
   },

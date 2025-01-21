@@ -12,16 +12,14 @@ import {
   useUpdateUserModal,
   VerifyUserButton,
 } from "@/features/manage-user";
-import {
-  UserRegistryFilters,
-  UserRegistryFiltersT,
-} from "@/features/user-registry-filters";
+import { UserRegistryFilters } from "@/features/user-registry-filters";
+import { UserOrderBy } from "@/features/user-registry-filters/model/types";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useSort } from "@/shared/hooks/use-sort";
 import { useTranslations } from "@/shared/locale/translations";
-import { UserOrderBy } from "@/shared/proto/user/v1/user";
+import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import List from "@/shared/ui/list";
 import { SortTh } from "@/shared/ui/sort-th";
-import { UserRegistryPageError } from "./user-registry-page-error";
 import { UserRegistryPageSkeleton } from "./user-registry-page-skeleton";
 
 type UserRegistryPageProps = {
@@ -30,78 +28,80 @@ type UserRegistryPageProps = {
 
 export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   const { t } = useTranslations();
-  const pagination = usePagination();
+
   const createModal = useCreateUserModal();
   const updateModal = useUpdateUserModal();
-  const [filtersResult, setFiltersResult] = useState<UserRegistryFiltersT>({
+  const [filtersResult, setFiltersResult] = useState<GetUsersRequest_Filter>({
     isDeleted: false,
-    isBlocked: null,
-    isVerified: null,
+    isBlocked: undefined,
+    isVerified: undefined,
+    email: "",
   });
   const { sortValue, handleChangeSort } = useSort<UserOrderBy>();
-
+  //TODO: sorting
   const usersQuery = useGetUsers({
-    page: pagination.page,
-    pageSize: pagination.pageSize,
-    ...(filtersResult.isDeleted !== null
+    ...(filtersResult.isDeleted !== undefined
       ? { isDeleted: filtersResult.isDeleted }
       : {}),
-    ...(filtersResult.isBlocked !== null
+    ...(filtersResult.isBlocked !== undefined
       ? { isBlocked: filtersResult.isBlocked }
       : {}),
-    ...(filtersResult.isVerified !== null
+    ...(filtersResult.isVerified !== undefined
       ? { isVerified: filtersResult.isVerified }
       : {}),
-    ...(sortValue?.order ? { order: sortValue.order } : {}),
-    ...(sortValue?.value ? { orderBy: sortValue.value } : {}),
+    ...(filtersResult.email !== "" ? { email: filtersResult.email } : {}),
   });
+  const pagination = usePagination(usersQuery.data?.users.length);
 
-  const rows = usersQuery.data?.users.map((user) => (
-    <UserRow
-      key={user.id}
-      user={user}
-      actions={
-        <>
-          <MenuItem onClick={() => updateModal.updateUser(user.id)}>
-            {t("update_user")}
-          </MenuItem>
-        </>
-      }
-      renderHideUser={(userId, checked) => (
-        <HideUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
-        />
-      )}
-      renderBlockUser={(userId, checked) => (
-        <BlockUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
-        />
-      )}
-      renderVerifyUser={(userId, checked) => (
-        <VerifyUserButton
-          className={"!justify-start"}
-          userId={userId}
-          checked={checked}
+  const rows = (
+    <List
+      page={pagination.page}
+      pageSize={pagination.pageSize}
+      items={usersQuery.data?.users}
+      itemToRender={(user) => (
+        <UserRow
+          key={user.id}
+          user={user}
+          actions={
+            <>
+              <MenuItem onClick={() => updateModal.updateUser(user.id)}>
+                {t("update_user")}
+              </MenuItem>
+            </>
+          }
+          renderHideUser={(userId, checked) => (
+            <HideUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
+          renderBlockUser={(userId, checked) => (
+            <BlockUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
+          renderVerifyUser={(userId, checked) => (
+            <VerifyUserButton
+              className={"!justify-start"}
+              userId={userId}
+              checked={checked}
+            />
+          )}
         />
       )}
     />
-  ));
+  );
 
-  const handleSubmitFilters = (data: UserRegistryFiltersT) => {
-    pagination.handlePageChange(1, usersQuery.data?.totalPages);
+  const handleSubmitFilters = (data: GetUsersRequest_Filter) => {
+    pagination.handlePageChange(1, pagination.pageSize);
     setFiltersResult(data);
   };
 
   if (usersQuery.isLoading) {
     return <UserRegistryPageSkeleton className={className} />;
-  }
-
-  if (usersQuery.isError) {
-    return <UserRegistryPageError className={className} />;
   }
 
   return (
@@ -157,14 +157,15 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
               <SortTh<UserOrderBy>
                 onSort={handleChangeSort}
                 order={
-                  sortValue?.value === UserOrderBy.countryCode
+                  sortValue?.value === UserOrderBy.cca3
                     ? sortValue?.order
                     : null
                 }
-                value={UserOrderBy.countryCode}
+                value={UserOrderBy.cca3}
               >
                 {t("country_сode")}
               </SortTh>
+              <Table.Th>{t("user_roles")}</Table.Th>
               <Table.Th>{t("registry_date")}</Table.Th>
               <Table.Th>{t("verified")}</Table.Th>
               <Table.Th>{t("block")}</Table.Th>
@@ -175,12 +176,12 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
         <Pagination
+          total={pagination.totalPages}
           disabled={usersQuery.isPending}
           value={pagination.page}
           onChange={(page) => {
-            pagination.handlePageChange(page, usersQuery.data?.totalPages);
+            pagination.handlePageChange(page, pagination.totalPages);
           }}
-          total={usersQuery.data?.totalPages ?? 0}
         />
       </div>
       {createModal.modal}
