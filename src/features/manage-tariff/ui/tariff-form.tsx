@@ -192,7 +192,7 @@ export const TariffForm: FC<TariffFormProps> = ({
         </Button>
         {showUnchangedError && (
           <Text className="text-center text-sm text-red-600">
-            No changes detected. Please modify at least one field to submit.
+            {t("tariff_update_no_changes_detected")}
           </Text>
         )}
       </Flex>
