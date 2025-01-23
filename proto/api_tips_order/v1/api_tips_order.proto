@@ -1,0 +1,294 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner: 
+    dev team
+    
+  Methods:
+    - GetOrders ( Получение списка заказов )
+    - GetOrder ( Получение заказа )
+    - AddOrder ( Создание заказа )
+    - SetOrderStatusPaid ( Обновление статуса заказа на "Оплачен" )
+    - SetOrderStatusCancelled ( Обновление статуса заказа на "Отменён" )
+*/
+
+syntax = "proto3";
+package api.tips.order.v1;
+option csharp_namespace = "ApiTips.Api.Order.V1";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import 'custom_enums/v1/custom_enums.proto';
+import 'custom_types/v1/decimal.proto';
+import 'general_entities/v1/general_entities.proto';
+
+service ApiTipsOrderService {
+  /*
+   * Получение списка заказов
+   */
+  rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
+  
+  /*
+   * Получение заказа
+   */
+  rpc GetOrder (GetOrderRequest) returns (GetOrderResponse);
+  
+  /*
+   * Создание заказа 
+   */
+  rpc AddOrder (AddOrderRequest) returns (AddOrderResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление статуса заказа на "Оплачен"
+   */
+  rpc SetOrderStatusPaid (SetOrderStatusPaidRequest) returns (SetOrderStatusPaidResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление статуса заказа на "Отменён"
+   */
+  rpc SetOrderStatusCancelled (SetOrderStatusCancelledRequest) returns (SetOrderStatusCancelledResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+}
+
+/*
+ * Запрос - получение списка заказов
+ */
+message GetOrdersRequest {
+  /*
+   * Фильтр вхождений поиска заказов
+   */
+  optional Filter filter = 1;
+
+  /*
+   * Сущность фильтра поиска заказов
+   */
+  message Filter {
+    optional custom_enums.v1.OrderStatus order_status = 1;
+  }
+}
+
+/*
+ * Ответ - получение списка заказов
+ */
+message GetOrdersResponse {
+  /*
+   * Заказы
+   */
+  repeated Order orders = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение заказа по идентификатору 
+ */
+message GetOrderRequest {
+  google.protobuf.Int64Value order_id = 1;
+}
+
+/*
+ * Ответ - получение заказа по идентификатору 
+ */
+message GetOrderResponse {
+  /*
+   * Заказ
+   */
+  optional Order order = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - создание заказа
+ */
+message AddOrderRequest {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 user_id = 1;
+
+  /*
+   * Идентификатор тарифа
+   */
+  int64 tariff_id = 2;
+}
+
+/*
+ * Ответ - создание заказа
+ */
+message AddOrderResponse {
+  /*
+   * Заказ
+   */
+  optional Order order = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - присвоение статуса "Оплачен" заказу
+ */
+message SetOrderStatusPaidRequest {
+  /*
+   * Идентификатор заказа
+   */
+  int64 order_id = 1;
+
+  /*
+   * Дата оплаты заказа
+   */
+  google.protobuf.Timestamp payment_date = 2;
+}
+
+/*
+ * Ответ - присвоение статуса "Оплачен" заказу
+ */
+message SetOrderStatusPaidResponse {
+  /*
+   * Заказ
+   */
+  optional Order order = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - присвоение статуса "Отменён" заказу
+ */
+message SetOrderStatusCancelledRequest {
+  /*
+   * Идентификатор заказа
+   */
+  int64 order_id = 1;
+}
+
+/*
+ * Ответ - присвоение статуса "Отменён" заказу
+ */
+message SetOrderStatusCancelledResponse {
+  /*
+   * Заказ
+   */
+  optional Order order = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/* ---------- Entities ---------- */
+
+/*
+ * Сущность заказа
+ */
+message Order {
+  /*
+   * Идентификатор заказа
+   */
+  int64 id = 1;
+
+  /*
+   * Дата создания заказа
+   */
+  google.protobuf.Timestamp created_at = 2;
+
+  /*
+   * Статус заказа
+   */
+  custom_enums.v1.OrderStatus order_status = 3;
+
+  /*
+   * Дата оплаты заказа
+   */
+  optional google.protobuf.Timestamp paid_at = 4;
+
+  /*
+   * Тариф на который оформлен заказ
+   */
+  Tariff tariff = 5;
+
+  /*
+   * Пользователь оформивший заказ
+   */
+  User user = 6;
+
+  /*
+   * to do сформированный счёт по заказу
+   */
+}
+
+/*
+ * Сущность тарифа
+ */
+message Tariff {
+  /*
+   * Идентификатор тарифа
+   */
+  int64 id = 1;
+
+  /*
+   * Название тарифа
+   */
+  string name = 2;
+
+  /*
+   * Общее количество подсказок 
+   */
+  optional int64 total_tips_count = 3;
+
+  /*
+   * Общая стоимость
+   */
+  api.tips.custom_types.v1.Decimal total_price = 4;
+  
+  /*
+   * Валюта тарифа, ISO 4217
+   */
+  string currency = 5;
+}
+
+/*
+ * Сущность пользователя
+ */
+message User {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 id = 1;
+  
+  /*
+   * Почта пользователя
+   */
+  string email = 2;
+
+  /*
+   * Имя пользователя
+   */
+  string first_name = 3;
+
+  /*
+   * Фамилия пользователя
+   */
+  string last_name = 4;
+}

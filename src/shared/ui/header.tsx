@@ -51,6 +51,11 @@ const Header = observer(() => {
             Landing
           </Link>
         )}
+        {authStore.isAuthenticated && (
+          <Link href={ROUTES.ORDERS} className="text-xl font-bold ml-8">
+            Orders
+          </Link>
+        )}
       </div>
       {authStore.isAuthenticated ? (
         <Menu shadow="md" width={200} position="bottom-end">

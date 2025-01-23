@@ -1,38 +1,37 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { OrderT } from "@/entities/order";
 import { useOrdersClient } from "@/shared/grpc/clients/use-order-client";
 import { QUERY_KEYS } from "@/shared/lib";
-// import {
-//   GetAllOrdersResponse,
-//   UpdateOrderRequest,
-//   UpdateOrderResponse,
-// } from "@/shared/proto/order/v1/order";
-//TODO MOCK TYPE
-type GetAllOrdersResponse = { orders: OrderT[] };
-type UpdateOrderRequest = unknown;
-type UpdateOrderResponse = { order: OrderT };
+import {
+  GetOrdersResponse,
+  SetOrderStatusPaidRequest,
+  SetOrderStatusPaidResponse,
+} from "@/shared/proto/api_tips_order/v1/api_tips_order";
 
-export const useUpdateOrder = () => {
-  const { updateOrder } = useOrdersClient();
+export const usePaidOrder = () => {
+  const { setOrderStatusPaid } = useOrdersClient();
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateOrderResponse, unknown, UpdateOrderRequest>({
+  return useMutation<
+    SetOrderStatusPaidResponse,
+    unknown,
+    SetOrderStatusPaidRequest
+  >({
     mutationFn: async (req) => {
-      const response = await updateOrder(req);
+      const response = await setOrderStatusPaid(req);
 
       return response;
     },
     onSuccess: (orderResponse) => {
       queryClient.setQueriesData(
-        { queryKey: [QUERY_KEYS.USERS] },
-        (oldData: GetAllOrdersResponse | undefined) => {
+        { queryKey: [QUERY_KEYS.ORDERS] },
+        (oldData: GetOrdersResponse | undefined) => {
           if (!oldData) return oldData;
           console.log(orderResponse, oldData);
           return {
             ...oldData,
             orders: oldData.orders.map((order) =>
               order.id === orderResponse?.order?.id
-                ? orderResponse?.order
+                ? { ...order, orderStatus: orderResponse.order.orderStatus }
                 : order,
             ),
           };

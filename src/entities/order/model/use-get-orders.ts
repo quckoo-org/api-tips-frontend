@@ -1,24 +1,20 @@
 "use client";
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { OrderT } from "@/entities/order";
 import { useOrdersClient } from "@/shared/grpc/clients/use-order-client";
 import { QUERY_KEYS } from "@/shared/lib";
-// import {
-//   GetAllOrdersRequest,
-//   GetAllOrdersResponse,
-// } from "@/shared/proto/user/v1/user";
-//TODO MOCK TYPE
-type GetAllOrdersRequest = unknown;
-type GetAllOrdersResponse = { orders: OrderT[] };
+import {
+  GetOrdersRequest,
+  GetOrdersResponse,
+} from "@/shared/proto/api_tips_order/v1/api_tips_order";
 
-export const useGetOrders = (req: GetAllOrdersRequest) => {
-  const { getAllOrders } = useOrdersClient();
+export const useGetOrders = (req: GetOrdersRequest) => {
+  const { getOrders } = useOrdersClient();
 
-  return useQuery<GetAllOrdersResponse>({
-    queryKey: [QUERY_KEYS.USERS, req],
+  return useQuery<GetOrdersResponse>({
+    queryKey: [QUERY_KEYS.ORDERS, req],
     queryFn: async ({ signal }) => {
-      const response = await getAllOrders(req, { signal });
+      const response = await getOrders(req, { signal });
 
       return response;
     },

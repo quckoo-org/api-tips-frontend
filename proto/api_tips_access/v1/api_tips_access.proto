@@ -4,27 +4,27 @@
   Description:
     Internal interaction contract
 
-  Owner:
+  Owner: 
     dev team
-
+    
   Methods:
     - GetUsers ( Получение списка пользователей с ролями )
     - GetUser ( Получение пользователя по идентификатору  )
     - AddUser ( Создание пользователя и присвоение ему ролей )
     - UpdateUser ( Обновление пользователя )
-
+    
     - GetRoles ( Получение списка ролей с разрешениями )
     - GetRole ( Получение роли с разрешениями и пермишенами )
     - AddRole ( Создание новой роли и назначение ей разрешений )
     - UpdateRole ( Обновление роли (обновление списка разрешений) )
     - DeleteRole ( Удаление роли )
-
+    
     - GetPermissions ( Получение списка разрешений с методами )
     - GetPermission ( Получение разрешения с методами )
     - AddPermission ( Создание нового разрешения и назначение ему методов )
     - UpdatePermission ( Обновление разрешения (обновление списка методов) )
     - DeletePermission ( Удаление разрешения )
-
+    
     - GetMethods ( Получение списка методов )
     - AddMethod ( Создание нового метода )
     - UpdateMethod ( Обновление существующего метода )
@@ -47,12 +47,12 @@ service ApiTipsAccessService {
    * Получение списка пользователей с ролями
    */
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
-
+  
   /*
-   * Получение пользователя по идентификатору
+   * Получение пользователя по идентификатору 
    */
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
-
+  
   /*
    * Создание пользователя и присвоение ему ролей
    */
@@ -66,9 +66,9 @@ service ApiTipsAccessService {
   rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse){
     option idempotency_level = IDEMPOTENT;
   };
-
+  
   // Роли
-
+  
   /*
    * Получение списка ролей с разрешениями
    */
@@ -99,7 +99,7 @@ service ApiTipsAccessService {
   rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse){
     option idempotency_level = IDEMPOTENT;
   };
-
+  
   // Разрешения
 
   /*
@@ -163,21 +163,21 @@ service ApiTipsAccessService {
 }
 
 /*
- * Запрос - получение пользователя по идентификатору
+ * Запрос - получение пользователя по идентификатору 
  */
 message GetUserRequest {
   google.protobuf.Int64Value user_id = 1;
 }
 
 /*
- * Ответ - получение пользователя по идентификатору
+ * Ответ - получение пользователя по идентификатору 
  */
 message GetUserResponse {
   /*
    * Пользователь
    */
   optional User user = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -212,7 +212,7 @@ message GetUsersResponse {
    * Пользователи
    */
   repeated User users = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -227,7 +227,7 @@ message AddUserRequest {
    * Почта пользователя
    */
   string email = 1;
-
+  
   /*
    * Имя пользователя
    */
@@ -242,12 +242,12 @@ message AddUserRequest {
    * Код страны пользователя (ISO 3166-1 alpha-3)
    */
   string cca3 = 4;
-
+  
   /*
    * Список идентификаторов ролей
    */
   repeated int64 roles_ids = 5;
-
+  
 }
 
 /*
@@ -258,7 +258,7 @@ message AddUserResponse {
    * Пользователь
    */
   optional User user = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -273,7 +273,7 @@ message UpdateUserRequest {
    * Идентификатор обновляемого пользователя
    */
   google.protobuf.Int64Value user_id = 1;
-
+  
   /*
    * Почта пользователя
    */
@@ -323,7 +323,7 @@ message UpdateUserResponse {
    * Пользователь
    */
   User user = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -397,7 +397,7 @@ message AddRoleResponse {
    * Роль
    */
   optional Role role = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -432,7 +432,7 @@ message UpdateRoleResponse {
    * Роль
    */
   optional Role role = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -529,7 +529,7 @@ message AddPermissionResponse {
    * Разрешение
    */
   optional Permission permission = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -564,7 +564,7 @@ message UpdatePermissionResponse {
    * Разрешение
    */
   optional Permission permission = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -634,7 +634,7 @@ message AddMethodResponse {
    * Метод
    */
   optional Method method = 1;
-
+  
   /*
    * ��ета информация ответа
    */
@@ -664,7 +664,7 @@ message UpdateMethodResponse {
    * Метод
    */
   optional Method method = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -706,7 +706,7 @@ message User {
    * Идентификатор пользователя
    */
   int64 id = 1;
-
+  
   /*
    * Почта пользователя
    */
