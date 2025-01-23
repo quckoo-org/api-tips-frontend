@@ -4,7 +4,10 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { CryptoWalletPayment } from "@/entities/payment";
-import { CryptoPaymentFormValues } from "@/features/manage-payments/model/types";
+import {
+  cryptoCurrencyTypeToCryptoCurrency,
+  CryptoPaymentFormValues,
+} from "@/features/manage-payments/model/types";
 import { PaymentCryptoForm } from "@/features/manage-payments/ui/payment-crypto-form";
 import { useTranslations } from "@/shared/locale/translations";
 import { Payment } from "@/shared/proto/api_tips_payment/v1/api_tips_payment";
@@ -25,14 +28,20 @@ export const UpdateCryptoPaymentModal: FC<UpdatePaymentModalProps> = ({
   const updateMutation = useUpdatePayment();
 
   const onUpdatePayment = async (paymentData: CryptoPaymentFormValues) => {
-    const { isBanned, ...PaymentType } = paymentData;
+    const { isBanned, ...paymentType } = paymentData;
     const response = await updateMutation.mutateAsync({
       payment: {
         id: payment.id,
         isBanned: isBanned,
         PaymentType: {
           $case: "cryptoWallet",
-          value: PaymentType,
+          value: {
+            ...paymentType,
+            cryptoCurrencyType:
+              cryptoCurrencyTypeToCryptoCurrency[
+                paymentType.cryptoCurrencyType
+              ],
+          },
         },
       },
     });

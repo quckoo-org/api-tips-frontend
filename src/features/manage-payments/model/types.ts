@@ -13,3 +13,13 @@ export const cryptoCurrencyType: Record<CryptoCurrency, string> = {
   [CryptoCurrency.CRYPTO_CURRENCY_UNSPECIFIED]: "",
   [CryptoCurrency.UNRECOGNIZED]: "",
 };
+
+export const cryptoCurrencyTypeToCryptoCurrency: Record<
+  string,
+  CryptoCurrency
+> = {
+  BTC: CryptoCurrency.CRYPTO_CURRENCY_BTC,
+  ETC: CryptoCurrency.CRYPTO_CURRENCY_ETC,
+  "": CryptoCurrency.CRYPTO_CURRENCY_UNSPECIFIED,
+  "": CryptoCurrency.UNRECOGNIZED,
+};
