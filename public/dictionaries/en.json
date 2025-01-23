@@ -101,5 +101,6 @@
   "delete_confirmation": "Delete confirmation",
   "delete_confirmation_text": "Are you sure you want to delete this item? This action is irreversible.",
   "cancel": "Cancel",
-  "delete": "Delete"
+  "delete": "Delete",
+  "user_roles": "Roles"
 }

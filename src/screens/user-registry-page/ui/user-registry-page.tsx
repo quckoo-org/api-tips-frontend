@@ -91,14 +91,14 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
                   key={role.id}
                   label={
                     <div>
-                      <Text>{t("permissions")}:</Text>
+                      <Text size="2xs">{t("permissions")}:</Text>
                       <ul>
                         {role.permissions.length ? (
                           role.permissions.map((permission) => (
                             <li key={permission.id}>{permission.name}</li>
                           ))
                         ) : (
-                          <Text>{t("none")}</Text>
+                          <Text size="2xs">{t("none")}</Text>
                         )}
                       </ul>
                     </div>
