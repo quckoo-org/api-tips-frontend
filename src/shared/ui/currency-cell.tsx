@@ -1,4 +1,3 @@
-import { Table } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { fromDecimal } from "@/shared/lib";
@@ -16,8 +15,8 @@ export const CurrencyCell: FC<CurrencyCellProps> = ({
   value,
 }) => {
   return (
-    <Table.Td className={clsx("", className)}>
+    <div className={clsx("", className)}>
       {fromDecimal(value) + " " + currency}
-    </Table.Td>
+    </div>
   );
 };

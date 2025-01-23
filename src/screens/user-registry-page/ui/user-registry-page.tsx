@@ -1,10 +1,15 @@
 "use client";
 
-import { ActionIcon, MenuItem, Pagination, Table } from "@mantine/core";
+import { ActionIcon, Menu, Text, Tooltip } from "@mantine/core";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
-import { FC, useState } from "react";
-import { useGetUsers, UserRow } from "@/entities/user";
+import { EllipsisIcon, PlusIcon } from "lucide-react";
+import {
+  MantineReactTable,
+  type MRT_ColumnDef,
+  useMantineReactTable,
+} from "mantine-react-table";
+import { FC, useMemo, useState } from "react";
+import { useGetUsers } from "@/entities/user";
 import {
   BlockUserButton,
   HideUserButton,
@@ -13,14 +18,12 @@ import {
   VerifyUserButton,
 } from "@/features/manage-user";
 import { UserRegistryFilters } from "@/features/user-registry-filters";
-import { UserOrderBy } from "@/features/user-registry-filters/model/types";
-import { usePagination } from "@/shared/hooks/use-pagination";
-import { useSort } from "@/shared/hooks/use-sort";
+import { formatDate } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
-import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
-import List from "@/shared/ui/list";
-import { SortTh } from "@/shared/ui/sort-th";
-import { UserRegistryPageSkeleton } from "./user-registry-page-skeleton";
+import {
+  GetUsersRequest_Filter,
+  User,
+} from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 type UserRegistryPageProps = {
   className?: string;
@@ -37,8 +40,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     isVerified: undefined,
     email: "",
   });
-  const { sortValue, handleChangeSort } = useSort<UserOrderBy>();
-  //TODO: sorting
+
   const usersQuery = useGetUsers({
     ...(filtersResult.isDeleted !== undefined
       ? { isDeleted: filtersResult.isDeleted }
@@ -51,63 +53,165 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
       : {}),
     ...(filtersResult.email !== "" ? { email: filtersResult.email } : {}),
   });
-  const pagination = usePagination(usersQuery.data?.users.length);
 
-  const rows = (
-    <List
-      page={pagination.page}
-      pageSize={pagination.pageSize}
-      items={usersQuery.data?.users}
-      itemToRender={(user) => (
-        <UserRow
-          key={user.id}
-          user={user}
-          actions={
-            <>
-              <MenuItem onClick={() => updateModal.updateUser(user.id)}>
-                {t("update_user")}
-              </MenuItem>
-            </>
-          }
-          renderHideUser={(userId, checked) => (
-            <HideUserButton
-              className={"!justify-start"}
-              userId={userId}
-              checked={checked}
-            />
-          )}
-          renderBlockUser={(userId, checked) => (
-            <BlockUserButton
-              className={"!justify-start"}
-              userId={userId}
-              checked={checked}
-            />
-          )}
-          renderVerifyUser={(userId, checked) => (
-            <VerifyUserButton
-              className={"!justify-start"}
-              userId={userId}
-              checked={checked}
-            />
-          )}
-        />
-      )}
-    />
+  const columns = useMemo<MRT_ColumnDef<User>[]>(
+    () => [
+      {
+        accessorKey: "email",
+        header: t("email"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "firstName",
+        header: t("first_name"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "lastName",
+        header: t("last_name"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "cca3",
+        header: t("country_сode"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "roles",
+        header: t("user_roles"),
+        sortingFn: "alphanumeric",
+        enableColumnActions: false,
+        enableSorting: false,
+        enableColumnFilter: false,
+        Cell: ({ cell }) => {
+          return (
+            <div>
+              {cell.row.original.roles.map((role) => (
+                <Tooltip
+                  key={role.id}
+                  label={
+                    <div>
+                      <Text size="2xs">{t("permissions")}:</Text>
+                      <ul>
+                        {role.permissions.length ? (
+                          role.permissions.map((permission) => (
+                            <li key={permission.id}>{permission.name}</li>
+                          ))
+                        ) : (
+                          <Text size="2xs">{t("none")}</Text>
+                        )}
+                      </ul>
+                    </div>
+                  }
+                >
+                  <Text>{role.name}</Text>
+                </Tooltip>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "registryDate",
+        header: t("registry_date"),
+        sortingFn: "datetime",
+        Cell: ({ cell }) => {
+          return (
+            <Text size="2xs">{formatDate(cell.row.original.createdAt)}</Text>
+          );
+        },
+      },
+      {
+        enableSorting: false,
+        accessorKey: "isVerified",
+        header: t("verified"),
+        Cell: ({ cell }) => (
+          <VerifyUserButton
+            className="!justify-start"
+            userId={cell.row.original.id}
+            checked={!!cell.row.original.verifiedAt}
+          />
+        ),
+      },
+      {
+        enableSorting: false,
+        accessorKey: "isBlocked",
+        header: t("block"),
+        Cell: ({ cell }) => (
+          <BlockUserButton
+            className="!justify-start"
+            userId={cell.row.original.id}
+            checked={!!cell.row.original.blockedAt}
+          />
+        ),
+      },
+      {
+        enableSorting: false,
+        accessorKey: "isDeleted",
+        header: t("deleted"),
+        Cell: ({ cell }) => (
+          <HideUserButton
+            className="!justify-start"
+            userId={cell.row.original.id}
+            checked={!!cell.row.original.deletedAt}
+          />
+        ),
+      },
+    ],
+    [t],
   );
 
-  const handleSubmitFilters = (data: GetUsersRequest_Filter) => {
-    pagination.handlePageChange(1, pagination.pageSize);
-    setFiltersResult(data);
-  };
+  const table = useMantineReactTable({
+    columns,
+    data: usersQuery.data?.users ?? [],
+    enableColumnOrdering: true,
+    enableGlobalFilter: false,
+    enableColumnActions: false,
+    enableRowActions: true,
+    positionActionsColumn: "last",
+    paginationDisplayMode: "pages",
+    enableColumnDragging: false,
+    enableDensityToggle: false,
+    enableFullScreenToggle: false,
+    enableHiding: false,
+    filterFromLeafRows: false,
+    enableTopToolbar: false,
+    renderRowActions: ({ cell }) => (
+      <Menu>
+        <Menu.Target>
+          <ActionIcon variant="light">
+            <EllipsisIcon />
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={() => updateModal.updateUser(cell.row.original.id)}
+          >
+            {t("update_user")}
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    ),
+    state: {
+      isLoading: usersQuery.isLoading,
+    },
+    initialState: { density: "xs" },
+    defaultColumn: {
+      minSize: 20,
+      maxSize: 9001,
+      size: 140,
+    },
+  });
 
-  if (usersQuery.isLoading) {
-    return <UserRegistryPageSkeleton className={className} />;
-  }
+  const handleSubmitFilters = (data: GetUsersRequest_Filter) => {
+    setFiltersResult(data);
+    table.setPageIndex(0);
+  };
 
   return (
     <>
-      <div className={clsx("p-8", className)}>
-        <div className="flex gap-4 justify-between">
+      <div className={clsx("", className)}>
+        <div className="flex gap-4 justify-between ">
           <UserRegistryFilters
             className="grow"
             result={filtersResult}
@@ -118,71 +222,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
             <PlusIcon />
           </ActionIcon>
         </div>
-        <Table className="mb-4" striped highlightOnHover>
-          <Table.Thead className="bg-primary-200">
-            <Table.Tr>
-              <SortTh<UserOrderBy>
-                onSort={handleChangeSort}
-                order={
-                  sortValue?.value === UserOrderBy.email
-                    ? sortValue?.order
-                    : null
-                }
-                value={UserOrderBy.email}
-              >
-                {t("email")}
-              </SortTh>
-              <SortTh<UserOrderBy>
-                onSort={handleChangeSort}
-                order={
-                  sortValue?.value === UserOrderBy.first_name
-                    ? sortValue?.order
-                    : null
-                }
-                value={UserOrderBy.first_name}
-              >
-                {t("first_name")}
-              </SortTh>
-              <SortTh<UserOrderBy>
-                onSort={handleChangeSort}
-                order={
-                  sortValue?.value === UserOrderBy.last_name
-                    ? sortValue?.order
-                    : null
-                }
-                value={UserOrderBy.last_name}
-              >
-                {t("last_name")}
-              </SortTh>
-              <SortTh<UserOrderBy>
-                onSort={handleChangeSort}
-                order={
-                  sortValue?.value === UserOrderBy.cca3
-                    ? sortValue?.order
-                    : null
-                }
-                value={UserOrderBy.cca3}
-              >
-                {t("country_сode")}
-              </SortTh>
-              <Table.Th>{t("user_roles")}</Table.Th>
-              <Table.Th>{t("registry_date")}</Table.Th>
-              <Table.Th>{t("verified")}</Table.Th>
-              <Table.Th>{t("block")}</Table.Th>
-              <Table.Th>{t("deleted")}</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-        <Pagination
-          total={pagination.totalPages}
-          disabled={usersQuery.isPending}
-          value={pagination.page}
-          onChange={(page) => {
-            pagination.handlePageChange(page, pagination.totalPages);
-          }}
-        />
+        <MantineReactTable table={table} />
       </div>
       {createModal.modal}
       {updateModal.modal}
