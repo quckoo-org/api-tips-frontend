@@ -120,6 +120,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               value={field.value}
               onChange={field.onChange}
               clearable
+              minDate={dayjs().toDate()}
             />
           )}
         />

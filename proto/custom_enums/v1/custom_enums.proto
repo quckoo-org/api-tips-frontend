@@ -77,3 +77,26 @@ enum OperationStatus {
    */
   OPERATION_STATUS_LOCKED = 8;
 }
+
+
+/*
+ * Валюта для банковского счета
+ */
+enum CurrencyType
+{
+  CURRENCY_TYPE_UNSPECIFIED = 0;
+
+  CURRENCY_TYPE_USD = 1;
+  CURRENCY_TYPE_RUB = 2;
+  CURRENCY_TYPE_CNY = 3;
+}
+
+/*
+ * Валюта для крипто-кошелька
+ */
+enum CryptoCurrency
+{
+  CRYPTO_CURRENCY_UNSPECIFIED = 0;
+  CRYPTO_CURRENCY_BTC = 1;
+  CRYPTO_CURRENCY_ETC = 2;
+}

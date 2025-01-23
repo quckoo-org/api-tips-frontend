@@ -9,6 +9,7 @@ export const enum ROUTES {
   LANDING = "/welcome-landing",
   ORDERS = "/orders",
   ADMINISTRATION = "/administration",
+  PAYMENTS = "/payments",
 }
 
 export const routesConfig: Array<{
@@ -63,6 +64,11 @@ export const routesConfig: Array<{
   },
   {
     path: ROUTES.ADMINISTRATION,
+    requiresAuth: true,
+    isAdmin: true,
+  },
+  {
+    path: ROUTES.PAYMENTS,
     requiresAuth: true,
     isAdmin: true,
   },
