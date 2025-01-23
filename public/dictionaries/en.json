@@ -102,5 +102,8 @@
   "delete_confirmation_text": "Are you sure you want to delete this item? This action is irreversible.",
   "cancel": "Cancel",
   "delete": "Delete",
-  "user_roles": "Roles"
+  "user_roles": "Roles",
+  "free_tips_count": "Free requests",
+  "paid_tips_count": "Paid requests",
+  "total_tips_count": "Total requests"
 }

@@ -89,3 +89,10 @@ export const sumDecimal = (
 
   return toDecimal(+sumValue) as Decimal; // Преобразуем результат обратно в объект Decimal
 };
+
+export const sortDecimal = (a: Decimal | undefined, b: Decimal | undefined) => {
+  const valueA = a ? a.units + a.nanos / 1_000_000_000 : 0;
+  const valueB = b ? b.units + b.nanos / 1_000_000_000 : 0;
+
+  return valueA - valueB;
+};
