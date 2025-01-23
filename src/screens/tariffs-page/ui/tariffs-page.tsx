@@ -1,20 +1,25 @@
 "use client";
 
-import { ActionIcon, MenuItem, Pagination, Table, Title } from "@mantine/core";
+import { ActionIcon, Menu, Text, Title } from "@mantine/core";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
-import { FC } from "react";
-import { TariffRow, useGetTariffs } from "@/entities/tariff";
+import { EllipsisIcon, PlusIcon } from "lucide-react";
+import {
+  MantineReactTable,
+  type MRT_ColumnDef,
+  useMantineReactTable,
+} from "mantine-react-table";
+import { FC, useMemo } from "react";
+import { useGetTariffs } from "@/entities/tariff";
 import {
   HideTariffButton,
   useCreateTariffModal,
   useUpdateTariffModal,
 } from "@/features/manage-tariff";
-import { usePagination } from "@/shared/hooks/use-pagination";
+import { formatDate } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
-import List from "@/shared/ui/list";
+import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
+import { CurrencyCell } from "@/shared/ui";
 import { TariffsPageError } from "./tariffs-page-error";
-import { TariffsPageSkeleton } from "./tariffs-page-skeleton";
 
 type TariffPageProps = {
   className?: string;
@@ -26,35 +31,125 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
   const { t } = useTranslations();
 
   const tariffsQuery = useGetTariffs({});
-  const pagination = usePagination(tariffsQuery.data?.tariffs.length);
 
-  const rows = (
-    <List
-      page={pagination.page}
-      pageSize={pagination.pageSize}
-      items={tariffsQuery.data?.tariffs}
-      itemToRender={(tariff) => (
-        <TariffRow
-          key={tariff.id}
-          tariff={tariff}
-          actions={
-            <>
-              <MenuItem onClick={() => updateModal.updateTariff(tariff)}>
-                {t("update_tariff")}
-              </MenuItem>
-            </>
-          }
-          renderHideTariff={(tariffId, checked) => (
-            <HideTariffButton tariffId={tariffId} checked={checked} />
-          )}
-        />
-      )}
-    />
+  const columns = useMemo<MRT_ColumnDef<Tariff>[]>(
+    () => [
+      {
+        accessorKey: "startDate",
+        header: t("start_date"),
+        sortingFn: "alphanumeric",
+        Cell: ({ cell }) => (
+          <Text size="2xs">{formatDate(cell.row.original.startDate)}</Text>
+        ),
+      },
+      {
+        accessorKey: "endDate",
+        header: t("end_date"),
+        sortingFn: "alphanumeric",
+        Cell: ({ cell }) => (
+          <Text size="2xs">{formatDate(cell.row.original.endDate)}</Text>
+        ),
+      },
+      {
+        accessorKey: "name",
+        header: t("name"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "freeTipsCount",
+        header: t("free_tips_count"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "paidTipsCount",
+        header: t("paid_tips_count"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        accessorKey: "totalTipsCount",
+        header: t("total_tips_count"),
+        sortingFn: "alphanumeric",
+      },
+      {
+        enableSorting: false,
+        accessorKey: "tipPrice",
+        header: t("tip_price"),
+        sortingFn: "alphanumeric",
+        Cell: ({ cell }) => (
+          <CurrencyCell
+            currency={cell.row.original.currency}
+            value={cell.row.original.tipPrice}
+          />
+        ),
+      },
+      {
+        enableSorting: false,
+        accessorKey: "totalPrice",
+        header: t("total_price"),
+        sortingFn: "alphanumeric",
+        Cell: ({ cell }) => (
+          <CurrencyCell
+            currency={cell.row.original.currency}
+            value={cell.row.original.tipPrice}
+          />
+        ),
+      },
+      {
+        accessorKey: "hiddenAt",
+        header: t("hidden"),
+        sortingFn: "alphanumeric",
+        Cell: ({ cell }) => (
+          <HideTariffButton
+            tariffId={cell.row.original.id}
+            checked={!!cell.row.original.hiddenAt}
+          />
+        ),
+      },
+    ],
+    [t],
   );
 
-  if (tariffsQuery.isLoading) {
-    return <TariffsPageSkeleton className={className} />;
-  }
+  const table = useMantineReactTable({
+    columns,
+    data: tariffsQuery.data?.tariffs ?? [],
+    enableColumnOrdering: true,
+    enableGlobalFilter: false,
+    enableColumnActions: false,
+    enableRowActions: true,
+    positionActionsColumn: "last",
+    paginationDisplayMode: "pages",
+    enableColumnDragging: false,
+    enableDensityToggle: false,
+    enableFullScreenToggle: false,
+    enableHiding: false,
+    filterFromLeafRows: false,
+    enableTopToolbar: false,
+    renderRowActions: ({ cell }) => (
+      <Menu>
+        <Menu.Target>
+          <ActionIcon variant="light">
+            <EllipsisIcon />
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={() => updateModal.updateTariff(cell.row.original)}
+          >
+            {t("update_tariff")}
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    ),
+    state: {
+      isLoading: tariffsQuery.isLoading,
+    },
+    initialState: { density: "xs" },
+    defaultColumn: {
+      minSize: 20,
+      maxSize: 9001,
+      size: 140,
+    },
+  });
 
   if (tariffsQuery.isError) {
     return <TariffsPageError className={className} />;
@@ -71,32 +166,7 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
             <PlusIcon />
           </ActionIcon>
         </div>
-        <Table className="mb-4" striped highlightOnHover>
-          <Table.Thead className="bg-primary-200">
-            <Table.Tr>
-              <Table.Th>{t("start_date")}</Table.Th>
-              <Table.Th>{t("end_date")}</Table.Th>
-              <Table.Th>{t("name")}</Table.Th>
-              <Table.Th>{t("free_requests")}</Table.Th>
-              <Table.Th>{t("paid_requests")}</Table.Th>
-              <Table.Th>{t("total_requests")}</Table.Th>
-              <Table.Th>{t("tip_price")}</Table.Th>
-              <Table.Th>{t("total_price")}</Table.Th>
-              <Table.Th>{t("hidden")}</Table.Th>
-              <Table.Th />
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-        <Pagination
-          disabled={tariffsQuery.isPending}
-          value={pagination.page}
-          onChange={(page) => {
-            pagination.handlePageChange(page, pagination.totalPages);
-          }}
-          total={pagination.totalPages ?? 0}
-        />
+        <MantineReactTable table={table} />
       </div>
       {crateModal.modal}
       {updateModal.modal}
