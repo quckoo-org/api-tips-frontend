@@ -138,7 +138,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               placeholder={t("enter_total_price")}
               onChange={field.onChange}
               error={errors.totalPrice?.message}
-              prefix={tariff?.currency + " "}
+              prefix={tariff?.currency && tariff?.currency + " "}
             />
           )}
         />

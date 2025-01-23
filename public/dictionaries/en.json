@@ -103,7 +103,7 @@
   "cancel": "Cancel",
   "delete": "Delete",
   "user_roles": "Roles",
-  "free_tips_count": "Free tips count",
-  "paid_tips_count": "Paid tips count",
-  "total_tips_count": "Total tips count"
+  "free_tips_count": "Free requests",
+  "paid_tips_count": "Paid requests",
+  "total_tips_count": "Total requests"
 }
