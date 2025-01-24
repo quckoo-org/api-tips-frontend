@@ -39,7 +39,6 @@ export const TariffForm: FC<TariffFormProps> = ({
     name: tariff?.name,
     freeTipsCount: tariff?.freeTipsCount,
     paidTipsCount: tariff?.paidTipsCount,
-    totalTipsCount: tariff?.totalTipsCount,
     // tipPrice: fromDecimal(tariff?.tipPrice) || undefined,
     totalPrice: fromDecimal(tariff?.totalPrice) || undefined,
     isHidden: !!tariff?.hiddenAt,
@@ -119,6 +118,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               placeholder={t("pick_end_date")}
               value={field.value}
               onChange={field.onChange}
+              minDate={new Date()}
               clearable
             />
           )}
@@ -138,7 +138,7 @@ export const TariffForm: FC<TariffFormProps> = ({
               placeholder={t("enter_total_price")}
               onChange={field.onChange}
               error={errors.totalPrice?.message}
-              prefix={tariff?.currency + " "}
+              prefix={tariff?.currency && tariff?.currency + " "}
             />
           )}
         />
@@ -167,21 +167,6 @@ export const TariffForm: FC<TariffFormProps> = ({
               allowNegative={false}
               value={field.value as number}
               placeholder={t("enter_paid_requests")}
-              onChange={field.onChange}
-              allowDecimal={false}
-            />
-          )}
-        />
-        <Controller
-          name="totalTipsCount"
-          control={control}
-          render={({ field }) => (
-            <NumberInput
-              label={t("total_requests")}
-              hideControls
-              allowNegative={false}
-              value={field.value}
-              placeholder={t("enter_total_requests")}
               onChange={field.onChange}
               allowDecimal={false}
             />

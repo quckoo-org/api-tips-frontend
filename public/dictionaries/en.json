@@ -108,7 +108,6 @@
   "order_created_at": "Created at",
   "order_total_price": "Total price",
   "order_tariff_name": "Tariff name",
-  "total_tips_count": "Total tips count",
   "update_order": "Update",
   "create_bill": "Create bill",
   "order_status": "Status",
@@ -116,5 +115,8 @@
   "order_status_paid": "Paid",
   "order_status_cancelled": "Cancelled",
   "order_status_unrecognized": "Unrecognized",
-  "order_status_created": "Created"
+  "order_status_created": "Created",
+  "free_tips_count": "Free requests",
+  "paid_tips_count": "Paid requests",
+  "total_tips_count": "Total requests"
 }

@@ -7,11 +7,13 @@ import Header from "@/shared/ui/header";
 
 type UiProviderProps = {
   children: React.ReactNode;
+  lang: string;
 };
 
-export const UiProvider: FC<UiProviderProps> = ({ children }) => {
+export const UiProvider: FC<UiProviderProps> = ({ children, lang }) => {
   const pathname = usePathname();
-  if (!pathname.includes("/welcome-landing"))
+  console.log(pathname, "pathname");
+  if (pathname !== `/${lang}`)
     return (
       <>
         <Header />

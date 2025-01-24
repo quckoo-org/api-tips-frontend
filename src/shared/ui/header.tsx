@@ -47,11 +47,6 @@ const Header = observer(() => {
           </Link>
         )}
         {authStore.isAuthenticated && (
-          <Link href={ROUTES.LANDING} className="text-xl font-bold ml-8">
-            Landing
-          </Link>
-        )}
-        {authStore.isAuthenticated && (
           <Link href={ROUTES.ORDERS} className="text-xl font-bold ml-8">
             Orders
           </Link>

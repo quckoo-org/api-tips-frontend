@@ -16,6 +16,7 @@ import {
   useUpdateTariffModal,
 } from "@/features/manage-tariff";
 import { formatDate } from "@/shared/lib";
+import { sortDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { CurrencyCell } from "@/shared/ui";
@@ -32,6 +33,8 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
 
   const tariffsQuery = useGetTariffs({});
 
+  console.log(tariffsQuery.data?.tariffs, "tariffs");
+
   const columns = useMemo<MRT_ColumnDef<Tariff>[]>(
     () => [
       {
@@ -45,7 +48,7 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
       {
         accessorKey: "endDate",
         header: t("end_date"),
-        sortingFn: "alphanumeric",
+        sortingFn: "datetime",
         Cell: ({ cell }) => (
           <Text size="2xs">{formatDate(cell.row.original.endDate)}</Text>
         ),
@@ -58,23 +61,23 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
       {
         accessorKey: "freeTipsCount",
         header: t("free_tips_count"),
-        sortingFn: "alphanumeric",
+        sortingFn: "basic",
       },
       {
         accessorKey: "paidTipsCount",
         header: t("paid_tips_count"),
-        sortingFn: "alphanumeric",
+        sortingFn: "basic",
       },
       {
         accessorKey: "totalTipsCount",
         header: t("total_tips_count"),
-        sortingFn: "alphanumeric",
+        sortingFn: "basic",
       },
       {
-        enableSorting: false,
         accessorKey: "tipPrice",
         header: t("tip_price"),
-        sortingFn: "alphanumeric",
+        sortingFn: (rowA, rowB) =>
+          sortDecimal(rowA.original.tipPrice, rowB.original.totalPrice),
         Cell: ({ cell }) => (
           <CurrencyCell
             currency={cell.row.original.currency}
@@ -83,14 +86,14 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
         ),
       },
       {
-        enableSorting: false,
         accessorKey: "totalPrice",
         header: t("total_price"),
-        sortingFn: "alphanumeric",
+        sortingFn: (rowA, rowB) =>
+          sortDecimal(rowA.original.totalPrice, rowB.original.totalPrice),
         Cell: ({ cell }) => (
           <CurrencyCell
             currency={cell.row.original.currency}
-            value={cell.row.original.tipPrice}
+            value={cell.row.original.totalPrice}
           />
         ),
       },
