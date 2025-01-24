@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "./globals.css";
 import "@mantine/dates/styles.css";
+import "mantine-react-table/styles.css";
 import { Inter, Montserrat } from "next/font/google";
 import { Provider } from "@/app/providers/provider";
 import { UiProvider } from "@/app/providers/ui-provider";
