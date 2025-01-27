@@ -9,7 +9,7 @@ export type RegisterReqT = {
   cca3: string;
 };
 
-export type RegisterErrorT = AxiosError<{ message: string }>;
+export type RegisterErrorT = AxiosError<{ Message: string }>;
 
 export type LoginByEmailReqT = {
   email: string;
@@ -21,4 +21,4 @@ export type LoginByEmailResT = {
   Jwt: string;
 };
 
-export type LoginByEmailErrorT = AxiosError<{ message: string }>;
+export type LoginByEmailErrorT = AxiosError<{ Message: string }>;
