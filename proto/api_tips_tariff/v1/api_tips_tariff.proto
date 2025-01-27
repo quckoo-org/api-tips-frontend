@@ -4,9 +4,9 @@
   Description:
     Internal interaction contract
 
-  Owner:
+  Owner: 
     dev team
-
+    
   Methods:
     - GetTariffs ( Получение списка тарифов )
     - GetTariff ( Получение тарифа )
@@ -29,12 +29,12 @@ service ApiTipsTariffService {
    * Получение списка тарифов
    */
   rpc GetTariffs (GetTariffsRequest) returns (GetTariffsResponse);
-
+  
   /*
    * Получение тарифа
    */
   rpc GetTariff (GetTariffRequest) returns (GetTariffResponse);
-
+  
   /*
    * Создание тарифа
    */
@@ -75,7 +75,7 @@ message GetTariffsResponse {
    * Тарифы
    */
   repeated Tariff tariffs = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -83,21 +83,21 @@ message GetTariffsResponse {
 }
 
 /*
- * Запрос - получение тарифа по идентификатору
+ * Запрос - получение тарифа по идентификатору 
  */
 message GetTariffRequest {
   google.protobuf.Int64Value tariff_id = 1;
 }
 
 /*
- * Ответ - получение тарифа по идентификатору
+ * Ответ - получение тарифа по идентификатору 
  */
 message GetTariffResponse {
   /*
    * Тариф
    */
   optional Tariff tariff = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -112,14 +112,14 @@ message AddTariffRequest {
    * Название тарифа
    */
   string name = 1;
-
+  
   /*
    * Количество бесплатных подсказок
    */
   optional int64 free_tips_count = 2;
 
   /*
-   * Количество оплаченных подсказок
+   * Количество оплаченных подсказок 
    */
   optional int64 paid_tips_count = 3;
 
@@ -127,7 +127,7 @@ message AddTariffRequest {
    * Общая стоимость
    */
   api.tips.custom_types.v1.Decimal total_price = 4;
-
+  
   /*
    * Дата начала действия
    */
@@ -149,10 +149,10 @@ message AddTariffRequest {
  */
 message AddTariffResponse {
   /*
-   * Пользователь
+   * Тариф
    */
   optional Tariff tariff = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -172,14 +172,14 @@ message UpdateTariffRequest {
    * Название тарифа
    */
   optional string name = 2;
-
+  
   /*
    * Количество бесплатных подсказок
    */
   optional int64 free_tips_count = 3;
 
   /*
-   * Количество оплаченных подсказок
+   * Количество оплаченных подсказок 
    */
   optional int64 paid_tips_count = 4;
 
@@ -187,7 +187,7 @@ message UpdateTariffRequest {
    * Общая стоимость
    */
   optional api.tips.custom_types.v1.Decimal total_price = 5;
-
+  
   /*
    * Дата начала действия
    */
@@ -212,7 +212,7 @@ message UpdateTariffResponse {
    * Тариф
    */
   optional Tariff tariff = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -239,19 +239,19 @@ message Tariff {
    * Стоимость одной подсказки
    */
   optional api.tips.custom_types.v1.Decimal tip_price = 3;
-
+  
   /*
    * Количество бесплатных подсказок
    */
   optional int64 free_tips_count = 4;
 
   /*
-   * Количество оплаченных подсказок
+   * Количество оплаченных подсказок 
    */
   optional int64 paid_tips_count = 5;
 
   /*
-   * Общее количество подсказок
+   * Общее количество подсказок 
    */
   optional int64 total_tips_count = 6;
 
@@ -259,7 +259,7 @@ message Tariff {
    * Общая стоимость
    */
   api.tips.custom_types.v1.Decimal total_price = 7;
-
+  
   /*
    * Дата начала действия
    */
