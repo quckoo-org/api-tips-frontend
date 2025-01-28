@@ -118,5 +118,8 @@
   "order_status_created": "Created",
   "free_tips_count": "Free requests",
   "paid_tips_count": "Paid requests",
-  "total_tips_count": "Total requests"
+  "total_tips_count": "Total requests",
+  "password_must_be_more_then_8_characters_long": "The password must be more then 8 characters long",
+  "first_name_must_consist_of_latin_letters": "The name must consist of latin letters",
+  "last_name_must_consist_of_latin_letters": "The last name must consist of latin letters"
 }

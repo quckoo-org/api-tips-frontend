@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { sha256 } from "js-sha256";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -40,11 +40,6 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
       className="flex flex-col max-w-md mx-auto p-4"
     >
       <h1 className="text-2xl mb-4">{t("Login")}</h1>
-      {!!loginMutation.error && (
-        <p className="text-red-500">
-          {loginMutation.error.response?.data.message}
-        </p>
-      )}
       <TextInput
         label={t("email")}
         placeholder={t("enter_email")}
@@ -57,6 +52,11 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
         {...register("password", { required: t("password_is_required") })}
         error={errors.password?.message}
       />
+      {!!loginMutation.error && (
+        <Text className="text-red-500 mt-2" size="2xs">
+          {loginMutation.error.response?.data.Message}
+        </Text>
+      )}
       <Button
         loading={loginMutation.isPending}
         type="submit"
