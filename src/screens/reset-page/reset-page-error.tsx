@@ -21,7 +21,7 @@ export const ResetPageError: FC<ResetPageErrorProps> = ({
   return (
     <div
       className={clsx(
-        "flex items-center justify-center min-h-screen bg-gray-50 p-4",
+        "flex items-center justify-center bg-gray-50 p-4",
         className,
       )}
     >
