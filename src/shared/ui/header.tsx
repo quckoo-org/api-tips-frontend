@@ -52,8 +52,8 @@ const Header = observer(() => {
           </Link>
         )}
         {authStore.isAuthenticated && (
-          <Link href={ROUTES.PAYMENTS} className="text-xl font-bold ml-8">
-            {t("payments")}
+          <Link href={ROUTES.REQUISITES} className="text-xl font-bold ml-8">
+            {t("requisites")}
           </Link>
         )}
       </div>

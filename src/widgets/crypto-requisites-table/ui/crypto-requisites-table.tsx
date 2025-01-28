@@ -1,34 +1,29 @@
 "use client";
 
-import { ActionIcon, Menu, Title, Text } from "@mantine/core";
+import { Title, Checkbox } from "@mantine/core";
 import clsx from "clsx";
-import { EllipsisIcon } from "lucide-react";
 import {
   MantineReactTable,
   MRT_ColumnDef,
   useMantineReactTable,
 } from "mantine-react-table";
 import { FC, useMemo } from "react";
-import { CryptoWalletPayment, useGetPayments } from "@/entities/payment";
-import {
-  BanCryptoPaymentButton,
-  cryptoCurrencyType,
-  useUpdateCryptoPaymentModal,
-} from "@/features/manage-payments";
+import { useGetRequisites } from "@/entities/requisites";
 import { useTranslations } from "@/shared/locale/translations";
-import { CryptoPaymentSkeleton } from "@/widgets/crypto-payment-table/ui/crypto-payment-skeleton";
+import { CryptoWallet } from "@/shared/proto/api_tips_requisites/v1/api_tips_requisites";
 
-type PaymentPageProps = {
+type RequisitesPageProps = {
   className?: string;
 };
 
-export const CryptoPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
-  const updateModal = useUpdateCryptoPaymentModal();
+export const CryptoRequisitesTable: FC<RequisitesPageProps> = ({
+  className,
+}) => {
   const { t } = useTranslations();
 
-  const paymentsQuery = useGetPayments();
+  const requisitesQuery = useGetRequisites();
 
-  const columns = useMemo<MRT_ColumnDef<CryptoWalletPayment>[]>(
+  const columns = useMemo<MRT_ColumnDef<CryptoWallet>[]>(
     () => [
       {
         accessorKey: "address",
@@ -49,21 +44,13 @@ export const CryptoPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
         accessorKey: "cryptoCurrencyType",
         header: t("crypto_currency_type"),
         enableSorting: false,
-        Cell: ({ cell }) => (
-          <Text>
-            {cryptoCurrencyType[cell.row.original.cryptoCurrencyType]}
-          </Text>
-        ),
       },
       {
         accessorKey: "isBanned",
         header: t("is_banned"),
         enableSorting: false,
         Cell: ({ cell }) => (
-          <BanCryptoPaymentButton
-            payment={cell.row.original}
-            checked={cell.row.original.isBanned}
-          />
+          <Checkbox disabled={true} checked={cell.row.original.isBanned} />
         ),
       },
     ],
@@ -72,12 +59,13 @@ export const CryptoPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
 
   const table = useMantineReactTable({
     columns,
-    data: paymentsQuery.data?.cryptoWallet ?? [],
+    data: requisitesQuery.data?.cryptoWallet
+      ? [requisitesQuery.data.cryptoWallet]
+      : [],
     enablePagination: false,
     enableColumnOrdering: true,
     enableGlobalFilter: false,
     enableColumnActions: false,
-    enableRowActions: true,
     positionActionsColumn: "last",
     enableColumnDragging: false,
     enableDensityToggle: false,
@@ -86,24 +74,12 @@ export const CryptoPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
     filterFromLeafRows: false,
     enableTopToolbar: false,
     enableBottomToolbar: false,
-    renderRowActions: ({ cell }) => (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="light">
-            <EllipsisIcon />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            onClick={() => updateModal.updateCryptoPayment(cell.row.original)}
-          >
-            {t("update_tariff")}
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    ),
     state: {
-      isLoading: paymentsQuery.isLoading,
+      showSkeletons: requisitesQuery.isLoading,
+      pagination: {
+        pageSize: 1,
+        pageIndex: 1,
+      },
     },
     initialState: { density: "xs" },
     defaultColumn: {
@@ -113,21 +89,16 @@ export const CryptoPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
     },
   });
 
-  if (paymentsQuery.isLoading) {
-    return <CryptoPaymentSkeleton className={className} />;
-  }
-
   return (
     <>
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
           <Title order={3} className="font-normal mb-4">
-            {t("crypto_payments")}
+            {t("crypto_requisites")}
           </Title>
         </div>
         <MantineReactTable table={table} />
       </div>
-      {updateModal.modal}
     </>
   );
 };

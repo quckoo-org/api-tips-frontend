@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { PaymentsPage } from "@/screens/payments-page";
+import { RequisitesPage } from "@/screens/requisites-page";
 
 const Page = async () => {
   return (
     <Suspense>
-      <PaymentsPage />
+      <RequisitesPage />
     </Suspense>
   );
 };

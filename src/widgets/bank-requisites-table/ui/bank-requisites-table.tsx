@@ -1,33 +1,27 @@
 "use client";
 
-import { ActionIcon, Menu, Title } from "@mantine/core";
+import { Checkbox, Title } from "@mantine/core";
 import clsx from "clsx";
-import { EllipsisIcon } from "lucide-react";
 import {
   MantineReactTable,
   MRT_ColumnDef,
   useMantineReactTable,
 } from "mantine-react-table";
 import { FC, useMemo } from "react";
-import { BankAccountPayment, useGetPayments } from "@/entities/payment";
-import {
-  BanBankPaymentButton,
-  useUpdateBankPaymentModal,
-} from "@/features/manage-payments";
+import { useGetRequisites } from "@/entities/requisites";
 import { useTranslations } from "@/shared/locale/translations";
-import { BankPaymentSkeleton } from "@/widgets/bank-payment-table/ui/bank-payment-skeleton";
+import { BankAccount } from "@/shared/proto/api_tips_requisites/v1/api_tips_requisites";
 
-type PaymentPageProps = {
+type RequisitesPageProps = {
   className?: string;
 };
 
-export const BankPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
-  const updateModal = useUpdateBankPaymentModal();
+export const BankRequisitesTable: FC<RequisitesPageProps> = ({ className }) => {
   const { t } = useTranslations();
 
-  const paymentsQuery = useGetPayments();
+  const requisitesQuery = useGetRequisites();
 
-  const columns = useMemo<MRT_ColumnDef<BankAccountPayment>[]>(
+  const columns = useMemo<MRT_ColumnDef<BankAccount>[]>(
     () => [
       {
         accessorKey: "bankName",
@@ -64,19 +58,18 @@ export const BankPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
         header: t("is_banned"),
         enableSorting: false,
         Cell: ({ cell }) => (
-          <BanBankPaymentButton
-            payment={cell.row.original}
-            checked={cell.row.original.isBanned}
-          />
+          <Checkbox checked={cell.row.original.isBanned} disabled={true} />
         ),
       },
     ],
     [t],
   );
 
-  const table = useMantineReactTable<BankAccountPayment>({
+  const table = useMantineReactTable<BankAccount>({
     columns,
-    data: paymentsQuery.data?.bankAccount ?? [],
+    data: requisitesQuery.data?.bankAccount
+      ? [requisitesQuery.data.bankAccount]
+      : [],
     enablePagination: false,
     enableColumnOrdering: true,
     enableGlobalFilter: false,
@@ -90,24 +83,12 @@ export const BankPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
     filterFromLeafRows: false,
     enableTopToolbar: false,
     enableBottomToolbar: false,
-    renderRowActions: ({ cell }) => (
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="light">
-            <EllipsisIcon />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            onClick={() => updateModal.updatePayment(cell.row.original)}
-          >
-            {t("update_tariff")}
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    ),
     state: {
-      isLoading: paymentsQuery.isLoading,
+      showSkeletons: requisitesQuery.isLoading,
+      pagination: {
+        pageSize: 1,
+        pageIndex: 1,
+      },
     },
     initialState: { density: "xs" },
     defaultColumn: {
@@ -117,21 +98,16 @@ export const BankPaymentsTable: FC<PaymentPageProps> = ({ className }) => {
     },
   });
 
-  if (paymentsQuery.isLoading) {
-    return <BankPaymentSkeleton className={className} />;
-  }
-
   return (
     <>
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
           <Title order={3} className="font-normal mb-4">
-            {t("bank_payments")}
+            {t("bank_requisites")}
           </Title>
         </div>
         <MantineReactTable table={table} />
       </div>
-      {updateModal.modal}
     </>
   );
 };

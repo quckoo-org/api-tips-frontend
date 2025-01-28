@@ -3,21 +3,21 @@
 import clsx from "clsx";
 
 import { FC } from "react";
-import { BankPaymentsTable, CryptoPaymentsTable } from "@/widgets";
+import { BankRequisitesTable, CryptoRequisitesTable } from "@/widgets";
 
 type TariffPageProps = {
   className?: string;
 };
 
-export const PaymentsPage: FC<TariffPageProps> = ({ className }) => {
+export const RequisitesPage: FC<TariffPageProps> = ({ className }) => {
   return (
     <>
       <div className={clsx("", className)}>
         <div>
-          <BankPaymentsTable />
+          <BankRequisitesTable />
         </div>
         <div className={"mt-4"}>
-          <CryptoPaymentsTable />
+          <CryptoRequisitesTable />
         </div>
       </div>
     </>
