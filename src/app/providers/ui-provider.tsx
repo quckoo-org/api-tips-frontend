@@ -12,12 +12,11 @@ type UiProviderProps = {
 
 export const UiProvider: FC<UiProviderProps> = ({ children, lang }) => {
   const pathname = usePathname();
-  console.log(pathname, "pathname");
   if (pathname !== `/${lang}`)
     return (
       <>
         <Header />
-        <Container className="p-4" size="xl">
+        <Container className="p-4 " size="xl">
           {children}
         </Container>
       </>

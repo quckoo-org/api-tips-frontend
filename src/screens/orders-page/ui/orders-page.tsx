@@ -53,8 +53,6 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     },
   });
 
-  console.log(ordersQuery.data?.orders, "orders");
-
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
       {

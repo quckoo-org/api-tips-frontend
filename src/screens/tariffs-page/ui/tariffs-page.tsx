@@ -33,8 +33,6 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
 
   const tariffsQuery = useGetTariffs({});
 
-  console.log(tariffsQuery.data?.tariffs, "tariffs");
-
   const columns = useMemo<MRT_ColumnDef<Tariff>[]>(
     () => [
       {

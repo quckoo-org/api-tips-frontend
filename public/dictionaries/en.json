@@ -118,8 +118,19 @@
   "order_status_created": "Created",
   "free_tips_count": "Free requests",
   "paid_tips_count": "Paid requests",
-  "total_tips_count": "Total requests",
   "password_must_be_more_then_8_characters_long": "The password must be more then 8 characters long",
   "first_name_must_consist_of_latin_letters": "The name must consist of latin letters",
-  "last_name_must_consist_of_latin_letters": "The last name must consist of latin letters"
+  "last_name_must_consist_of_latin_letters": "The last name must consist of latin letters",
+  "total_tips_count": "Total requests",
+  "forgot_password_title": "Forgot password?",
+  "forgot_password_description": " Enter the email address you used when you joined and we’ll send you instructions to reset your password.",
+  "back_to_login": "Back to login",
+  "reset_password": "Reset password",
+  "resend_in": "Resend in",
+  "seconds": "s",
+  "invalid_link": "Invalid link",
+  "reset_error_text_default": "The reset password link is invalid or has expired.",
+  "request_new_link": "Request new link",
+  "reset_password_title": "Reset Your Password",
+  "reset_password_subtitle": "Enter a new password below to reset your account password."
 }

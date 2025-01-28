@@ -1,10 +1,11 @@
 "use client";
 
-import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Anchor, Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { sha256 } from "js-sha256";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "@/shared/locale/translations";
+import { ROUTES } from "@/shared/router";
 import { LoginByEmailReqT } from "../model/types";
 import { useLoginByEmail } from "../model/use-login-by-email";
 
@@ -47,10 +48,18 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
         error={errors.email?.message}
       />
       <PasswordInput
-        label={t("password")}
+        label={
+          <div className="flex justify-between w-full">
+            <span>{t("password")}</span>
+            <Anchor href={ROUTES.FORGOT_PASSWORD} size="2xs">
+              Forgot?
+            </Anchor>
+          </div>
+        }
         placeholder={t("enter_password")}
         {...register("password", { required: t("password_is_required") })}
         error={errors.password?.message}
+        labelProps={{ className: "w-full" }}
       />
       {!!loginMutation.error && (
         <Text className="text-red-500 mt-2" size="2xs">
