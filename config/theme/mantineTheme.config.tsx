@@ -8,6 +8,7 @@ import {
   PasswordInput,
   TextInput,
   Accordion,
+  Button,
 } from "@mantine/core";
 import { clsx } from "clsx";
 import { ChevronDown } from "lucide-react";
@@ -32,14 +33,44 @@ const TITLE_LEADING: Record<string, string> = {
   h3: typedTwConfig.theme.lineHeight["h3"],
 };
 
+const BUTTON_VARIANT = {
+  xs: {
+    height: rem(48),
+    paddingInline: rem(24),
+    fontSize: typedTwConfig.theme.fontSize.md,
+  },
+  sm: {
+    height: rem(48),
+    paddingInline: rem(24),
+    fontSize: typedTwConfig.theme.fontSize.md,
+  },
+  md: {
+    height: rem(48),
+    paddingInline: rem(24),
+    fontSize: typedTwConfig.theme.fontSize.md,
+  },
+  lg: {
+    height: rem(48),
+    paddingInline: rem(24),
+    fontSize: typedTwConfig.theme.fontSize.md,
+  },
+  xl: {
+    height: rem(48),
+    paddingInline: rem(24),
+    fontSize: typedTwConfig.theme.fontSize.md,
+    lineHeight: typedTwConfig.theme.lineHeight.md,
+  },
+};
+
 export const mantineTheme = createTheme({
   autoContrast: true,
   colors: tailWindColors,
-  primaryColor: "purple",
+  primaryColor: "blue",
   radius: typedTwConfig.theme.borderRadius,
   headings: {
-    fontFamily: "Montserrat",
+    fontFamily: "Roboto",
   },
+
   lineHeights: typedTwConfig.theme.lineHeight,
   components: {
     Checkbox: {
@@ -114,6 +145,16 @@ export const mantineTheme = createTheme({
           label: "font-semibold mb-1 text-sm",
         },
       },
+    }),
+    Button: Button.extend({
+      vars: (_, { size = "md" }) => ({
+        root: {
+          "--button-height": BUTTON_VARIANT[size as MantineSize]?.height,
+          "--button-padding-x":
+            BUTTON_VARIANT[size as MantineSize]?.paddingInline,
+          "--button-fz": BUTTON_VARIANT[size as MantineSize]?.fontSize,
+        },
+      }),
     }),
   },
 });

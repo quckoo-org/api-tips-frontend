@@ -52,48 +52,47 @@ export const ResetForm: FC<ResetFormProps> = ({ className, code, email }) => {
   };
 
   return (
-    <div
+    <Card
+      shadow="sm"
+      radius="lg"
+      padding="xl"
       className={clsx(
-        "flex items-center justify-center min-h-screen bg-gray-50 p-4",
+        "bg-white border border-gray-300 w-full flex flex-col gap-y-4 max-w-md",
         className,
       )}
     >
-      <div className="max-w-md w-full">
-        <Card shadow="md" radius="md" padding="lg" className="bg-white">
-          <Text className="text-xl font-bold mb-4">
-            {t("reset_password_title")}
-          </Text>
-          <Text className="text-gray-600 text-sm mb-6">
-            {t("reset_password_subtitle")}
-          </Text>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-4">
-              <PasswordInput
-                label="New Password"
-                placeholder="Enter your new password"
-                {...register("password", {
-                  required: t("password_required"),
-                  minLength: {
-                    value: 8,
-                    message: t("password_must_be_more_then_8_characters_long"),
-                  },
-                })}
-                error={errors.password?.message}
-              />
-            </div>
-            <Button
-              fullWidth
-              variant="filled"
-              color="dark"
-              className="text-white"
-              type="submit"
-              loading={changePasswordQuery.isPending}
-            >
-              {t("reset_password")}
-            </Button>
-          </form>
-        </Card>
-      </div>
-    </div>
+      <Text className="text-xl font-bold mb-4">
+        {t("reset_password_title")}
+      </Text>
+      <Text className="text-gray-600 text-sm mb-6">
+        {t("reset_password_subtitle")}
+      </Text>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          <PasswordInput
+            label="New Password"
+            placeholder="Enter your new password"
+            {...register("password", {
+              required: t("password_required"),
+              minLength: {
+                value: 8,
+                message: t("password_must_be_more_then_8_characters_long"),
+              },
+            })}
+            error={errors.password?.message}
+          />
+        </div>
+        <Button
+          fullWidth
+          variant="filled"
+          color="dark"
+          className="text-white"
+          type="submit"
+          loading={changePasswordQuery.isPending}
+        >
+          {t("reset_password")}
+        </Button>
+      </form>
+    </Card>
   );
 };
