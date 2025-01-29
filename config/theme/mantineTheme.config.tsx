@@ -5,8 +5,9 @@ import {
   Title,
   Text,
   MantineSize,
-  Accordion,
+  PasswordInput,
   TextInput,
+  Accordion,
 } from "@mantine/core";
 import { clsx } from "clsx";
 import { ChevronDown } from "lucide-react";
@@ -82,13 +83,6 @@ export const mantineTheme = createTheme({
         },
       }),
     }),
-    TextInput: TextInput.extend({
-      vars: () => ({
-        root: {
-          "--input-bd": "red",
-        },
-      }),
-    }),
     Accordion: Accordion.extend({
       defaultProps: {
         chevron: <ChevronDown />,
@@ -99,6 +93,25 @@ export const mantineTheme = createTheme({
           content: clsx("lg:px-5 bg-white rounded-lg px-10 py-5"),
           control: "lg:px-5 px-10 rounded-lg",
           chevron: "w-7 h-7 flex justify-center",
+        },
+      },
+    }),
+    TextInput: TextInput.extend({
+      vars: () => ({
+        root: {
+          "--input-bd": "red",
+        },
+      }),
+      defaultProps: {
+        classNames: {
+          label: "font-semibold mb-1 text-sm",
+        },
+      },
+    }),
+    PasswordInput: PasswordInput.extend({
+      defaultProps: {
+        classNames: {
+          label: "font-semibold mb-1 text-sm",
         },
       },
     }),

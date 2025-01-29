@@ -26,7 +26,6 @@ export const usePaidOrder = () => {
         { queryKey: [QUERY_KEYS.ORDERS] },
         (oldData: GetOrdersResponse | undefined) => {
           if (!oldData) return oldData;
-          console.log(orderResponse, oldData);
           return {
             ...oldData,
             orders: oldData.orders.map((order) =>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -37,11 +37,6 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
     >
       <form>
         <h1 className="text-2xl mb-4">{t("Register")}</h1>
-        {!!registerMutation.error && (
-          <p className="text-red-500">
-            {registerMutation.error?.response?.data.message}
-          </p>
-        )}
         <TextInput
           label={t("email")}
           placeholder={t("enter_email")}
@@ -57,19 +52,37 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
         <PasswordInput
           label={t("Password")}
           placeholder={t("Password")}
-          {...register("password", { required: t("password_is_required") })}
+          {...register("password", {
+            required: t("password_is_required"),
+            minLength: {
+              value: 8,
+              message: t("password_must_be_more_then_8_characters_long"),
+            },
+          })}
           error={errors.password?.message}
         />
         <TextInput
           label={t("first_name")}
           placeholder={t("first_name")}
-          {...register("firstname", { required: t("firstName_is_required") })}
+          {...register("firstname", {
+            required: t("firstName_is_required"),
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: t("first_name_must_consist_of_latin_letters"),
+            },
+          })}
           error={errors.firstname?.message}
         />
         <TextInput
           label={t("last_name")}
           placeholder={t("last_name")}
-          {...register("lastname", { required: t("lastName_is_required") })}
+          {...register("lastname", {
+            required: t("lastName_is_required"),
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: t("last_name_must_consist_of_latin_letters"),
+            },
+          })}
           error={errors.lastname?.message}
         />
         <Controller
@@ -84,6 +97,11 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
             />
           )}
         />
+        {!!registerMutation.error && (
+          <Text className="text-red-500 mt-2" size="2xs">
+            {registerMutation.error?.response?.data.Message}
+          </Text>
+        )}
         <Button
           disabled={registerMutation.isPending}
           loading={registerMutation.isPending}
