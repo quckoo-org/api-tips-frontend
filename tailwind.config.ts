@@ -63,8 +63,8 @@ export default {
         md: rem(16),
         xl: rem(20),
         h3: rem(24),
+        h2: rem(36),
         h1: rem(40),
-        h2: rem(60),
         h0: rem(90),
       },
       lineHeight: {
@@ -72,8 +72,8 @@ export default {
         md: rem(24),
         xl: rem(30),
         h3: rem(32),
+        h2: rem(42),
         h1: rem(48),
-        h2: rem(82),
         h0: rem(99),
       },
       backgroundImage: {

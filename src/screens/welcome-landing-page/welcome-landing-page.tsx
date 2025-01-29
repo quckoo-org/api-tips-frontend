@@ -10,8 +10,10 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
+
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,95 +37,119 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
     <>
       <div className={clsx("", className)}>
         <BackgroundImage
-          src={isPhone ? "/landing-bg-phone.png" : "/landing-bg.png"}
-          className="lg:min-h-0 lg:pb-8 min-h-[895px] text-white"
+          src={isPhone ? "/landing-bg-phone.webp" : "/landing-bg.webp"}
+          className="min-h-[895px] text-white"
         >
-          <header className="sm:mb-[400px] mb-[102.5px]">
-            <Container className="py-6" size="xl">
-              <div className="flex items-center">
-                <div className="flex items-center gap-x-4">
-                  <Image src="/logo.svg" width={163} height={38} alt="logo" />
-                  <nav className="lg:hidden flex gap-x-1">
-                    <UnstyledButton className="px-3.5 py-2 font-semibold">
-                      Our Solution
-                    </UnstyledButton>
-                    <UnstyledButton className="px-3.5 py-2 font-semibold">
-                      Pricing
-                    </UnstyledButton>
-                    <UnstyledButton className="px-3.5 py-2 font-semibold">
-                      Company
-                    </UnstyledButton>
-                  </nav>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <header className="sm:mb-[400px] mb-[102.5px]">
+              <Container className="py-6" size="xl">
+                <div className="flex items-center">
+                  <div className="flex items-center gap-x-4">
+                    <Image src="/logo.svg" width={163} height={38} alt="logo" />
+                    {!isMobile && (
+                      <nav className="flex gap-x-1">
+                        <Link href="#our-solution">
+                          <UnstyledButton className="px-3.5 py-2 font-semibold">
+                            Our Solution
+                          </UnstyledButton>
+                        </Link>
+                        <Link href="#pricing">
+                          <UnstyledButton className="px-3.5 py-2 font-semibold">
+                            Pricing
+                          </UnstyledButton>
+                        </Link>
+                        <Link href="#company">
+                          <UnstyledButton className="px-3.5 py-2 font-semibold">
+                            Company
+                          </UnstyledButton>
+                        </Link>
+                      </nav>
+                    )}
+                  </div>
+
+                  {isMobile ? (
+                    <Burger
+                      className="ml-auto text-white"
+                      color="white"
+                      onClick={handlers.toggle}
+                    />
+                  ) : (
+                    <div className="flex items-center ml-auto gap-x-1">
+                      <UnstyledButton className="px-3.5 py-2 font-semibold">
+                        Contact Sales
+                      </UnstyledButton>
+                      <Link href={ROUTES.LOGIN}>
+                        <UnstyledButton className="px-3 py-2 font-semibold">
+                          Login
+                        </UnstyledButton>
+                      </Link>
+                      <Link href={ROUTES.REGISTER}>
+                        <Button
+                          className="bg-custom-gradient border-0 ml-3"
+                          size="md"
+                        >
+                          Get Started
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
-                <div className="lg:hidden flex items-center ml-auto gap-x-1">
-                  <UnstyledButton className="px-3.5 py-2 font-semibold">
-                    Contact Sales
-                  </UnstyledButton>
-                  <Link href={ROUTES.LOGIN}>
-                    <UnstyledButton className="px-3 py-2 font-semibold">
-                      Login
-                    </UnstyledButton>
-                  </Link>
+              </Container>
+            </header>
+            <Container size="xl">
+              <div className="max-w-[820px]">
+                <Title
+                  className="lg:text-h1 lg:leading-h1 lg:mb-5 mb-12"
+                  size="h0"
+                >
+                  Play Smarter <br /> with AI Precision
+                </Title>
+                <Text
+                  size="xl"
+                  className="lg:leading-lg lg:text-lg lg:mb-5 mb-12"
+                >
+                  Unlock the power of technology and transform your approach to
+                  poker today with cutting-edge AI technology. Our advanced
+                  Poker Assistant analyzes every move, providing real-time
+                  insights to help you make data-driven decisions and master the
+                  table.
+                </Text>
+                <div className="flex gap-x-2.5">
                   <Link href={ROUTES.REGISTER}>
                     <Button
-                      className="bg-custom-gradient border-0 ml-3"
-                      size="md"
+                      className="bg-custom-gradient border-0"
+                      size="xl"
+                      rightSection={!isMobile && <ArrowRight />}
                     >
                       Get Started
                     </Button>
                   </Link>
+                  <Button variant="outline" size="xl">
+                    Watch Video
+                  </Button>
                 </div>
-                {isMobile && (
-                  <Burger
-                    className="ml-auto text-white"
-                    color="white"
-                    onClick={handlers.toggle}
-                  />
-                )}
               </div>
             </Container>
-          </header>
-          <Container size="xl">
-            <div className="max-w-[820px]">
-              <Title
-                className="lg:mb-5 lg:text-4xl lg:leading-4xl mb-12"
-                size="h0"
-              >
-                Play Smarter <br /> with AI Precision
-              </Title>
-              <Text
-                size="xl"
-                className="lg:text-sm lg:leading-md lg:mb-5 mb-12 leading-2xl "
-              >
-                Unlock the power of technology and transform your approach to
-                poker today with cutting-edge AI technology. Our advanced Poker
-                Assistant analyzes every move, providing real-time insights to
-                help you make data-driven decisions and master the table.
-              </Text>
-              <div className="flex gap-x-2.5">
-                <Link href={ROUTES.REGISTER}>
-                  <Button
-                    className="bg-custom-gradient border-0"
-                    size="xl"
-                    rightSection={!isMobile && <ArrowRight />}
-                  >
-                    Get Started
-                  </Button>
-                </Link>
-                <Button variant="outline" size="xl">
-                  Watch Video
-                </Button>
-              </div>
-            </div>
-          </Container>
+          </motion.div>
         </BackgroundImage>
-
-        <div>
+        <motion.div
+          id="our-solution"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: true }}
+        >
           <Container className="lg:py-16 py-24" size="xl">
-            <div className="lg:text-center lg:mb-8 mb-14">
+            <div className="mb-14">
               <Text
+                size="md"
                 tt="uppercase"
-                className="lg:mb-1.5 lg:text-2xs lg:leading-sm opacity-30 mb-2"
+                className="lg:text-sm lg:leading-sm opacity-30 mb-2"
               >
                 quick start
               </Text>
@@ -145,7 +171,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 <Title size="h3" className="mb-2 relative">
                   Sign Up and Select Your Plan
                 </Title>
-                <Text className="lg:text-2xs lg:leading-sm">
+                <Text className="lg:text-md lg:leading-md" size="lg">
                   Start your journey by creating an account and choosing the
                   plan that fits your needs. Access cutting-edge AI tools
                   designed to enhance your strategic decision-making.
@@ -166,7 +192,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 <Title size="h3" className="mb-2 relative">
                   Integrate and Optimize
                 </Title>
-                <Text className="lg:text-2xs lg:leading-sm">
+                <Text className="lg:text-md lg:leading-md" size="lg">
                   Connect the AI Assistant to your platform using API. Customize
                   its advanced analytics and insights to align with your unique
                   approach, powered by state-of-the-art machine learning.
@@ -187,7 +213,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 <Title size="h3" className="mb-2 relative">
                   Analyze, Adapt, Excel
                 </Title>
-                <Text className="lg:text-2xs lg:leading-sm">
+                <Text className="lg:text-md lg:leading-md" size="lg">
                   Leverage real-time AI-driven recommendations and post-session
                   analytics to refine your strategy. With every decision, unlock
                   the full potential of precision technology.
@@ -195,172 +221,191 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
               </div>
             </div>
           </Container>
-        </div>
-        <div className="lg:py-16 bg-blue-600 py-24">
-          <Container size="xl">
-            <div className="lg:mb-2.5 mb-10 text-center">
-              <div className="lg:mb-8 mb-14">
-                <Text
-                  tt="uppercase"
-                  className="lg:text-2xs lg:leading-sm text-white opacity-70 mb-2"
-                >
-                  Pick Your Plan
-                </Text>
-                <Title className=" text-white" size="h1">
-                  Choose the plan that works for you
-                </Title>
-              </div>
-              <FloatingIndicator
-                className="m-auto mb-2"
-                data={["Billed monthly", "Billed Yearly"]}
-              />
-              <Text className="text-white">
-                Switch to yearly to save 20%, and get the ability to play
-                smarterer with AI precision.
-              </Text>
-            </div>
-            <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center">
-              <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
-                <Text
-                  tt="uppercase"
-                  className="lg:text-xs lg:leading-xs lg:mb-0 opacity-30 mb-2.5"
-                >
-                  Basic
-                </Text>
-                <Title size="h3" className="lg:mb-5 mb-7">
-                  Ace Up Your Sleeve
-                </Title>
-                <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title size="h2">17 USD</Title>
-                  <Text className="lg:text-2xs lg:leading-sm mb-4">
-                    / per month
+        </motion.div>
+        <div className="lg:py-16 bg-blue-600 py-24" id="pricing">
+          <motion.div
+            id="our-solution"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <Container size="xl">
+              <div className="lg:mb-2.5 mb-10 text-center">
+                <div className="lg:mb-8 mb-14">
+                  <Text
+                    size="md"
+                    tt="uppercase"
+                    className=" lg:text-sm lg:leading-sm text-white opacity-70 mb-2"
+                  >
+                    Pick Your Plan
                   </Text>
+                  <Title className="text-white" size="h1">
+                    Choose the plan that works for you
+                  </Title>
                 </div>
-                <Button
-                  className="lg:mb-5 mb-10"
-                  size="lg"
-                  variant="black"
-                  fullWidth={isMobile}
-                >
-                  Get Basic Plan
-                </Button>
-                <ul className="list-disc flex flex-col gap-y-2 ml-4">
-                  <li className="lg:text-2xs lg:leading-md">
-                    Basic hand analysis and real-time suggestions.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Access to pre-flop strategies for common scenarios.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Weekly performance reports.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Community forum access for tips and tricks.
-                  </li>
-                </ul>
-              </div>
-              <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 px-10 py-16 bg-white rounded-xl basis-1/3 min-h-[52rem] relative overflow-hidden">
-                <Image
-                  width={360}
-                  height={340}
-                  className="lg:h-[231px] lg:w-[218px] lg:-top-6 lg:-right-20 h-[359px] w-[339px] absolute -right-40 top-4 -z-1"
-                  src="/plan-block-bg.png"
-                  alt="pattern"
+                <FloatingIndicator
+                  className="m-auto mb-2"
+                  data={["Billed monthly", "Billed Yearly"]}
                 />
-                <Text
-                  tt="uppercase"
-                  className="lg:text-xs lg:leading-xs lg:mb-0 opacity-30 mb-2.5"
-                >
-                  Professional
+                <Text className="text-white">
+                  Switch to yearly to save 20%, and get the ability to play
+                  smarterer with AI precision.
                 </Text>
-                <Title size="h3" className="lg:mb-5 mb-7">
-                  Royal Advantage
-                </Title>
-                <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title size="h2">78 USD</Title>
-                  <Text className="lg:text-2xs lg:leading-sm mb-4">
-                    / per month
-                  </Text>
-                </div>
-                <Button
-                  className="lg:mb-5 mb-10"
-                  size="lg"
-                  variant="gradient"
-                  fullWidth={isMobile}
-                >
-                  Get Professional Plan
-                </Button>
-                <ul className="lg:max-w-none list-disc flex flex-col gap-y-2 max-w-64 ml-4">
-                  <li className="lg:text-2xs lg:leading-md">
-                    All basic plan features.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Advanced decision-making insights.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Personalized strategy recommendations based on play history.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Real-time bluff detection and counter-strategies.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Priority access to new features.
-                  </li>
-                </ul>
               </div>
-              <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
-                <Text
-                  tt="uppercase"
-                  className="lg:text-xs lg:leading-xs lg:mb-0 opacity-30 mb-2.5"
-                >
-                  Elite
-                </Text>
-                <Title size="h3" className="lg:mb-5 mb-7">
-                  Full House Mastery
-                </Title>
-                <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title size="h2">124 USD</Title>
-                  <Text className="lg:text-2xs lg:leading-sm mb-4">
-                    / per month
+              <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center">
+                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
+                  <Text
+                    size="md"
+                    tt="uppercase"
+                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
+                  >
+                    Basic
                   </Text>
+                  <Title size="h3" className="lg:text-xl lg:leading-xl mb-7">
+                    Ace Up Your Sleeve
+                  </Title>
+                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                    <Title size="h2">17 USD</Title>
+                    <Text className="lg:text-sm mb-1">/ per month</Text>
+                  </div>
+                  <Button
+                    className="lg:mb-5 mb-10"
+                    size="lg"
+                    variant="black"
+                    fullWidth={isMobile}
+                  >
+                    Get Basic Plan
+                  </Button>
+                  <ul className="list-disc flex flex-col gap-y-2 ml-4">
+                    <li className="lg:text-sm lg:leading:sm">
+                      Basic hand analysis and real-time suggestions.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Access to pre-flop strategies for common scenarios.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Weekly performance reports.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Community forum access for tips and tricks.
+                    </li>
+                  </ul>
                 </div>
-                <Button
-                  className="lg:mb-5 mb-10"
-                  size="lg"
-                  variant="black"
-                  fullWidth={isMobile}
-                >
-                  Get Elit Plan
-                </Button>
-                <ul className="list-disc flex flex-col gap-y-2 ml-4">
-                  <li className="lg:text-2xs lg:leading-md">
-                    All professional plan features.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Comprehensive game simulations and what-if scenarios.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    One-on-one strategy sessions with AI poker experts.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Access to exclusive high-level strategies and AI tools.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Unlimited hand history storage and analysis.
-                  </li>
-                  <li className="lg:text-2xs lg:leading-md">
-                    Dedicated 24/7 support for instant troubleshooting and
-                    guidance.
-                  </li>
-                </ul>
+                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 px-10 py-16 bg-white rounded-xl basis-1/3 min-h-[52rem] relative overflow-hidden">
+                  <Image
+                    width={360}
+                    height={340}
+                    className="lg:h-[231px] lg:w-[218px] lg:-top-6 lg:-right-20 h-[359px] w-[339px] absolute -right-40 top-4 -z-1"
+                    src="/plan-block-bg.png"
+                    alt="pattern"
+                  />
+                  <Text
+                    tt="uppercase"
+                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
+                  >
+                    Professional
+                  </Text>
+                  <Title
+                    size="h3"
+                    className="lg:text-xl lg:leading-xl lg:mb-5 mb-7"
+                  >
+                    Royal Advantage
+                  </Title>
+                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                    <Title size="h2">78 USD</Title>
+                    <Text className="lg:text-sm mb-1">/ per month</Text>
+                  </div>
+                  <Button
+                    className="lg:mb-5 mb-10"
+                    size="lg"
+                    variant="gradient"
+                    fullWidth={isMobile}
+                  >
+                    Get Professional Plan
+                  </Button>
+                  <ul className="list-disc flex flex-col gap-y-2 max-w-64 ml-4">
+                    <li className="lg:text-sm lg:leading:sm">
+                      All basic plan features.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Advanced decision-making insights.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Personalized strategy recommendations based on play
+                      history.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Real-time bluff detection and counter-strategies.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Priority access to new features.
+                    </li>
+                  </ul>
+                </div>
+                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
+                  <Text
+                    tt="uppercase"
+                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
+                  >
+                    Elite
+                  </Text>
+                  <Title
+                    size="h3"
+                    className="lg:text-xl lg:leading-xl lg:mb-5 mb-7"
+                  >
+                    Full House Mastery
+                  </Title>
+                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                    <Title size="h2">124 USD</Title>
+                    <Text className="lg:text-sm mb-1">/ per month</Text>
+                  </div>
+                  <Button
+                    className="lg:mb-5 mb-10"
+                    size="lg"
+                    variant="black"
+                    fullWidth={isMobile}
+                  >
+                    Get Elit Plan
+                  </Button>
+                  <ul className="list-disc flex flex-col gap-y-2 ml-4">
+                    <li className="lg:text-sm lg:leading:sm">
+                      All professional plan features.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Comprehensive game simulations and what-if scenarios.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      One-on-one strategy sessions with AI poker experts.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Access to exclusive high-level strategies and AI tools.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Unlimited hand history storage and analysis.
+                    </li>
+                    <li className="lg:text-sm lg:leading:sm">
+                      Dedicated 24/7 support for instant troubleshooting and
+                      guidance.
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-          </Container>
+            </Container>
+          </motion.div>
         </div>
-        <div className="lg:py-16 bg-gray-50 py-24">
+
+        <motion.div
+          id="company"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: true }}
+          className="lg:py-16  bg-gray-50 py-24"
+        >
           <Container size="xl">
             <div className="lg:mb-8 text-center mb-14">
-              <Text className="lg:text-2xs lg:leading-sm opacity-30 uppercase mb-2">
+              <Text className="lg:text-sm lg:leading-sm opacity-30 uppercase mb-2">
                 Questions? Answers!
               </Text>
               <Title size="h1">Frequently Asked Questions</Title>
@@ -439,7 +484,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
               </Accordion>
             </div>
           </Container>
-        </div>
+        </motion.div>
         <footer className=" bg-gray-50">
           <Container size="xl">
             <div className="border-t border-[#00000026]">
@@ -451,11 +496,11 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                     height={31}
                     alt="mini-logo"
                   />
-                  <Text className="lg:pl-0 p-2">
+                  <Text className="g:pl-0 p-2">
                     © 2024 Smarterer, Inc. All rights reserved
                   </Text>
                 </div>
-                <div className="lg:flex-col lg:ml-0 flex gap-x-1 ml-auto">
+                <div className="lg:flex-col lg:ml-0  flex gap-x-1 ml-auto">
                   <UnstyledButton className="lg:pl-0 px-3.5 py-2">
                     Our Solution
                   </UnstyledButton>
@@ -490,15 +535,30 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
         classNames={{ root: "bg-gray-50" }}
       >
         <nav className="flex flex-col items-center">
-          <UnstyledButton className="px-3.5 py-2 font-semibold">
-            Our Solution
-          </UnstyledButton>
-          <UnstyledButton className="px-3.5 py-2 font-semibold">
-            Pricing
-          </UnstyledButton>
-          <UnstyledButton className="px-3.5 py-2 font-semibold">
-            Company
-          </UnstyledButton>
+          <Link href="#our-solution">
+            <UnstyledButton
+              onClick={handlers.close}
+              className="px-3.5 py-2 font-semibold"
+            >
+              Our Solution
+            </UnstyledButton>
+          </Link>
+          <Link href="#pricing">
+            <UnstyledButton
+              onClick={handlers.close}
+              className="px-3.5 py-2 font-semibold"
+            >
+              Pricing
+            </UnstyledButton>
+          </Link>
+          <Link href="#company">
+            <UnstyledButton
+              onClick={handlers.close}
+              className="px-3.5 py-2 font-semibold"
+            >
+              Company
+            </UnstyledButton>
+          </Link>
           <UnstyledButton className="px-3.5 py-2 font-semibold">
             Contact Sales
           </UnstyledButton>

@@ -121,8 +121,8 @@ export const mantineTheme = createTheme({
         chevron: <ChevronDown />,
         classNames: {
           item: clsx("bg-white border-none rounded-lg mb-2"),
-          panel: "lg:text-sm lg:leading-sm text-lg",
-          label: clsx("lg:text-sm lg:text-sm py-5 text-xl font-semibold"),
+          panel: "text-lg",
+          label: clsx("py-5 text-xl font-semibold"),
           content: clsx("lg:px-5 bg-white rounded-lg px-10 py-5"),
           control: "lg:px-5 px-10 rounded-lg bg-white hover:bg-gray-100",
           chevron: "w-7 h-7 flex justify-center",
