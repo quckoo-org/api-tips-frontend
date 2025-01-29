@@ -48,15 +48,10 @@ export const FloatingIndicator = forwardRef<
   ));
 
   return (
-    <div
-      className={clsx(
-        "border-white border w-fit rounded-sm font-['Inter']",
-        className,
-      )}
-    >
+    <div className={clsx("border-white border w-fit rounded-lg", className)}>
       <div
         ref={setRootRef}
-        className="relative bg-blue-700 w-fit rounded-sm dark:bg-dark-800 dark:border-dark-400 m-0.5"
+        className="relative bg-blue-600 w-fit rounded-lg dark:bg-dark-800 dark:border-dark-400 m-0.5"
       >
         {controls}
         <FloatingIndicatorMantine

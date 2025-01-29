@@ -22,14 +22,16 @@ const CONTAINER_SIZES: Record<string, string> = {
 };
 
 const TITLE_SIZES: Record<string, string> = {
-  // h1: typedTwConfig.theme.fontSize["7xl"],
-  // h2: typedTwConfig.theme.fontSize["6xl"],
+  h0: typedTwConfig.theme.fontSize["h0"],
+  h1: typedTwConfig.theme.fontSize["h1"],
+  h2: typedTwConfig.theme.fontSize["h2"],
   h3: typedTwConfig.theme.fontSize["h3"],
 };
 
 const TITLE_LEADING: Record<string, string> = {
-  // h1: typedTwConfig.theme.lineHeight["7xl"],
-  // h2: typedTwConfig.theme.lineHeight["6xl"],
+  h0: typedTwConfig.theme.lineHeight["h0"],
+  h1: typedTwConfig.theme.lineHeight["h1"],
+  h2: typedTwConfig.theme.lineHeight["h2"],
   h3: typedTwConfig.theme.lineHeight["h3"],
 };
 
@@ -122,7 +124,7 @@ export const mantineTheme = createTheme({
           panel: "lg:text-sm lg:leading-sm text-lg",
           label: clsx("lg:text-sm lg:text-sm py-5 text-xl font-semibold"),
           content: clsx("lg:px-5 bg-white rounded-lg px-10 py-5"),
-          control: "lg:px-5 px-10 rounded-lg",
+          control: "lg:px-5 px-10 rounded-lg bg-white hover:bg-gray-100",
           chevron: "w-7 h-7 flex justify-center",
         },
       },

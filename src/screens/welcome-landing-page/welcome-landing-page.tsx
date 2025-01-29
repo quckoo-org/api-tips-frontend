@@ -68,7 +68,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                     <Button
                       className="bg-custom-gradient border-0 ml-3"
                       size="md"
-                      radius="xs"
                     >
                       Get Started
                     </Button>
@@ -88,9 +87,9 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
             <div className="max-w-[820px]">
               <Title
                 className="lg:mb-5 lg:text-4xl lg:leading-4xl mb-12"
-                size="h1"
+                size="h0"
               >
-                Play Smarter With AI Precision
+                Play Smarter <br /> with AI Precision
               </Title>
               <Text
                 size="xl"
@@ -128,9 +127,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
               >
                 quick start
               </Text>
-              <Title className="lg:text-3xl lg:leading-4.5xl " size="h3">
-                How It Works?
-              </Title>
+              <Title size="h1">How It Works?</Title>
             </div>
             <div className="sm:gap-y-16 lg:flex-col lg:items-center lg:text-center flex justify-between gap-x-20">
               <div className="lg:flex lg:flex-col lg:items-center">
@@ -145,12 +142,9 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   }
                   alt="block"
                 />
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm font-semibold mb-2 relative"
-                >
+                <Title size="h3" className="mb-2 relative">
                   Sign Up and Select Your Plan
-                </Text>
+                </Title>
                 <Text className="lg:text-2xs lg:leading-sm">
                   Start your journey by creating an account and choosing the
                   plan that fits your needs. Access cutting-edge AI tools
@@ -169,12 +163,9 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   className="relative lg:left-0 lg:bottom-0 -left-6 -bottom-4"
                   alt="block"
                 />
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm font-semibold mb-2 relative"
-                >
+                <Title size="h3" className="mb-2 relative">
                   Integrate and Optimize
-                </Text>
+                </Title>
                 <Text className="lg:text-2xs lg:leading-sm">
                   Connect the AI Assistant to your platform using API. Customize
                   its advanced analytics and insights to align with your unique
@@ -193,12 +184,9 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   className="relative lg:left-0 lg:bottom-0 -left-6 -bottom-4"
                   alt="block"
                 />
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm font-semibold mb-2 relative"
-                >
+                <Title size="h3" className="mb-2 relative">
                   Analyze, Adapt, Excel
-                </Text>
+                </Title>
                 <Text className="lg:text-2xs lg:leading-sm">
                   Leverage real-time AI-driven recommendations and post-session
                   analytics to refine your strategy. With every decision, unlock
@@ -208,7 +196,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
             </div>
           </Container>
         </div>
-        <div className="lg:py-16 bg-blue-700 py-24">
+        <div className="lg:py-16 bg-blue-600 py-24">
           <Container size="xl">
             <div className="lg:mb-2.5 mb-10 text-center">
               <div className="lg:mb-8 mb-14">
@@ -218,10 +206,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 >
                   Pick Your Plan
                 </Text>
-                <Title
-                  className="lg:text-3xl lg:leading-4.5xl text-white"
-                  size="h3"
-                >
+                <Title className=" text-white" size="h1">
                   Choose the plan that works for you
                 </Title>
               </div>
@@ -229,7 +214,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 className="m-auto mb-2"
                 data={["Billed monthly", "Billed Yearly"]}
               />
-              <Text className="text-white font-['Inter']">
+              <Text className="text-white">
                 Switch to yearly to save 20%, and get the ability to play
                 smarterer with AI precision.
               </Text>
@@ -242,17 +227,12 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 >
                   Basic
                 </Text>
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm lg:mb-5 font-semibold mb-7"
-                >
+                <Title size="h3" className="lg:mb-5 mb-7">
                   Ace Up Your Sleeve
-                </Text>
+                </Title>
                 <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title className="lg:text-4xl lg:leading-4.5xl" size="h3">
-                    17 USD
-                  </Title>
-                  <Text className="lg:text-2xs lg:leading-sm mb-2.5">
+                  <Title size="h2">17 USD</Title>
+                  <Text className="lg:text-2xs lg:leading-sm mb-4">
                     / per month
                   </Text>
                 </div>
@@ -261,7 +241,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   size="lg"
                   variant="black"
                   fullWidth={isMobile}
-                  rightSection={<ArrowRight />}
                 >
                   Get Basic Plan
                 </Button>
@@ -294,17 +273,12 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 >
                   Professional
                 </Text>
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm lg:mb-5  font-semibold mb-7"
-                >
+                <Title size="h3" className="lg:mb-5 mb-7">
                   Royal Advantage
-                </Text>
+                </Title>
                 <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title className="lg:text-4xl lg:leading-4.5xl" size="h3">
-                    78 USD
-                  </Title>
-                  <Text className="lg:text-2xs lg:leading-sm  mb-2.5">
+                  <Title size="h2">78 USD</Title>
+                  <Text className="lg:text-2xs lg:leading-sm mb-4">
                     / per month
                   </Text>
                 </div>
@@ -313,7 +287,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   size="lg"
                   variant="gradient"
                   fullWidth={isMobile}
-                  rightSection={<ArrowRight />}
                 >
                   Get Professional Plan
                 </Button>
@@ -342,17 +315,12 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 >
                   Elite
                 </Text>
-                <Text
-                  size="xl"
-                  className="lg:text-sm lg:leading-sm lg:mb-5 font-semibold mb-7"
-                >
+                <Title size="h3" className="lg:mb-5 mb-7">
                   Full House Mastery
-                </Text>
+                </Title>
                 <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                  <Title className="lg:text-4xl lg:leading-4.5xl" size="h3">
-                    124 USD
-                  </Title>
-                  <Text className="lg:text-2xs lg:leading-sm mb-2.5">
+                  <Title size="h2">124 USD</Title>
+                  <Text className="lg:text-2xs lg:leading-sm mb-4">
                     / per month
                   </Text>
                 </div>
@@ -361,7 +329,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   size="lg"
                   variant="black"
                   fullWidth={isMobile}
-                  rightSection={<ArrowRight />}
                 >
                   Get Elit Plan
                 </Button>
@@ -390,15 +357,13 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
             </div>
           </Container>
         </div>
-        <div className="lg:py-16 bg-gray-100 py-24">
+        <div className="lg:py-16 bg-gray-50 py-24">
           <Container size="xl">
             <div className="lg:mb-8 text-center mb-14">
               <Text className="lg:text-2xs lg:leading-sm opacity-30 uppercase mb-2">
                 Questions? Answers!
               </Text>
-              <Title size="h3" className="lg:text-3xl lg:leading-4.5xl">
-                Frequently Asked Questions
-              </Title>
+              <Title size="h1">Frequently Asked Questions</Title>
             </div>
             <div>
               <Accordion>
@@ -475,7 +440,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
             </div>
           </Container>
         </div>
-        <footer className=" bg-gray-100">
+        <footer className=" bg-gray-50">
           <Container size="xl">
             <div className="border-t border-[#00000026]">
               <div className="lg:gap-y-5 lg:flex-col lg:items-start flex py-7">
@@ -522,7 +487,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
         size="100%"
         position="top"
         withCloseButton={true}
-        classNames={{ root: "bg-gray-100" }}
+        classNames={{ root: "bg-gray-50" }}
       >
         <nav className="flex flex-col items-center">
           <UnstyledButton className="px-3.5 py-2 font-semibold">

@@ -29,13 +29,13 @@ const getStyles = ({
       root: "px-5 py-2 text-sm",
     },
     md: {
-      root: "px-5 py-2 text-sm h-10",
+      root: "px-5 py-2 text-sm h-10 rounded-md",
     },
     lg: {
-      root: "lg:py-5 lg:h-[64px] lg:text-sm lg:leading-md px-8 py-6 font-semibold h-[72px]",
+      root: "lg:py-5 lg:h-[64px] lg:text-sm lg:leading-md px-8 py-6 font-semibold rounded-lg h-[72px]",
     },
     xl: {
-      root: "lg:h-[64px] lg:py-5 lg:px-8 lg:text-sm lg:leading-md px-12 py-6 text-xl h-[72px]",
+      root: "lg:h-[64px] lg:py-5 lg:px-8 lg:text-sm lg:leading-md px-12 py-6 text-h3 h-[72px] rounded-lg",
     },
   };
 
