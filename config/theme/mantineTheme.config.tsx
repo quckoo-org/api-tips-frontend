@@ -6,6 +6,7 @@ import {
   Text,
   MantineSize,
   Accordion,
+  TextInput,
 } from "@mantine/core";
 import { clsx } from "clsx";
 import { ChevronDown } from "lucide-react";
@@ -19,15 +20,15 @@ const CONTAINER_SIZES: Record<string, string> = {
 };
 
 const TITLE_SIZES: Record<string, string> = {
-  h1: typedTwConfig.theme.fontSize["7xl"],
-  h2: typedTwConfig.theme.fontSize["6xl"],
-  h3: typedTwConfig.theme.fontSize["5xl"],
+  // h1: typedTwConfig.theme.fontSize["7xl"],
+  // h2: typedTwConfig.theme.fontSize["6xl"],
+  h3: typedTwConfig.theme.fontSize["h3"],
 };
 
 const TITLE_LEADING: Record<string, string> = {
-  h1: typedTwConfig.theme.lineHeight["7xl"],
-  h2: typedTwConfig.theme.lineHeight["6xl"],
-  h3: typedTwConfig.theme.lineHeight["5xl"],
+  // h1: typedTwConfig.theme.lineHeight["7xl"],
+  // h2: typedTwConfig.theme.lineHeight["6xl"],
+  h3: typedTwConfig.theme.lineHeight["h3"],
 };
 
 export const mantineTheme = createTheme({
@@ -78,6 +79,13 @@ export const mantineTheme = createTheme({
             size !== undefined && size in typedTwConfig.theme.fontSize
               ? rem(typedTwConfig.theme.fontSize[size as MantineSize])
               : rem(size),
+        },
+      }),
+    }),
+    TextInput: TextInput.extend({
+      vars: () => ({
+        root: {
+          "--input-bd": "red",
         },
       }),
     }),

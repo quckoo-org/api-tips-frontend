@@ -2,15 +2,16 @@ import "@mantine/core/styles.css";
 import "./globals.css";
 import "@mantine/dates/styles.css";
 import "mantine-react-table/styles.css";
-import { Inter, Montserrat } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { Provider } from "@/app/providers/provider";
 import { UiProvider } from "@/app/providers/ui-provider";
 import { i18n, type Locale } from "@/config/i18n/i18n-config";
 import { getDictionary } from "@/shared/locale/getDictionary";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const montserrat = Montserrat({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+});
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -28,9 +29,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
-      <body
-        className={`${inter.className} ${montserrat.className} antialiased`}
-      >
+      <body className={`${roboto.className} antialiased`}>
         <Provider dictionary={dictionary} locale={lang}>
           <UiProvider lang={lang}>{children}</UiProvider>
         </Provider>

@@ -12,8 +12,10 @@ type UiProviderProps = {
 
 export const UiProvider: FC<UiProviderProps> = ({ children, lang }) => {
   const pathname = usePathname();
-  console.log(pathname, "pathname");
-  if (pathname !== `/${lang}`)
+
+  const paths = [`/${lang}`, `/${lang}/login`, `/${lang}/register`];
+
+  if (!paths.includes(pathname))
     return (
       <>
         <Header />
