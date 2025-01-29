@@ -8,6 +8,8 @@ export const enum ROUTES {
   TARIFFS = "/tariffs",
   ORDERS = "/orders",
   ADMINISTRATION = "/administration",
+  RESET = "/reset",
+  FORGOT_PASSWORD = "/forgot-password",
 }
 
 export const routesConfig: Array<{
@@ -59,5 +61,15 @@ export const routesConfig: Array<{
     path: ROUTES.ADMINISTRATION,
     requiresAuth: true,
     isAdmin: true,
+  },
+  {
+    path: ROUTES.RESET,
+    requiresAuth: false,
+    isAdmin: false,
+  },
+  {
+    path: ROUTES.FORGOT_PASSWORD,
+    requiresAuth: false,
+    isAdmin: false,
   },
 ];

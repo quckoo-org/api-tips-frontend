@@ -27,7 +27,6 @@ import {
 } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 import { CurrencyCell } from "@/shared/ui";
 import { MenageOrderProvider } from "../providers";
-import { OrdersPageError } from "./orders-page-error";
 
 type OrdersPageProps = {
   className?: string;
@@ -52,8 +51,6 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
         : {}),
     },
   });
-
-  console.log(ordersQuery.data?.orders, "orders");
 
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
@@ -191,9 +188,9 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     table.setPageIndex(0);
   };
 
-  if (ordersQuery.isError) {
-    return <OrdersPageError className={className} />;
-  }
+  // if (ordersQuery.isError) {
+  //   return <OrdersPageError className={className} />;
+  // }
 
   return (
     <MenageOrderProvider
