@@ -8,11 +8,11 @@
     dev team
     
   Methods:
-    - GetAllRequisitess ( Получение всех платежных данных )
+    - GetAllPayments ( Получение всех платежных данных )
 */
 
 syntax = "proto3";
-package api.tips.Requisites.v1;
+package api.tips.requisites.v1;
 option csharp_namespace = "ApiTips.Api.Requisites.V1";
 
 import "google/protobuf/wrappers.proto";
