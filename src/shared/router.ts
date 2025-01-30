@@ -63,4 +63,14 @@ export const routesConfig: Array<{
     requiresAuth: true,
     isAdmin: true,
   },
+  {
+    path: ROUTES.RESET,
+    requiresAuth: false,
+    isAdmin: false,
+  },
+  {
+    path: ROUTES.FORGOT_PASSWORD,
+    requiresAuth: false,
+    isAdmin: false,
+  },
 ];
