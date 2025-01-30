@@ -37,16 +37,14 @@ export const ResetForm: FC<ResetFormProps> = ({ className, code, email }) => {
     };
     changePasswordQuery.mutate(changePasswordRequest, {
       onSuccess: () => {
-        toast.success("Password has been changed successfully", {
+        toast.success(t("password_reset_success"), {
           duration: 4000,
         });
         authStore.logout();
         router.push(ROUTES.LOGIN);
       },
       onError: (error) => {
-        toast.error(
-          error.response?.data.Message || "Failed to change password",
-        );
+        toast.error(error.response?.data.Message || t("password_reset_failed"));
       },
     });
   };
