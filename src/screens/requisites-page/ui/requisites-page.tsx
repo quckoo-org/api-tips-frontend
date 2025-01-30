@@ -3,7 +3,8 @@
 import clsx from "clsx";
 
 import { FC } from "react";
-import { BankRequisitesTable, CryptoRequisitesTable } from "@/widgets";
+import { BankRequisitesTable } from "@/widgets/bank-requisites-table/ui/bank-requisites-table";
+import { CryptoRequisitesTable } from "@/widgets/crypto-requisites-table/ui/crypto-requisites-table";
 
 type TariffPageProps = {
   className?: string;
