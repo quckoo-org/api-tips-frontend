@@ -5,7 +5,7 @@ mkdir -p ./src/shared/proto
 
 # Выполняем protoc с настройками для macOS
 protoc \
-    --plugin=protoc-gen-ts_proto="./node_modules/.bin/protoc-gen-ts_proto" \
+    --plugin=protoc-gen-ts_proto="$(pwd)/node_modules/.bin/protoc-gen-ts_proto" \
     --ts_proto_out=./src/shared/proto \
     --proto_path=./proto \
     -I./proto ./proto/*/*/*.proto \

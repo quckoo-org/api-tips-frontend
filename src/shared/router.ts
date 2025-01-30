@@ -6,9 +6,10 @@ export const enum ROUTES {
   VERIFY = "/verify",
   FORBIDDEN = "/forbidden",
   TARIFFS = "/tariffs",
-  LANDING = "/welcome-landing",
   ORDERS = "/orders",
   ADMINISTRATION = "/administration",
+  RESET = "/reset",
+  FORGOT_PASSWORD = "/forgot-password",
   REQUISITES = "/requisites",
 }
 
@@ -53,22 +54,12 @@ export const routesConfig: Array<{
     isAdmin: false,
   },
   {
-    path: ROUTES.LANDING,
-    requiresAuth: false,
-    isAdmin: false,
-  },
-  {
     path: ROUTES.ORDERS,
     requiresAuth: true,
     isAdmin: true,
   },
   {
     path: ROUTES.ADMINISTRATION,
-    requiresAuth: true,
-    isAdmin: true,
-  },
-  {
-    path: ROUTES.REQUISITES,
     requiresAuth: true,
     isAdmin: true,
   },

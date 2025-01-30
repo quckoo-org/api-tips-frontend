@@ -1,5 +1,5 @@
-export type { OrderT } from "./model/types";
-
-export { OrderRow } from "./ui/order-row";
-
 export { useGetOrders } from "./model/use-get-orders";
+
+export { OrderStatusText } from "./ui/order-status";
+
+export { useGetOrderStatus } from "./model/use-get-order-status";

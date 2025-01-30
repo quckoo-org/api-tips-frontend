@@ -41,7 +41,7 @@ function checkAuth(
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-
+  const searchParams = request.nextUrl.search; // Сохраняем query-параметры
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) =>
@@ -54,10 +54,7 @@ export function middleware(request: NextRequest) {
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
     return NextResponse.redirect(
-      new URL(
-        `/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
-        request.url,
-      ),
+      new URL(`/${locale}${pathname}${searchParams}`, request.url),
     );
   }
 

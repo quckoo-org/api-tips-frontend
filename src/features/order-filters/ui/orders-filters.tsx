@@ -1,61 +1,81 @@
 "use client";
 
-import { ActionIcon, Collapse, Flex, Loader, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Collapse,
+  Flex,
+  Loader,
+  Select,
+  Title,
+} from "@mantine/core";
 import { useDebouncedCallback, useDisclosure } from "@mantine/hooks";
 import clsx from "clsx";
 import { ListFilterIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { createFilterMapper } from "@/shared/lib";
+import { Controller, useForm } from "react-hook-form";
+import { useGetOrderStatus } from "@/entities/order";
 import { useTranslations } from "@/shared/locale/translations";
-import { OrdersFiltersT } from "../model/types";
+import { GetOrdersRequest_Filter } from "@/shared/proto/api_tips_order/v1/api_tips_order";
+import { OrderStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 
 type OrdersFiltersProps = {
   className?: string;
-  onSubmit: (data: OrdersFiltersT) => void;
+  onSubmit: (data: GetOrdersRequest_Filter) => void;
   isPending: boolean;
-  result: OrdersFiltersT;
+  result: GetOrdersRequest_Filter;
 };
 
 export const OrdersFilters: FC<OrdersFiltersProps> = ({
   className,
   onSubmit,
   isPending,
-  // result,
+  result,
 }) => {
-  const [opened, handlers] = useDisclosure();
-  const searchParams = useSearchParams();
+  const { getOrderStatus } = useGetOrderStatus();
   const { t } = useTranslations();
 
-  const router = useRouter();
+  const [opened, handlers] = useDisclosure();
 
-  const filterMapper = createFilterMapper();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { handleSubmit, register, watch, control } = useForm<OrdersFiltersT>({
-    defaultValues: undefined,
-    values: filterMapper.toFilters(searchParams) as OrdersFiltersT,
+  const STATUSES_DATA: Array<{
+    value: Partial<OrderStatus>;
+    label: string;
+  }> = [
+    {
+      value: OrderStatus.ORDER_STATUS_CREATED,
+      label: getOrderStatus(OrderStatus.ORDER_STATUS_CREATED),
+    },
+    {
+      value: OrderStatus.ORDER_STATUS_CANCELLED,
+      label: getOrderStatus(OrderStatus.ORDER_STATUS_CANCELLED),
+    },
+    {
+      value: OrderStatus.ORDER_STATUS_PAID,
+      label: getOrderStatus(OrderStatus.ORDER_STATUS_PAID),
+    },
+  ];
+
+  const { handleSubmit, watch, control } = useForm<GetOrdersRequest_Filter>({
+    defaultValues: result,
+    // values: filterMapper.toFilters(searchParams) as GetOrdersRequest_Filter,
   });
 
-  const debouncedSubmit = useDebouncedCallback((data: OrdersFiltersT) => {
-    // const filters = {
-    //   ...data,
-    //   isVerified: data.isVerified ?? undefined,
-    //   isBlocked: data.isBlocked ?? undefined,
-    //   isDeleted: data.isDeleted ?? undefined,
-    // };
-    const filters = {};
+  const debouncedSubmit = useDebouncedCallback(
+    (data: GetOrdersRequest_Filter) => {
+      // const filters: GetOrdersRequest_Filter = {
+      //   orderStatus: data.orderStatus,
+      // };
+      // const queryString = filterMapper.toSearchParams(filters);
+      // router.push(`?${queryString}`);
+      onSubmit(data);
+    },
+    300,
+  );
 
-    const queryString = filterMapper.toSearchParams(filters);
-    router.push(`?${queryString}`);
-    onSubmit(data);
-  }, 300);
-
-  const handleSubmitForm = (data: OrdersFiltersT) => {
+  const handleSubmitForm = (data: GetOrdersRequest_Filter) => {
     const filteredData = Object.fromEntries(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(data).filter(([_, value]) => value !== undefined),
-    ) as OrdersFiltersT;
+    ) as GetOrdersRequest_Filter;
 
     debouncedSubmit(filteredData);
   };
@@ -65,15 +85,8 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
     //@ts-ignore
     const subscription = watch((data) => handleSubmit(handleSubmitForm)(data));
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line
   }, [handleSubmit, watch]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleMapToFilters = (value: string | null) => {
-    return value === "true" ? true : value === "false" ? false : null;
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleMapToSelectValue = (value: boolean | null) => {
-    return value === true ? "true" : value === false ? "false" : "null";
-  };
 
   return (
     <form
@@ -82,7 +95,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
     >
       <Flex>
         <Title order={3} className="font-normal">
-          {t("user_registry")}
+          {t("orders")}
         </Title>
         <div className="flex ml-auto gap-x-4">
           <ActionIcon size="lg" onClick={handlers.toggle}>
@@ -96,65 +109,19 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
       </Flex>
       <Collapse in={opened}>
         <div className="flex gap-4">
-          FILTERS
-          {/*  <Controller*/}
-          {/*    control={control}*/}
-          {/*    name="isBlocked"*/}
-          {/*    render={({ field }) => (*/}
-          {/*      <Select*/}
-          {/*        {...field}*/}
-          {/*        value={handleMapToSelectValue(field.value)}*/}
-          {/*        onChange={(value) => field.onChange(handleMapToFilters(value))}*/}
-          {/*        placeholder={t("is_blocked")}*/}
-          {/*        label={t("is_blocked")}*/}
-          {/*        data={[*/}
-          {/*          { value: "null", label: t("all") },*/}
-          {/*          { value: "true", label: t("show_blocked") },*/}
-          {/*          { value: "false", label: t("hide_blocked") },*/}
-          {/*        ]}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*  <Controller*/}
-          {/*    control={control}*/}
-          {/*    name="isVerified"*/}
-          {/*    render={({ field }) => (*/}
-          {/*      <Select*/}
-          {/*        {...field}*/}
-          {/*        value={handleMapToSelectValue(field.value)}*/}
-          {/*        onChange={(value) => field.onChange(handleMapToFilters(value))}*/}
-          {/*        placeholder={t("is_verified")}*/}
-          {/*        label={t("is_verified")}*/}
-          {/*        data={[*/}
-          {/*          { value: "null", label: t("all") },*/}
-          {/*          { value: "true", label: t("show_verified") },*/}
-          {/*          { value: "false", label: t("hide_verified") },*/}
-          {/*        ]}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*  <Controller*/}
-          {/*    control={control}*/}
-          {/*    name="isDeleted"*/}
-          {/*    render={({ field }) => {*/}
-          {/*      return (*/}
-          {/*        <Select*/}
-          {/*          {...field}*/}
-          {/*          value={handleMapToSelectValue(field.value)}*/}
-          {/*          onChange={(value) =>*/}
-          {/*            field.onChange(handleMapToFilters(value))*/}
-          {/*          }*/}
-          {/*          placeholder={t("is_hidden")}*/}
-          {/*          label={t("is_hidden")}*/}
-          {/*          data={[*/}
-          {/*            { value: "null", label: t("all") },*/}
-          {/*            { value: "true", label: t("show_hidden") },*/}
-          {/*            { value: "false", label: t("hide_hidden") },*/}
-          {/*          ]}*/}
-          {/*        />*/}
-          {/*      );*/}
-          {/*    }}*/}
-          {/*  />*/}
+          <Controller
+            control={control}
+            name="orderStatus"
+            render={({ field }) => (
+              <Select
+                {...field}
+                clearable
+                placeholder={t("order_status")}
+                label={t("order_status")}
+                data={STATUSES_DATA}
+              />
+            )}
+          />
         </div>
       </Collapse>
     </form>

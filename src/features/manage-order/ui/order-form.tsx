@@ -1,17 +1,21 @@
 "use client";
 
-import { Button, Flex, Text, TextInput } from "@mantine/core";
+import { Button, Flex, Select, Text } from "@mantine/core";
 import { clsx } from "clsx";
 import { FC } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { menageOrderDepsContext } from "@/features/manage-order";
+import { AddOrderFormValuesT } from "@/features/manage-order/model/types";
 import { useGetOrder } from "@/features/manage-order/model/use-get-order";
+import { useStrictContext } from "@/shared/hooks/useSctrictContext";
 import { useTranslations } from "@/shared/locale/translations";
-import { OrderFormValues } from "../model/types";
+import { AddOrderRequest } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 
 type OrderFormProps = {
   className?: string;
   orderId?: number;
-  onSuccess: (order: OrderFormValues) => Promise<void>;
+  onSuccess: (order: AddOrderRequest) => Promise<void>;
+  isLoading: boolean;
   error?: string;
 };
 
@@ -19,102 +23,73 @@ export const OrderForm: FC<OrderFormProps> = ({
   className,
   onSuccess,
   orderId,
+  isLoading,
   error,
 }) => {
   const { t } = useTranslations();
   const orderQuery = useGetOrder({ orderId });
+  const { getTariffs, getUsers } = useStrictContext(menageOrderDepsContext);
 
-  console.log(orderQuery);
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<OrderFormValues>({
+    control,
+  } = useForm<AddOrderFormValuesT>({
     defaultValues: {
-      status: "",
-      count: 0,
-      tariff: {
-        name: "",
-      },
-      orderNumber: 0,
-      firstName: "",
-      lastName: "",
-      email: "",
-      sum: 0,
-      currency: "",
+      userId: undefined,
+      tariffId: undefined,
     },
     values: {
-      status: orderQuery.data?.order?.status ?? "",
-      count: orderQuery.data?.order?.count ?? 0,
-      tariff: {
-        name: orderQuery.data?.order?.tariff.name ?? "",
-      },
-      orderNumber: orderQuery.data?.order?.orderNumber ?? 0,
-      firstName: orderQuery.data?.order?.firstName ?? "",
-      lastName: orderQuery.data?.order?.lastName ?? "",
-      email: orderQuery.data?.order?.email ?? "",
-      sum: orderQuery.data?.order?.sum ?? 0,
-      currency: orderQuery.data?.order?.currency ?? "",
+      userId: orderQuery.data?.order?.user?.id.toString(),
+      tariffId: orderQuery.data?.order?.tariff?.id.toString(),
     },
   });
 
-  const onSubmit = (data: OrderFormValues) => {
-    console.log(data);
-    console.log(orderId);
-    onSuccess(data);
+  const onSubmit = (data: AddOrderFormValuesT) => {
+    const result: AddOrderRequest = {
+      userId: Number(data.userId)!,
+      tariffId: Number(data.tariffId)!,
+    };
+    onSuccess(result);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={clsx("", className)}>
       <Flex direction="column" gap="md">
         {!!error && <Text color="red">{error}</Text>}
-        <TextInput
-          label={t("email")}
-          placeholder={t("enter_email")}
-          {...register("email", { required: t("email_is_required") })}
-          error={errors.email?.message}
+        <Controller
+          control={control}
+          name="userId"
+          rules={{ required: t("required_field") }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              searchable
+              placeholder={t("select_order")}
+              label={t("order")}
+              error={errors.userId?.message}
+              data={getUsers()}
+            />
+          )}
         />
-        <TextInput
-          label={t("first_name")}
-          placeholder={t("enter_first_name")}
-          {...register("firstName")}
+        <Controller
+          control={control}
+          name="tariffId"
+          rules={{ required: t("required_field") }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              searchable
+              placeholder={t("select_tariff")}
+              label={t("tariff")}
+              error={errors.tariffId?.message}
+              data={getTariffs()}
+            />
+          )}
         />
-        <TextInput
-          label={t("last_name")}
-          placeholder={t("enter_last_name")}
-          {...register("lastName")}
-        />
-        <TextInput
-          label={t("status")}
-          placeholder={t("enter_status")}
-          {...register("status")}
-        />
-        <TextInput
-          label={t("count")}
-          placeholder={t("enter_count")}
-          {...register("count")}
-        />
-        <TextInput
-          label={t("order_number")}
-          placeholder={t("enter_order_number")}
-          {...register("orderNumber")}
-        />
-        <TextInput
-          label={t("sum")}
-          placeholder={t("enter_sum")}
-          {...register("sum")}
-        />
-        <TextInput
-          label={t("currency")}
-          placeholder={t("enter_currency")}
-          {...register("currency")}
-        />
-        {/*<TextInput*/}
-        {/*  label={t("count")}*/}
-        {/*  placeholder={t("enter_count")}*/}
-        {/*  {...register("count")}*/}
-        {/*/>*/}
-        <Button type="submit">Submit</Button>
+        <Button loading={isLoading} type="submit">
+          Submit
+        </Button>
       </Flex>
     </form>
   );

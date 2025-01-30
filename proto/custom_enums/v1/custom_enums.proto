@@ -78,25 +78,24 @@ enum OperationStatus {
   OPERATION_STATUS_LOCKED = 8;
 }
 
+enum OrderStatus {
+  /*
+   *  Дефолтный (неопределенный) статус заказа
+   */
+  ORDER_STATUS_UNSPECIFIED = 0;
 
-/*
- * Валюта для банковского счета
- */
-enum CurrencyType
-{
-  CURRENCY_TYPE_UNSPECIFIED = 0;
+  /*
+   *  Cтатус заказа "Создан", присваивается после создания заказа
+   */
+  ORDER_STATUS_CREATED = 1;
 
-  CURRENCY_TYPE_USD = 1;
-  CURRENCY_TYPE_RUB = 2;
-  CURRENCY_TYPE_CNY = 3;
-}
+  /*
+   *  Cтатус заказа "Оплачен", присваивается после оплаты заказа (устанавливается вручную менеджером)
+   */
+  ORDER_STATUS_PAID = 2;
 
-/*
- * Валюта для крипто-кошелька
- */
-enum CryptoCurrency
-{
-  CRYPTO_CURRENCY_UNSPECIFIED = 0;
-  CRYPTO_CURRENCY_BTC = 1;
-  CRYPTO_CURRENCY_ETC = 2;
+  /*
+   *  Cтатус заказа "Отменён", присваивается после отмены заказа пользователем или менеджером
+   */
+  ORDER_STATUS_CANCELLED = 3;
 }

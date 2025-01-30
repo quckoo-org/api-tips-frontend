@@ -8,5 +8,6 @@ export const QUERY_KEYS = {
   ORDERS: "orders",
   PERMISSIONS: "permissions",
   METHODS: "methods",
+  RESET_PASSWORD: "reset_password",
   REQUISITES: "requisites",
 };
