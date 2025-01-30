@@ -1,10 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { PropsWithChildren } from "react";
+import React from "react";
+import { i18n, type Locale } from "@/config/i18n/i18n-config";
+import { getDictionary } from "@/shared/locale/getDictionary";
 
-type AuthLayoutProps = PropsWithChildren;
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }));
+}
 
-export default async function AuthLayout({ children }: AuthLayoutProps) {
+export default async function AuthLayout({
+  children,
+  params,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ lang: Locale }>;
+}>) {
+  const { lang } = await params;
+  const dictionary = await getDictionary(lang);
+
   return (
     <div className="flex h-screen items-center justify-center bg-gray-50 ">
       <div className="max-w-md w-full h-full flex flex-col justify-between">
@@ -19,13 +32,13 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
         </div>
         {children}
         <div className="mt-4 text-center text-xs text-gray-500">
-          By continuing, you acknowledge that you understand and agree to the{" "}
+          {dictionary.by_continuing_you_acknowledge_that_you_understand}
           <Link href="" className="text-blue-500 hover:underline">
-            Terms and Conditions
+            {dictionary.terms_and_conditions}
           </Link>{" "}
           and{" "}
           <Link href="" className="text-blue-500 hover:underline">
-            Privacy Policy
+            {dictionary.privacy_policy}
           </Link>
           .
         </div>

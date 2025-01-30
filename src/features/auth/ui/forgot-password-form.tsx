@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { usePasswordRecovery } from "@/features/auth";
 import { RecoveryPasswordReqT } from "@/features/auth/model/types";
 import { useTranslations } from "@/shared/locale/translations";
+import { ROUTES } from "@/shared/router";
 
 export const ForgotPasswordForm = () => {
   const { t } = useTranslations();
@@ -74,7 +75,10 @@ export const ForgotPasswordForm = () => {
         </Button>
       </form>
       <div className="mt-4">
-        <Link href="/login" className="text-sm text-blue-500 hover:underline">
+        <Link
+          href={ROUTES.LOGIN}
+          className="text-sm text-blue-500 hover:underline"
+        >
           {t("back_to_login")}
         </Link>
       </div>

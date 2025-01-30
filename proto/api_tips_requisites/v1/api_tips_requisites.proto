@@ -1,0 +1,126 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner: 
+    dev team
+    
+  Methods:
+    - GetAllPayments ( Получение всех платежных данных )
+*/
+
+syntax = "proto3";
+package api.tips.requisites.v1;
+option csharp_namespace = "ApiTips.Api.Requisites.V1";
+
+import "google/protobuf/wrappers.proto";
+import 'general_entities/v1/general_entities.proto';
+
+service ApiTipsRequisitesService {
+
+  /*
+   * Получение всех платежных данных
+   */
+  rpc GetAllRequisites (GetAllRequisitesRequest) returns (GetAllRequisitesResponse);
+}
+
+/*
+ * Запрос на получение всех платежных данных
+ */
+message GetAllRequisitesRequest {
+}
+
+/*
+ * Ответ на получение всех платежных данных
+ */
+message GetAllRequisitesResponse {
+
+  /*
+   * Данные по банковскому счёту
+   */
+  BankAccount bank_account = 1;
+
+  /*
+   * Данные по крипто-кошельку
+   */
+  CryptoWallet crypto_wallet = 2;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 3;
+}
+
+/*
+ * Данные для банковского счета
+ */
+message BankAccount {
+  /*
+   * Наименование банка
+   */
+  google.protobuf.StringValue bank_name = 1;
+  /*
+   * Адрес банка
+   */
+  google.protobuf.StringValue bank_address = 2;
+  /*
+   * Swift номер
+   */
+  google.protobuf.StringValue swift = 3;
+  /*
+   * Номер аккаунта
+   */
+  google.protobuf.StringValue account_number = 4;
+  /*
+   * Iban номер
+   */
+  google.protobuf.StringValue iban = 5;
+  /*
+   * Дополнительная информация
+   */
+  google.protobuf.StringValue additional_info = 6;
+
+  /*
+   * Тип валюты
+   */
+  google.protobuf.StringValue currency_type = 7;
+
+  /*
+   * Признак запрета счёта
+   */
+  google.protobuf.BoolValue is_banned = 8;
+
+}
+
+/*
+ * Данные для криптокошелька
+ */
+message CryptoWallet {
+
+  /*
+   * Номер расчётного счета
+   */
+  google.protobuf.StringValue address = 1;
+
+  /*
+   * Справочник крипто-валюты
+   */
+  google.protobuf.StringValue wallet = 2;
+
+  /*
+   * Токен для крипто-кошелька
+   */
+  google.protobuf.StringValue token = 3;
+
+  /*
+   * Тип крипто-валюты
+   */
+  google.protobuf.StringValue crypto_currency_type = 4;
+
+  /*
+   * Признак запрета счёта
+   */
+  google.protobuf.BoolValue is_banned = 5;
+}
