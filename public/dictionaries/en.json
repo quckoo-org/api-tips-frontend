@@ -168,5 +168,8 @@
   "reset_password_title": "Reset Your Password",
   "reset_password_subtitle": "Enter a new password below to reset your account password.",
   "password_reset_success": "Password has been changed successfully",
-  "password_reset_failed": "Failed to change password"
+  "password_reset_failed": "Failed to change password",
+  "by_continuing_you_acknowledge_that_you_understand": "By continuing, you acknowledge that you understand and agree to the",
+  "terms_and_conditions": "Terms and Conditions",
+  "privacy_policy": "Privacy Policy"
 }
