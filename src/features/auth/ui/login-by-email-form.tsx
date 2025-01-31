@@ -43,10 +43,6 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
     loginMutation.mutateAsync(finalRequest);
   };
 
-  // box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
-  // box-shadow: 0px 10px 15px -5px rgba(0, 0, 0, 0.1);
-  // box-shadow: 0px 7px 7px -5px rgba(0, 0, 0, 0.04);
-
   return (
     <Card
       component="form"
@@ -57,7 +53,7 @@ export const LoginByEmailForm: FC<LoginByEmailProps> = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Title size="h3">
-        {t("play_smarter")} <br />{" "}
+        {t("play_smarter")}! <br />{" "}
         <span className="text-gray-600">{t("login_to_your_account")}</span>
       </Title>
       <TextInput

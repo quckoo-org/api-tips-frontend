@@ -17,12 +17,12 @@ const AuthUiLayout: FC<AuthUiLayoutProps> = ({ children, className }) => {
   const { t } = useTranslations();
 
   return (
-    <div className={clsx("h-screen bg-gray-50", className)}>
-      <div className="max-w-[460px] flex flex-col justify-center h-full m-auto py-6 px-4">
+    <div className={clsx("min-h-screen bg-gray-50", className)}>
+      <div className="max-w-[460px] flex flex-col gap-y-4 justify-center h-full m-auto py-6 px-4">
         <Link href={ROUTES.HOME} className="self-center">
           <Image src="/logo-dark.svg" width={163} height={38} alt="logo" />
         </Link>
-        <div className="grow flex lg:mt-12 lg:items-start justify-center items-center">
+        <div className="grow flex lg:mt-8 lg:items-start justify-center items-center">
           {children}
         </div>
         <Text className="text-gray-600 self-center text-center">
@@ -30,11 +30,11 @@ const AuthUiLayout: FC<AuthUiLayoutProps> = ({ children, className }) => {
             "By continuing, you acknowledge that you understand and agree to the",
           )}{" "}
           <Link className="text-gray-500 hover:underline" href={ROUTES.HOME}>
-            Terms and Conditions
+            {t("terms_and_conditions")}
           </Link>{" "}
           {t("and")}{" "}
           <Link className="text-gray-500 hover:underline" href={ROUTES.HOME}>
-            Privacy Policy
+            {t("privacy_policy")}
           </Link>
         </Text>
       </div>

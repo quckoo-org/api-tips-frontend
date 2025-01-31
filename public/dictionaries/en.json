@@ -172,5 +172,19 @@
   "password_reset_failed": "Failed to change password",
   "by_continuing_you_acknowledge_that_you_understand": "By continuing, you acknowledge that you understand and agree to the",
   "terms_and_conditions": "Terms and Conditions",
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "create": "Create",
+  "already_have_an_account": "Already have an account",
+  "log_in": "Log In",
+  "play_smarter": "Play smarter",
+  "login_to_your_account": "Login to your account",
+  "don't_have_an_account": "Don't have an account",
+  "sign_up": "Sign Up",
+  "continue": "Continue",
+  "create_order": "Create order",
+  "update": "Update",
+  "permissions": "Permissions",
+  "methods": "Methods",
+  "actions": "Actions",
+  "home": "Home"
 }
