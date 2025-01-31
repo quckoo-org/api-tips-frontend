@@ -40,7 +40,9 @@ export async function* errorMiddleware<Request, Response>(
 
     if (
       (response as ResponseT)?.response.status !==
-      OperationStatus.OPERATION_STATUS_OK
+        OperationStatus.OPERATION_STATUS_OK &&
+      (response as ResponseT)?.response.status !==
+        OperationStatus.OPERATION_STATUS_NO_DATA
     ) {
       throw new ServerError(
         (response as ResponseT).response.status,

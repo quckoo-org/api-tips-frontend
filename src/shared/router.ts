@@ -10,6 +10,7 @@ export const enum ROUTES {
   ADMINISTRATION = "/administration",
   RESET = "/reset",
   FORGOT_PASSWORD = "/forgot-password",
+  REQUISITES = "/requisites",
 }
 
 export const routesConfig: Array<{

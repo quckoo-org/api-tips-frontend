@@ -9,4 +9,5 @@ export const QUERY_KEYS = {
   PERMISSIONS: "permissions",
   METHODS: "methods",
   RESET_PASSWORD: "reset_password",
+  REQUISITES: "requisites",
 };

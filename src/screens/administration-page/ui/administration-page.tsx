@@ -2,7 +2,9 @@
 import { Tabs } from "@mantine/core";
 import React, { FC } from "react";
 import { useTranslations } from "@/shared/locale/translations";
-import { RolesTable, PermissionsTable, MethodsTable } from "@/widgets";
+import { MethodsTable } from "@/widgets/methods-table/ui/methods-table";
+import { PermissionsTable } from "@/widgets/permissions-table/ui/permissions-table";
+import { RolesTable } from "@/widgets/roles-table/ui/roles-table";
 
 export const AdministrationPage: FC = () => {
   const { t } = useTranslations();

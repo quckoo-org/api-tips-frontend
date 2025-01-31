@@ -75,6 +75,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
     //@ts-ignore
     const subscription = watch((data) => handleSubmit(handleSubmitForm)(data));
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line
   }, [handleSubmit, watch]);
 
   return (

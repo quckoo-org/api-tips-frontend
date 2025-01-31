@@ -7158,8 +7158,8 @@ __metadata:
   linkType: hard
 
 "ts-proto@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "ts-proto@npm:2.3.0"
+  version: 2.6.1
+  resolution: "ts-proto@npm:2.6.1"
   dependencies:
     "@bufbuild/protobuf": "npm:^2.0.0"
     case-anything: "npm:^2.1.13"
@@ -7167,7 +7167,7 @@ __metadata:
     ts-proto-descriptors: "npm:2.0.0"
   bin:
     protoc-gen-ts_proto: protoc-gen-ts_proto
-  checksum: 10c0/0571c93c277c44718e364a61b26c3d8db5c44210b150cb0966cecb27bf09996f683355c33c0eec2e4c9c960a9ea27f8197d841777a51e3b34144472449c8066e
+  checksum: 10c0/7cc5eb611971d76ff0e43587f5dd0a6e0e42f6a30ec8054f59ef6f8b88d25226072bed20212e1b2d94902ab79cf4042237bd16efad379f2eed47d0b8fd741627
   languageName: node
   linkType: hard
 
