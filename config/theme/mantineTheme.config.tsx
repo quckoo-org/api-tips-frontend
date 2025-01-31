@@ -1,19 +1,21 @@
 import {
-  Container,
-  createTheme,
-  rem,
-  Title,
-  Text,
-  MantineSize,
-  PasswordInput,
-  TextInput,
   Accordion,
   Button,
+  Container,
+  createTheme,
+  MantineSize,
+  PasswordInput,
+  rem,
+  Select,
+  Text,
+  TextInput,
+  Title,
 } from "@mantine/core";
 import { clsx } from "clsx";
 import { ChevronDown } from "lucide-react";
 import { typedTwConfig } from "../tailwind";
 import { parseTailwindColors } from "./utils/parseTailwindColors";
+
 const tailWindColors = parseTailwindColors(typedTwConfig.theme.colors);
 
 const CONTAINER_SIZES: Record<string, string> = {
@@ -37,30 +39,35 @@ const TITLE_LEADING: Record<string, string> = {
 
 const BUTTON_VARIANT = {
   xs: {
-    height: rem(48),
-    paddingInline: rem(24),
-    fontSize: typedTwConfig.theme.fontSize.md,
+    height: rem(30),
+    paddingInline: rem(14),
+    fontSize: typedTwConfig.theme.fontSize.xs,
+    borderRadius: typedTwConfig.theme.borderRadius.xs,
   },
   sm: {
-    height: rem(48),
-    paddingInline: rem(24),
-    fontSize: typedTwConfig.theme.fontSize.md,
+    height: rem(36),
+    paddingInline: rem(18),
+    fontSize: typedTwConfig.theme.fontSize.sm,
+    borderRadius: typedTwConfig.theme.borderRadius.sm,
   },
   md: {
     height: rem(48),
     paddingInline: rem(24),
     fontSize: typedTwConfig.theme.fontSize.md,
+    borderRadius: typedTwConfig.theme.borderRadius.md,
   },
   lg: {
     height: rem(48),
     paddingInline: rem(24),
     fontSize: typedTwConfig.theme.fontSize.md,
+    borderRadius: typedTwConfig.theme.borderRadius.lg,
   },
   xl: {
     height: rem(48),
     paddingInline: rem(24),
     fontSize: typedTwConfig.theme.fontSize.md,
     lineHeight: typedTwConfig.theme.lineHeight.md,
+    borderRadius: typedTwConfig.theme.borderRadius.xl,
   },
 };
 
@@ -78,6 +85,9 @@ export const mantineTheme = createTheme({
     Checkbox: {
       styles: {
         cursor: "pointer",
+      },
+      classNames: {
+        input: "rounded-xs",
       },
     },
     Container: Container.extend({
@@ -130,11 +140,13 @@ export const mantineTheme = createTheme({
       },
     }),
     TextInput: TextInput.extend({
-      vars: () => ({
-        root: {
-          "--input-bd": "red",
+      defaultProps: {
+        classNames: {
+          label: "font-semibold mb-1 text-sm",
         },
-      }),
+      },
+    }),
+    Select: Select.extend({
       defaultProps: {
         classNames: {
           label: "font-semibold mb-1 text-sm",
@@ -155,6 +167,7 @@ export const mantineTheme = createTheme({
           "--button-padding-x":
             BUTTON_VARIANT[size as MantineSize]?.paddingInline,
           "--button-fz": BUTTON_VARIANT[size as MantineSize]?.fontSize,
+          "--button-radius": BUTTON_VARIANT[size as MantineSize]?.borderRadius,
         },
       }),
     }),

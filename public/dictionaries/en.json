@@ -149,5 +149,12 @@
   "already_have_an_account": "Already have an account?",
   "log_in": "Log In",
   "create": "Create",
-  "continue": "Continue"
+  "continue": "Continue",
+  "users": "Users",
+  "home": "Home",
+  "create_order": "Create order",
+  "permissions": "Permissions",
+  "update": "Update",
+  "methods": "Methods",
+  "actions": "Actions"
 }

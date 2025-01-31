@@ -1,10 +1,9 @@
 "use client";
 
-import { Container } from "@mantine/core";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
 import { ROUTES } from "@/shared/router";
-import Header from "@/shared/ui/header";
+import { Sidebar } from "@/widgets/sidebar";
 
 type UiProviderProps = {
   children: React.ReactNode;
@@ -24,12 +23,10 @@ export const UiProvider: FC<UiProviderProps> = ({ children, lang }) => {
 
   if (!paths.includes(pathname))
     return (
-      <>
-        <Header />
-        <Container className="p-4" size="xl">
-          {children}
-        </Container>
-      </>
+      <div className="flex h-screen ">
+        <Sidebar className="sticky top-0 h-screen" />
+        <div className="p-6 mx-auto flex-1 overflow-auto">{children}</div>
+      </div>
     );
 
   return <>{children}</>;

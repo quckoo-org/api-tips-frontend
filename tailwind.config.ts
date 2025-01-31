@@ -34,6 +34,18 @@ export default {
           800: "#1971c2",
           900: "#1864ab",
         },
+        indigo: {
+          50: "#e7f5ff",
+          100: "#DBE4FF",
+          200: "#a5d8ff",
+          300: "#74c0fc",
+          400: "#4dabf7",
+          500: "#339af0",
+          600: "#1B5FF4",
+          700: "#1c7ed6",
+          800: "#1971c2",
+          900: "#1864ab",
+        },
         gray: {
           50: "#F8F9FA",
           100: "#f1f3f5",
@@ -54,11 +66,13 @@ export default {
         sm: { max: "639px" },
       },
       borderRadius: {
+        xs: rem(4),
         sm: rem(8),
         md: rem(12),
         lg: rem(16),
       },
       fontSize: {
+        xs: rem(12),
         sm: rem(14),
         md: rem(16),
         xl: rem(20),
@@ -68,6 +82,7 @@ export default {
         h0: rem(90),
       },
       lineHeight: {
+        xs: rem(16),
         sm: rem(20),
         md: rem(24),
         xl: rem(30),

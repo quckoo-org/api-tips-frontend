@@ -1,20 +1,19 @@
 "use client";
 
-import { ActionIcon, MenuItem, Pagination, Table } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
-import { FC } from "react";
-import { RoleRow, useGetRoles } from "@/entities/role";
+import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
+import { FC, useMemo } from "react";
+import { useGetRoles } from "@/entities/role";
 
 import {
   useCreateRoleModal,
   useDeleteRoleModal,
   useUpdateRoleModal,
 } from "@/features/manage-roles";
-import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
-import List from "@/shared/ui/list";
-import { RolesTableSkeleton } from "./roles-table-skeleton";
+import { Role } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import { useReactTable } from "@/shared/ui/use-react-table";
 
 type RolePageProps = {
   className?: string;
@@ -27,61 +26,73 @@ export const RolesTable: FC<RolePageProps> = ({ className }) => {
   const { t } = useTranslations();
 
   const rolesQuery = useGetRoles();
-  const pagination = usePagination(rolesQuery.data?.roles.length);
 
-  const rows = (
-    <List
-      page={pagination.page}
-      pageSize={pagination.pageSize}
-      items={rolesQuery.data?.roles}
-      itemToRender={(role) => (
-        <RoleRow
-          key={role.id}
-          role={role}
-          actions={
-            <>
-              <MenuItem onClick={() => updateModal.updateRole(role)}>
-                {t("update_role")}
-              </MenuItem>
-              <MenuItem onClick={() => deleteModal.deleteRole(role)}>
-                {t("delete_role")}
-              </MenuItem>
-            </>
-          }
-        />
-      )}
-    />
+  const columns = useMemo<MRT_ColumnDef<Role>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: t("name"),
+        sortingFn: "alphanumeric",
+        size: undefined, // Убираем фиксированный размер
+        grow: 1, // Даем колонке возможность растягиваться
+      },
+    ],
+    [t],
   );
 
-  if (rolesQuery.isLoading) {
-    return <RolesTableSkeleton className={className} />;
-  }
+  const table = useReactTable({
+    columns,
+    data: rolesQuery.data?.roles ?? [],
+    enableRowActions: true,
+    displayColumnDefOptions: {
+      "mrt-row-actions": {
+        header: t("actions"),
+        size: 80, // Фиксируем ширину колонки
+        maxSize: 80,
+        enableResizing: false, // Запрещаем растяжение
+        mantineTableHeadCellProps: { style: { flex: "none", width: "80px" } }, // Принудительно фиксируем
+        mantineTableBodyCellProps: { style: { flex: "none", width: "80px" } },
+      },
+    },
+    renderRowActions: ({ cell }) => (
+      <div className="flex w-fit gap-x-4">
+        <Button
+          onClick={() => updateModal.updateRole(cell.row.original)}
+          color="gray"
+          variant="outline"
+          size="xs"
+        >
+          {t("update")}
+        </Button>
+        <Button
+          onClick={() => deleteModal.deleteRole(cell.row.original)}
+          color="gray"
+          variant="outline"
+          size="xs"
+        >
+          {t("delete")}
+        </Button>
+      </div>
+    ),
+    state: {
+      isLoading: rolesQuery.isLoading,
+    },
+    defaultColumn: {
+      // maxSize: 200,
+      // size: 140,
+    },
+  });
 
   return (
     <>
       <div className={clsx("", className)}>
-        <div className="flex justify-end mt-4 mb-2">
-          <ActionIcon onClick={crateModal.createRole}>
-            <PlusIcon />
-          </ActionIcon>
+        <div className="flex justify-between mb-6">
+          <Title size="h1">{t("roles")}</Title>
+          <Button size="sm" onClick={crateModal.createRole}>
+            {t("create_role")}
+          </Button>
         </div>
-        <Table className="mb-4" striped highlightOnHover>
-          <Table.Thead className="bg-primary-200">
-            <Table.Tr>
-              <Table.Th>{t("role_name")}</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-        <Pagination
-          disabled={rolesQuery.isPending}
-          value={pagination.page}
-          onChange={(page) => {
-            pagination.handlePageChange(page, pagination.totalPages);
-          }}
-          total={pagination.totalPages ?? 0}
-        />
+        <MantineReactTable table={table} />
       </div>
       {crateModal.modal}
       {updateModal.modal}

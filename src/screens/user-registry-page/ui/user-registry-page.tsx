@@ -1,13 +1,9 @@
 "use client";
 
-import { ActionIcon, Menu, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Button, Menu, Text, Title, Tooltip } from "@mantine/core";
 import clsx from "clsx";
-import { EllipsisIcon, PlusIcon } from "lucide-react";
-import {
-  MantineReactTable,
-  type MRT_ColumnDef,
-  useMantineReactTable,
-} from "mantine-react-table";
+import { EllipsisIcon } from "lucide-react";
+import { MantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
 import { useGetUsers } from "@/entities/user";
 import {
@@ -24,6 +20,7 @@ import {
   GetUsersRequest_Filter,
   User,
 } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import { useReactTable } from "@/shared/ui/use-react-table";
 
 type UserRegistryPageProps = {
   className?: string;
@@ -161,21 +158,9 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     [t],
   );
 
-  const table = useMantineReactTable({
+  const table = useReactTable({
     columns,
     data: usersQuery.data?.users ?? [],
-    enableColumnOrdering: true,
-    enableGlobalFilter: false,
-    enableColumnActions: false,
-    enableRowActions: true,
-    positionActionsColumn: "last",
-    paginationDisplayMode: "pages",
-    enableColumnDragging: false,
-    enableDensityToggle: false,
-    enableFullScreenToggle: false,
-    enableHiding: false,
-    filterFromLeafRows: false,
-    enableTopToolbar: false,
     renderRowActions: ({ cell }) => (
       <Menu>
         <Menu.Target>
@@ -195,11 +180,10 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     state: {
       isLoading: usersQuery.isLoading,
     },
-    initialState: { density: "xs" },
     defaultColumn: {
       minSize: 20,
-      maxSize: 9001,
-      size: 140,
+      maxSize: 200,
+      size: 100,
     },
   });
 
@@ -211,17 +195,20 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   return (
     <>
       <div className={clsx("", className)}>
-        <div className="flex gap-4 justify-between ">
-          <UserRegistryFilters
-            className="grow"
-            result={filtersResult}
-            onSubmit={handleSubmitFilters}
-            isPending={usersQuery.isFetching}
-          />
-          <ActionIcon size="lg" onClick={createModal.createUser}>
-            <PlusIcon />
-          </ActionIcon>
+        <div className="flex gap-4 justify-between">
+          <Title size="h1" className="mb-6">
+            {t("user_registry")}
+          </Title>
+          <Button size="sm" onClick={createModal.createUser}>
+            {t("create_user")}
+          </Button>
         </div>
+        <UserRegistryFilters
+          className="grow mb-6"
+          result={filtersResult}
+          onSubmit={handleSubmitFilters}
+          isPending={usersQuery.isFetching}
+        />
         <MantineReactTable table={table} />
       </div>
       {createModal.modal}

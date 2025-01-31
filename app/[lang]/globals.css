@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-}
+:root {}
 
 body {
   @apply bg-white;
@@ -13,3 +12,18 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+
+.mrt-table {
+  --header-name-size: auto !important;
+  --col-name-size: auto !important;
+}
+
+.mrt-table-head-cell-labels {
+  @apply flex justify-between w-full;
+}
+
+.mrt-table-paper {
+  @apply border-none shadow-none;
+}
+

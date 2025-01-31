@@ -1,11 +1,11 @@
 "use client";
 
-import { ActionIcon, MenuItem, Pagination, Table } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
-import { FC, useState } from "react";
+import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
+import { FC, useMemo, useState } from "react";
 
-import { MethodRow, useGetMethods } from "@/entities/methods";
+import { useGetMethods } from "@/entities/methods";
 import {
   useCreateMethodModal,
   useDeleteMethodModal,
@@ -17,8 +17,8 @@ import {
 } from "@/features/methods-table-filters";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
-import List from "@/shared/ui/list";
-import { MethodsTableSkeleton } from "./methods-table-skeleton";
+import { Method } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import { useReactTable } from "@/shared/ui/use-react-table";
 
 type MethodPageProps = {
   className?: string;
@@ -35,77 +35,90 @@ export const MethodsTable: FC<MethodPageProps> = ({ className }) => {
   const methodsQuery = useGetMethods();
   const pagination = usePagination(methodsQuery.data?.methods.length, 15);
 
-  const filteredMethods = methodsQuery.data?.methods.filter((method) => {
-    if (filtersResult.search) {
-      return method.name
-        .toLowerCase()
-        .includes(filtersResult.search.toLowerCase());
-    }
-    return true;
-  });
-
-  const rows = (
-    <List
-      page={pagination.page}
-      pageSize={pagination.pageSize}
-      items={filteredMethods}
-      itemToRender={(method) => (
-        <MethodRow
-          key={method.id}
-          method={method}
-          actions={
-            <>
-              <MenuItem onClick={() => updateModal.updateMethod(method)}>
-                {t("update_method")}
-              </MenuItem>
-              <MenuItem onClick={() => deleteMethod.deleteMethod(method)}>
-                {t("delete_method")}
-              </MenuItem>
-            </>
-          }
-        />
-      )}
-    />
+  const filteredMethods = useMemo(
+    () =>
+      methodsQuery.data?.methods.filter((method) => {
+        if (filtersResult.search) {
+          return method.name
+            .toLowerCase()
+            .includes(filtersResult.search.toLowerCase());
+        }
+        return true;
+      }),
+    [filtersResult.search, methodsQuery.data?.methods],
   );
+
+  const columns = useMemo<MRT_ColumnDef<Method>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: t("name"),
+        sortingFn: "alphanumeric",
+        grow: 1,
+      },
+    ],
+    [t],
+  );
+
+  const table = useReactTable({
+    columns,
+    data: filteredMethods ?? [],
+    displayColumnDefOptions: {
+      "mrt-row-actions": {
+        header: t("actions"),
+      },
+    },
+    renderRowActions: ({ cell }) => (
+      <div className="flex gap-x-4">
+        <Button
+          onClick={() => updateModal.updateMethod(cell.row.original)}
+          color="gray"
+          variant="outline"
+          size="xs"
+        >
+          {t("update")}
+        </Button>
+        <Button
+          onClick={() => deleteMethod.deleteMethod(cell.row.original)}
+          color="gray"
+          variant="outline"
+          size="xs"
+        >
+          {t("delete")}
+        </Button>
+      </div>
+    ),
+    state: {
+      isLoading: methodsQuery.isLoading,
+    },
+    defaultColumn: {
+      maxSize: 200,
+      size: 140,
+    },
+  });
 
   const handleSubmitFilters = (data: MethodsTableFiltersT) => {
     pagination.handlePageChange(1, pagination.pageSize);
     setFiltersResult(data);
   };
 
-  if (methodsQuery.isLoading) {
-    return <MethodsTableSkeleton className={className} />;
-  }
-
   return (
     <>
       <div className={clsx("", className)}>
-        <div className="flex justify-end mt-4 mb-2 items-center">
+        <Title size="h1" className="mb-6">
+          {t("methods")}
+        </Title>
+        <div className="flex justify-end mb-6 items-center">
           <MethodTableFilters
             onSubmit={handleSubmitFilters}
             result={filtersResult}
+            className="grow"
           />
-          <ActionIcon onClick={crateModal.createMethod}>
-            <PlusIcon />
-          </ActionIcon>
+          <Button size="sm" onClick={crateModal.createMethod}>
+            {t("create_method")}
+          </Button>
         </div>
-        <Table className="mb-4" striped highlightOnHover>
-          <Table.Thead className="bg-primary-200">
-            <Table.Tr>
-              <Table.Th>{t("method_name")}</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-        <Pagination
-          disabled={methodsQuery.isPending}
-          value={pagination.page}
-          onChange={(page) => {
-            pagination.handlePageChange(page, pagination.totalPages);
-          }}
-          total={pagination.totalPages ?? 0}
-        />
+        <MantineReactTable table={table} />
       </div>
       {crateModal.modal}
       {updateModal.modal}

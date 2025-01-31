@@ -63,17 +63,13 @@ export const PermissionsTableFilters: FC<PermissionsTableFiltersProps> = ({
   return (
     <form
       onSubmit={handleSubmit(handleSubmitForm)}
-      className={clsx("w-full mr-2", className)}
+      className={clsx("mr-2", className)}
     >
-      <Flex className="w-full">
-        <div className="flex w-full mr-auto">
-          <TextInput
-            placeholder={t("search_permissions")}
-            {...register("search")}
-            className="w-full"
-          />
-        </div>
-      </Flex>
+      <TextInput
+        placeholder={t("search_permissions")}
+        {...register("search")}
+        className="w-full"
+      />
     </form>
   );
 };

@@ -8,7 +8,7 @@ export const AdministrationPage: FC = () => {
   const { t } = useTranslations();
   return (
     <Tabs defaultValue="roles">
-      <Tabs.List>
+      <Tabs.List className="mb-6">
         <Tabs.Tab value="roles">{t("roles_tab")}</Tabs.Tab>
         <Tabs.Tab value="permissions">{t("permissions_tab")}</Tabs.Tab>
         <Tabs.Tab value="methods">{t("methods_tab")}</Tabs.Tab>

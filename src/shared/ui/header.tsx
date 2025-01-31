@@ -25,8 +25,9 @@ const Header = observer(() => {
     queryClient.removeQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
     router.push(ROUTES.HOME);
   };
+
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
+    <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white bg-primary-500">
       <div>
         <Link href="/" className="text-xl font-bold">
           Home
