@@ -2,12 +2,11 @@
 
 import {
   Button,
-  Paper,
+  Card,
   PasswordInput,
+  Text,
   TextInput,
   Title,
-  Text,
-  Card,
 } from "@mantine/core";
 import { sha256 } from "js-sha256";
 import Link from "next/link";

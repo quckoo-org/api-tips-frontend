@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  ActionIcon,
-  Button,
-  MenuItem,
-  Pagination,
-  Table,
-  Title,
-} from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
-import { PlusIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
 
-import { PermissionRow, useGetPermissions } from "@/entities/permissions";
+import { useGetPermissions } from "@/entities/permissions";
 import {
   useCreatePermissionModal,
   useDeletePermissionModal,
@@ -23,11 +15,7 @@ import { MethodsTableFiltersT } from "@/features/methods-table-filters";
 import { PermissionsTableFilters } from "@/features/permissions-table-filters";
 import { usePagination } from "@/shared/hooks/use-pagination";
 import { useTranslations } from "@/shared/locale/translations";
-import {
-  Permission,
-  Role,
-} from "@/shared/proto/api_tips_access/v1/api_tips_access";
-import List from "@/shared/ui/list";
+import { Permission } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { useReactTable } from "@/shared/ui/use-react-table";
 import { PermissionsTableSkeleton } from "./permissions-table-skeleton";
 

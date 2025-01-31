@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Menu, Text } from "@mantine/core";
+import { Box, Button, Menu, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconHome, IconUsers } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -7,7 +7,6 @@ import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
   PackageIcon,
-  PanelLeftCloseIcon,
   SquareKanbanIcon,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";

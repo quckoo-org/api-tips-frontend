@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, TextInput } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
