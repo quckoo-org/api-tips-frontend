@@ -68,8 +68,8 @@ export const ResetForm: FC<ResetFormProps> = ({ className, code, email }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <PasswordInput
-            label="New Password"
-            placeholder="Enter your new password"
+            label={t("new_password")}
+            placeholder={t("enter_your_new_password")}
             {...register("password", {
               required: t("password_required"),
               minLength: {

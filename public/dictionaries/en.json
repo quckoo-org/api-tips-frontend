@@ -186,5 +186,7 @@
   "permissions": "Permissions",
   "methods": "Methods",
   "actions": "Actions",
-  "home": "Home"
+  "home": "Home",
+  "new_password": "New Password",
+  "enter_your_new_password": "Enter your new password"
 }
