@@ -1,5 +1,5 @@
 "use client";
-import { Card, Text } from "@mantine/core";
+import { Card, Text, Title } from "@mantine/core";
 import clsx from "clsx";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -17,30 +17,31 @@ export const ResetPageError: FC<ResetPageErrorProps> = ({
   email,
 }) => {
   const { t } = useTranslations();
-  console.log(email);
+
   return (
-    <div
+    <Card
+      shadow="sm"
+      radius="lg"
+      padding="xl"
       className={clsx(
-        "flex items-center justify-center bg-gray-50 p-4",
+        "bg-white border border-gray-300 w-full flex flex-col gap-y-4 max-w-md",
         className,
       )}
     >
-      <Card shadow="md" radius="md" padding="lg" className="bg-white max-w-md">
-        <Text className="text-xl font-semibold mb-4 text-center">
-          {t("invalid_link")}
-        </Text>
-        <Text className="text-gray-600 text-sm mb-6 text-center">
-          {errorText || t("reset_error_text_default")}
-        </Text>
-        <div className="text-center">
-          <Link
-            href={ROUTES.FORGOT_PASSWORD + `?email=${email ?? ""}`}
-            className="text-sm text-blue-500 hover:underline"
-          >
-            {t("request_new_link")}
-          </Link>
-        </div>
-      </Card>
-    </div>
+      <Title className="text-center" size="h3">
+        {t("invalid_link")}
+      </Title>
+      <Text className="text-gray-600 text-sm text-center">
+        {errorText || t("reset_error_text_default")}
+      </Text>
+      <div className="text-center">
+        <Link
+          href={ROUTES.FORGOT_PASSWORD + `?email=${email ?? ""}`}
+          className="text-sm text-blue-500 hover:underline"
+        >
+          {t("request_new_link")}
+        </Link>
+      </div>
+    </Card>
   );
 };

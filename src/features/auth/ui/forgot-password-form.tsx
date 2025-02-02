@@ -1,6 +1,6 @@
 "use client";
 
-import { TextInput, Button, Card, Text } from "@mantine/core";
+import { TextInput, Button, Card, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -40,10 +40,15 @@ export const ForgotPasswordForm = () => {
   }, [resendCooldown]);
 
   return (
-    <Card shadow="md" radius="md" padding="lg" className="bg-white">
-      <Text className="text-xl font-bold mb-4">
+    <Card
+      shadow="sm"
+      radius="lg"
+      padding="xl"
+      className="bg-white border border-gray-300"
+    >
+      <Title className="mb-4" size="h3">
         {t("forgot_password_title")}
-      </Text>
+      </Title>
       <Text className="text-gray-600 mb-4 ">
         {t("forgot_password_description")}
       </Text>
@@ -66,6 +71,7 @@ export const ForgotPasswordForm = () => {
           fullWidth
           variant="filled"
           color="dark"
+          radius="lg"
           disabled={resendCooldown > 0}
           loading={recoveryPasswordQuery.isPending}
         >

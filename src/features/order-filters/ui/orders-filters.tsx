@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  ActionIcon,
-  Collapse,
-  Flex,
-  Loader,
-  Select,
-  Title,
-} from "@mantine/core";
-import { useDebouncedCallback, useDisclosure } from "@mantine/hooks";
+import { Select } from "@mantine/core";
+import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
-import { ListFilterIcon } from "lucide-react";
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useGetOrderStatus } from "@/entities/order";
@@ -33,8 +25,6 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
 }) => {
   const { getOrderStatus } = useGetOrderStatus();
   const { t } = useTranslations();
-
-  const [opened, handlers] = useDisclosure();
 
   const STATUSES_DATA: Array<{
     value: Partial<OrderStatus>;
@@ -93,37 +83,22 @@ export const OrdersFilters: FC<OrdersFiltersProps> = ({
       onSubmit={handleSubmit(handleSubmitForm)}
       className={clsx("mb-2", className)}
     >
-      <Flex>
-        <Title order={3} className="font-normal">
-          {t("orders")}
-        </Title>
-        <div className="flex ml-auto gap-x-4">
-          <ActionIcon size="lg" onClick={handlers.toggle}>
-            {isPending ? (
-              <Loader color="white" size="sm" />
-            ) : (
-              <ListFilterIcon />
-            )}
-          </ActionIcon>
-        </div>
-      </Flex>
-      <Collapse in={opened}>
-        <div className="flex gap-4">
-          <Controller
-            control={control}
-            name="orderStatus"
-            render={({ field }) => (
-              <Select
-                {...field}
-                clearable
-                placeholder={t("order_status")}
-                label={t("order_status")}
-                data={STATUSES_DATA}
-              />
-            )}
-          />
-        </div>
-      </Collapse>
+      <div className="flex gap-4">
+        <Controller
+          control={control}
+          name="orderStatus"
+          render={({ field }) => (
+            <Select
+              {...field}
+              clearable
+              disabled={isPending}
+              placeholder={t("order_status")}
+              label={t("order_status")}
+              data={STATUSES_DATA}
+            />
+          )}
+        />
+      </div>
     </form>
   );
 };

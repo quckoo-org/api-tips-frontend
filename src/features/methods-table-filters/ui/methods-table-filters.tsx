@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, TextInput } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -60,17 +60,9 @@ export const MethodTableFilters: FC<MethodTableFiltersProps> = ({
   return (
     <form
       onSubmit={handleSubmit(handleSubmitForm)}
-      className={clsx("w-full mr-2", className)}
+      className={clsx("mr-2", className)}
     >
-      <Flex className="w-full">
-        <div className="flex w-full mr-auto">
-          <TextInput
-            placeholder={t("search_method")}
-            {...register("search")}
-            className="w-full"
-          />
-        </div>
-      </Flex>
+      <TextInput placeholder={t("search_method")} {...register("search")} />
     </form>
   );
 };

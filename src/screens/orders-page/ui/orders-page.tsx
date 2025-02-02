@@ -1,13 +1,9 @@
 "use client";
 
-import { ActionIcon, Loader, Menu, Text } from "@mantine/core";
+import { ActionIcon, Button, Loader, Menu, Text, Title } from "@mantine/core";
 import clsx from "clsx";
-import { EllipsisIcon, PlusIcon } from "lucide-react";
-import {
-  MantineReactTable,
-  MRT_ColumnDef,
-  useMantineReactTable,
-} from "mantine-react-table";
+import { EllipsisIcon } from "lucide-react";
+import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
 import { OrderStatusText, useGetOrders } from "@/entities/order";
 import { useGetTariffs } from "@/entities/tariff";
@@ -26,6 +22,7 @@ import {
   Order,
 } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 import { CurrencyCell } from "@/shared/ui";
+import { useReactTable } from "@/shared/ui/use-react-table";
 import { MenageOrderProvider } from "../providers";
 
 type OrdersPageProps = {
@@ -122,21 +119,9 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     [t],
   );
 
-  const table = useMantineReactTable({
+  const table = useReactTable({
     columns,
     data: ordersQuery.data?.orders ?? [],
-    enableColumnOrdering: true,
-    enableGlobalFilter: false,
-    enableColumnActions: false,
-    enableRowActions: true,
-    positionActionsColumn: "last",
-    paginationDisplayMode: "pages",
-    enableColumnDragging: false,
-    enableDensityToggle: false,
-    enableFullScreenToggle: false,
-    enableHiding: false,
-    filterFromLeafRows: false,
-    enableTopToolbar: false,
     renderRowActions: ({ cell }) => (
       <Menu>
         <Menu.Target>
@@ -175,11 +160,10 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     state: {
       isLoading: ordersQuery.isLoading,
     },
-    initialState: { density: "xs" },
     defaultColumn: {
       minSize: 20,
       maxSize: 9001,
-      size: 140,
+      size: 135,
     },
   });
 
@@ -188,10 +172,6 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     table.setPageIndex(0);
   };
 
-  // if (ordersQuery.isError) {
-  //   return <OrdersPageError className={className} />;
-  // }
-
   return (
     <MenageOrderProvider
       tariffs={tariffsQuery.data?.tariffs ?? []}
@@ -199,16 +179,19 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     >
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
-          <OrdersFilters
-            className="grow"
-            result={filtersResult}
-            onSubmit={handleSubmitFilters}
-            isPending={ordersQuery.isFetching}
-          />
-          <ActionIcon size="lg" onClick={createModal.addOrder}>
-            <PlusIcon />
-          </ActionIcon>
+          <Title size="h1" className="mb-6">
+            {t("orders")}
+          </Title>
+          <Button size="sm" onClick={createModal.addOrder}>
+            {t("create_order")}
+          </Button>
         </div>
+        <OrdersFilters
+          className="grow mb-6"
+          result={filtersResult}
+          onSubmit={handleSubmitFilters}
+          isPending={ordersQuery.isFetching}
+        />
         <MantineReactTable table={table} />
       </div>
       {createModal.modal}

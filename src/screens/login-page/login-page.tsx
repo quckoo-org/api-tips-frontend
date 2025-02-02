@@ -8,9 +8,5 @@ type LoginPageProps = {
 };
 
 export const LoginPage: FC<LoginPageProps> = ({ className }) => {
-  return (
-    <div className={clsx("", className)}>
-      <LoginByEmailForm />
-    </div>
-  );
+  return <LoginByEmailForm className={clsx("", className)} />;
 };

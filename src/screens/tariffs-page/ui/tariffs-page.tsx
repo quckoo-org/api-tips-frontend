@@ -1,13 +1,9 @@
 "use client";
 
-import { ActionIcon, Menu, Text, Title } from "@mantine/core";
+import { ActionIcon, Button, Menu, Text, Title } from "@mantine/core";
 import clsx from "clsx";
-import { EllipsisIcon, PlusIcon } from "lucide-react";
-import {
-  MantineReactTable,
-  type MRT_ColumnDef,
-  useMantineReactTable,
-} from "mantine-react-table";
+import { EllipsisIcon } from "lucide-react";
+import { MantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo } from "react";
 import { useGetTariffs } from "@/entities/tariff";
 import {
@@ -20,6 +16,7 @@ import { sortDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { Tariff } from "@/shared/proto/api_tips_tariff/v1/api_tips_tariff";
 import { CurrencyCell } from "@/shared/ui";
+import { useReactTable } from "@/shared/ui/use-react-table";
 import { TariffsPageError } from "./tariffs-page-error";
 
 type TariffPageProps = {
@@ -110,21 +107,9 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
     [t],
   );
 
-  const table = useMantineReactTable({
+  const table = useReactTable({
     columns,
     data: tariffsQuery.data?.tariffs ?? [],
-    enableColumnOrdering: true,
-    enableGlobalFilter: false,
-    enableColumnActions: false,
-    enableRowActions: true,
-    positionActionsColumn: "last",
-    paginationDisplayMode: "pages",
-    enableColumnDragging: false,
-    enableDensityToggle: false,
-    enableFullScreenToggle: false,
-    enableHiding: false,
-    filterFromLeafRows: false,
-    enableTopToolbar: false,
     renderRowActions: ({ cell }) => (
       <Menu>
         <Menu.Target>
@@ -144,7 +129,6 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
     state: {
       isLoading: tariffsQuery.isLoading,
     },
-    initialState: { density: "xs" },
     defaultColumn: {
       minSize: 20,
       maxSize: 9001,
@@ -160,12 +144,12 @@ export const TariffsPage: FC<TariffPageProps> = ({ className }) => {
     <>
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
-          <Title order={3} className="font-normal mb-4">
+          <Title size="h1" className="mb-6">
             {t("tariffs")}
           </Title>
-          <ActionIcon onClick={crateModal.createTariff}>
-            <PlusIcon />
-          </ActionIcon>
+          <Button size="sm" onClick={crateModal.createTariff}>
+            {t("create_tariff")}
+          </Button>
         </div>
         <MantineReactTable table={table} />
       </div>
