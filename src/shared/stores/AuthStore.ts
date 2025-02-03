@@ -1,18 +1,30 @@
 "use client";
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
-import { TokenService } from "@/shared/lib";
-import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import { ROLES } from "@/shared/lib";
+
+export type UserResponse = {
+  aud: string;
+  cca3: string;
+  email: string;
+  exp: number;
+  firstname: string;
+  iss: string;
+  jti: string;
+  lastname: string;
+  roles: string[];
+  sub: string;
+};
 
 class AuthStore {
-  user: User | null = null;
+  user: UserResponse | null = null;
   isAuthenticated = false;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  login(user: User | null) {
+  login(user: UserResponse | null) {
     this.user = user;
     this.isAuthenticated = true;
   }
@@ -23,13 +35,12 @@ class AuthStore {
     Cookies.remove("jwt");
   }
 
-  syncWithCookies() {
-    const token = TokenService.getAccessToken();
-    this.isAuthenticated = !!token;
-  }
-  setCurrentUser(currentUser: User) {
-    this.user = currentUser;
-    this.isAuthenticated = true;
+  isAccess(rolesHasAccess: ROLES[] | string[]) {
+    return rolesHasAccess.length && this.user?.roles
+      ? this.user?.roles.some((userRole) =>
+          rolesHasAccess.includes(userRole as ROLES),
+        )
+      : false;
   }
 }
 
