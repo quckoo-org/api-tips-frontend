@@ -99,3 +99,20 @@ enum OrderStatus {
    */
   ORDER_STATUS_CANCELLED = 3;
 }
+
+enum PaymentType {
+  /*
+   *  Дефолтный (неопределенный) статус оплаты
+   */
+  PAYMENT_TYPE_UNSPECIFIED = 0;
+
+  /*
+   *  Cтатус заказа "Создан", присваивается после создания счёта
+   */
+  PAYMENT_TYPE_CRYPTO = 1;
+
+  /*
+   *  Cтатус заказа "Оплачен", присваивается после оплаты счёта (устанавливается вручную менеджером)
+   */
+  PAYMENT_TYPE_BANK = 2;
+}

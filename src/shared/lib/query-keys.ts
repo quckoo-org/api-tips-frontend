@@ -10,4 +10,5 @@ export const QUERY_KEYS = {
   METHODS: "methods",
   RESET_PASSWORD: "reset_password",
   REQUISITES: "requisites",
+  INVOICES: "invoices",
 };
