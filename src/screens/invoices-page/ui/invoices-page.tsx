@@ -2,6 +2,7 @@
 
 import { ActionIcon, Button, Menu, Text, Title } from "@mantine/core";
 import clsx from "clsx";
+import dayjs from "dayjs";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
@@ -136,10 +137,16 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
       return (
         invoice.invoiceOwner?.email.includes(filtersResult.email) &&
         (filtersResult.createdDate
-          ? invoice.createdDate === filtersResult.createdDate
+          ? dayjs(invoice.createdDate).isSame(
+              dayjs(filtersResult.createdDate),
+              "day",
+            )
           : true) &&
         (filtersResult.paymentDate
-          ? invoice.paymentDate === filtersResult.paymentDate
+          ? dayjs(invoice.paymentDate).isSame(
+              dayjs(filtersResult.paymentDate),
+              "day",
+            )
           : true)
       );
     });
