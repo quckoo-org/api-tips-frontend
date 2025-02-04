@@ -5,7 +5,7 @@ import {
   GetInvoicesResponse,
   UpdateInvoiceRequest,
   UpdateInvoiceResponse,
-} from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+} from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 export const useUpdateInvoice = () => {
   const { updateInvoice } = useInvoicesClient();

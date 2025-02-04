@@ -71,6 +71,7 @@ export const InvoicesFilters: FC<OrdersFiltersProps> = ({
             <DatePickerInput
               label={t("invoice_created_date")}
               placeholder={t("enter_invoice_created_date")}
+              className={"w-1/6"}
               value={field.value}
               onChange={field.onChange}
               maxDate={new Date()}
@@ -86,6 +87,7 @@ export const InvoicesFilters: FC<OrdersFiltersProps> = ({
               label={t("invoice_payment_date")}
               placeholder={t("enter_invoice_payment_date")}
               value={field.value}
+              className={"w-1/6"}
               onChange={field.onChange}
               maxDate={new Date()}
               clearable

@@ -5,7 +5,7 @@ import {
   CreateInvoiceRequest,
   CreateInvoiceResponse,
   GetInvoicesResponse,
-} from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+} from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 export const useCreateInvoice = () => {
   const { createInvoice } = useInvoicesClient();
@@ -23,7 +23,7 @@ export const useCreateInvoice = () => {
     },
     onSuccess: (orderResponse) => {
       queryClient.setQueriesData(
-        { queryKey: [QUERY_KEYS.ORDERS] },
+        { queryKey: [QUERY_KEYS.INVOICES] },
         (oldData: GetInvoicesResponse | undefined) => {
           if (!oldData || !orderResponse.invoice) return oldData;
 

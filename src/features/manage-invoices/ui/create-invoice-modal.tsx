@@ -4,11 +4,13 @@ import { Modal } from "@mantine/core";
 import clsx from "clsx";
 import { FC } from "react";
 import { InvoiceForm, useCreateInvoice } from "@/features/manage-invoices";
+import { CreateInvoiceFormValuesT } from "@/features/manage-invoices/model/types";
+import { toDecimal } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import {
   CreateInvoiceRequest,
   Invoice,
-} from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+} from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 type CreateInvoiceModalProps = {
   className?: string;
@@ -22,15 +24,21 @@ export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
   const { t } = useTranslations();
   const addInvoiceMutation = useCreateInvoice();
 
-  const onCreateInvoice = async (req: CreateInvoiceRequest) => {
-    const invoiceResponse = await addInvoiceMutation.mutateAsync(req);
+  const onCreateInvoice = async (req: CreateInvoiceFormValuesT) => {
+    const invoiceRequest: CreateInvoiceRequest = {
+      ...req,
+      totalAmount: toDecimal(req.totalAmount),
+      orderId: +req.orderId,
+    };
+    const invoiceResponse =
+      await addInvoiceMutation.mutateAsync(invoiceRequest);
 
     onClose(invoiceResponse.invoice);
   };
 
   return (
     <Modal
-      title={t("add_invoice")}
+      title={t("create_invoice")}
       opened
       onClose={onClose}
       className={clsx("", className)}

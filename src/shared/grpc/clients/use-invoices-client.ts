@@ -1,6 +1,6 @@
 import { useGrpcClient } from "@/shared/grpc/useGrpcClient";
-import { ApiTipsInvoicesServiceDefinition } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { ApiTipsInvoiceServiceDefinition } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 export const useInvoicesClient = () => {
-  return useGrpcClient(ApiTipsInvoicesServiceDefinition);
+  return useGrpcClient(ApiTipsInvoiceServiceDefinition);
 };

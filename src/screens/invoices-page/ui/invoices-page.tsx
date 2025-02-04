@@ -5,9 +5,11 @@ import clsx from "clsx";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { InvoicePaymentText, useGetInvoices } from "@/entities/invoices";
 import { ValidPayment } from "@/entities/invoices/model/types";
 
+import { OrderStatusText } from "@/entities/order";
 import { InvoicesFilters, InvoicesFiltersT } from "@/features/invoices-filters";
 import {
   useCreateInvoiceModal,
@@ -16,7 +18,8 @@ import {
 import { formatDate } from "@/shared/lib";
 import { sortDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
-import { Invoice } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { Invoice } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
+import { OrderStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 import { CurrencyCell } from "@/shared/ui";
 import { useReactTable } from "@/shared/ui/use-react-table";
 
@@ -39,6 +42,11 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
   const columns = useMemo<MRT_ColumnDef<Invoice>[]>(
     () => [
       {
+        accessorKey: "guid",
+        header: t("invoice_guid"),
+        sortingFn: "alphanumeric",
+      },
+      {
         accessorKey: "invoiceOwner.email",
         header: t("email"),
         sortingFn: "alphanumeric",
@@ -54,11 +62,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
               cell.row.original.invoiceOwner?.lastName}
           </Text>
         ),
-      },
-      {
-        accessorKey: "guid",
-        header: t("invoice_guid"),
-        sortingFn: "alphanumeric",
       },
       {
         accessorKey: "refNumber",
@@ -82,13 +85,18 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
       {
         enableSorting: false,
         accessorKey: "paymentType",
-        header: t("invoice_status"),
+        header: t("invoice_payment_type"),
         sortingFn: "alphanumeric",
         Cell: ({ cell }) => (
           <InvoicePaymentText
             paymentType={cell.row.original.paymentType as ValidPayment}
           />
         ),
+      },
+      {
+        accessorKey: "currency",
+        header: t("invoice_currency"),
+        sortingFn: "basic",
       },
       {
         accessorKey: "createdDate",
@@ -107,6 +115,14 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
         ),
       },
       {
+        accessorKey: "status",
+        header: t("invoice_status"),
+        sortingFn: "basic",
+        Cell: ({ cell }) => (
+          <OrderStatusText status={cell.row.original.status as OrderStatus} />
+        ),
+      },
+      {
         accessorKey: "description",
         header: t("invoice_description"),
         sortingFn: "basic",
@@ -115,17 +131,24 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     [t],
   );
 
-  const filteredInvoices = invoicesQuery.data?.invoices.filter((invoice) => {
-    return (
-      invoice.invoiceOwner?.email.includes(filtersResult.email) &&
-      (filtersResult.createdDate
-        ? invoice.createdDate === filtersResult.createdDate
-        : true) &&
-      (filtersResult.paymentDate
-        ? invoice.paymentDate === filtersResult.paymentDate
-        : true)
-    );
-  });
+  const filteredInvoices = useMemo(() => {
+    return invoicesQuery.data?.invoices.filter((invoice) => {
+      return (
+        invoice.invoiceOwner?.email.includes(filtersResult.email) &&
+        (filtersResult.createdDate
+          ? invoice.createdDate === filtersResult.createdDate
+          : true) &&
+        (filtersResult.paymentDate
+          ? invoice.paymentDate === filtersResult.paymentDate
+          : true)
+      );
+    });
+  }, [
+    filtersResult.createdDate,
+    filtersResult.email,
+    filtersResult.paymentDate,
+    invoicesQuery.data?.invoices,
+  ]);
 
   const table = useReactTable({
     columns,
@@ -141,7 +164,10 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
           <Menu.Item
             onClick={() => updateModal.updateInvoice(cell.row.original)}
           >
-            {t("update_payment")}
+            {t("update_invoice")}
+          </Menu.Item>
+          <Menu.Item onClick={() => toast("Functionality not implemented yet")}>
+            {t("download_invoice")}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

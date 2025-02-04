@@ -10,7 +10,7 @@ import { useTranslations } from "@/shared/locale/translations";
 import {
   Invoice,
   UpdateInvoiceRequest,
-} from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+} from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 type UpdateInvoiceModalProps = {
   className?: string;
@@ -39,12 +39,13 @@ export const UpdateInvoiceModal: FC<UpdateInvoiceModalProps> = ({
 
   return (
     <Modal
-      title={t("add_invoice")}
+      title={t("update_invoice")}
       opened
       onClose={onClose}
       className={clsx("", className)}
     >
       <UpdateInvoiceForm
+        invoice={invoice}
         isLoading={updateInvoiceMutation.isPending}
         onSuccess={onUpdateInvoice}
         error={updateInvoiceMutation.error?.description}

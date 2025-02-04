@@ -6,7 +6,7 @@ import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UpdateInvoiceFormValuesT } from "@/features/manage-invoices/model/types";
 import { useTranslations } from "@/shared/locale/translations";
-import { Invoice } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { Invoice } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 type InvoiceFormProps = {
   className?: string;
@@ -46,7 +46,6 @@ export const UpdateInvoiceForm: FC<InvoiceFormProps> = ({
         <TextInput
           label={t("invoice_ref_number")}
           placeholder={t("enter_invoice_ref_number")}
-          withAsterisk
           {...register("refNumber", {
             required: t("invoice_ref_number_is_required"),
           })}
@@ -59,7 +58,6 @@ export const UpdateInvoiceForm: FC<InvoiceFormProps> = ({
           render={({ field }) => (
             <NumberInput
               label={t("amount_of_requests")}
-              withAsterisk
               hideControls
               allowNegative={false}
               allowDecimal={false}

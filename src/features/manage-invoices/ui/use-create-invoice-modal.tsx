@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CreateInvoiceModal } from "@/features/manage-invoices";
-import { Invoice } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { Invoice } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 export const useCreateInvoiceModal = () => {
   const [modalProps, setModalProps] = useState<{

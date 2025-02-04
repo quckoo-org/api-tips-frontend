@@ -3,7 +3,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useInvoicesClient } from "@/shared/grpc/clients/use-invoices-client";
 import { QUERY_KEYS } from "@/shared/lib";
-import { GetInvoicesResponse } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { GetInvoicesResponse } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 export const useGetInvoices = () => {
   const { getInvoices } = useInvoicesClient();

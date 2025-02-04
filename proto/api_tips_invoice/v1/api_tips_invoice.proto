@@ -12,7 +12,7 @@
 
 syntax = "proto3";
 package api.tips.invoice.v1;
-option csharp_namespace = "ApiTips.Api.Invoices.V1";
+option csharp_namespace = "ApiTips.Api.Invoice.V1";
 
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
@@ -20,7 +20,7 @@ import 'custom_enums/v1/custom_enums.proto';
 import 'custom_types/v1/decimal.proto';
 import 'general_entities/v1/general_entities.proto';
 
-service ApiTipsInvoicesService {
+service ApiTipsInvoiceService {
 
   /*
    * Получение всех счетов
@@ -108,7 +108,7 @@ message CreateInvoiceResponse {
 message UpdateInvoiceRequest {
 
   /*
-   * Описание к счету
+   * Идентификатор (Guid) счёта для обновления
    */
   string invoice_id = 1;
 
@@ -156,9 +156,10 @@ message Invoice {
   User invoice_owner = 2;
 
   /*
-   * Алиас счета
+   * Статус счёта
+   *  - полностью зависит от заказа, на который он создаётся (берётся такой же статус)
    */
-  google.protobuf.StringValue alias = 3;
+  custom_enums.v1.OrderStatus status = 3;
 
   /*
    * REF-номер счета
@@ -194,6 +195,11 @@ message Invoice {
    * Описание для счета
    */
   google.protobuf.StringValue description = 10;
+
+  /*
+   * Тип валюты
+   */
+  google.protobuf.StringValue currency = 11;
 }
 
 message User {

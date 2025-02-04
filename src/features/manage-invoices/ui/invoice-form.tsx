@@ -12,10 +12,11 @@ import { clsx } from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useInvoicesPaymentType } from "@/entities/invoices";
+import { useGetOrders } from "@/entities/order";
 import { CreateInvoiceFormValuesT } from "@/features/manage-invoices/model/types";
 import { fromDecimal } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
-import { Invoice } from "@/shared/proto/api_tips_invoices/v1/api_tips_invoices";
+import { Invoice } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
 
 type InvoiceFormProps = {
   className?: string;
@@ -34,6 +35,13 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
 }) => {
   const { t } = useTranslations();
   const { getAllPaymentsOptions } = useInvoicesPaymentType();
+  const ordersQuery = useGetOrders({});
+
+  const ordersOptions = ordersQuery.data?.orders.map((order) => ({
+    value: order.id.toString(),
+    label: order.id.toString(),
+  }));
+
   const {
     handleSubmit,
     register,
@@ -42,7 +50,9 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   } = useForm<CreateInvoiceFormValuesT>({
     defaultValues: {
       ...invoice,
-      totalAmount: fromDecimal(invoice?.totalAmount),
+      totalAmount: invoice?.totalAmount
+        ? fromDecimal(invoice?.totalAmount)
+        : undefined,
     },
   });
 
@@ -54,15 +64,6 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} className={clsx("", className)}>
       <Flex direction="column" gap="md">
         {!!error && <Text color="red">{error}</Text>}
-        <TextInput
-          label={t("invoice_description")}
-          placeholder={t("enter_invoice_description")}
-          withAsterisk
-          {...register("description", {
-            required: t("invoice_description_is_required"),
-          })}
-          error={errors.description?.message}
-        />
         <Controller
           name="amountOfRequests"
           control={control}
@@ -102,11 +103,12 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
         <Controller
           control={control}
           name="paymentType"
-          rules={{ required: t("required_payment_type") }}
+          rules={{ required: t("payment_type_is_required") }}
           render={({ field }) => (
             <Select
               {...field}
               searchable
+              withAsterisk
               placeholder={t("select_payment_type")}
               label={t("payment_type")}
               error={errors.paymentType?.message}
@@ -114,21 +116,28 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
             />
           )}
         />
-        {/*<Controller*/}
-        {/*  control={control}*/}
-        {/*  name="tariffId"*/}
-        {/*  rules={{ required: t("required_field") }}*/}
-        {/*  render={({ field }) => (*/}
-        {/*    <Select*/}
-        {/*      {...field}*/}
-        {/*      searchable*/}
-        {/*      placeholder={t("select_tariff")}*/}
-        {/*      label={t("tariff")}*/}
-        {/*      error={errors.tariffId?.message}*/}
-        {/*      data={getTariffs()}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*/>*/}
+        <Controller
+          control={control}
+          name="orderId"
+          rules={{ required: t("order_id_is_required") }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              searchable
+              withAsterisk
+              placeholder={t("select_order_id")}
+              label={t("order_id")}
+              error={errors.orderId?.message}
+              data={ordersOptions}
+            />
+          )}
+        />
+        <TextInput
+          label={t("invoice_description")}
+          placeholder={t("enter_invoice_description")}
+          {...register("description")}
+          error={errors.description?.message}
+        />
         <Button loading={isLoading} type="submit">
           Submit
         </Button>
