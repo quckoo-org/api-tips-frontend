@@ -7,6 +7,7 @@ import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
   PackageIcon,
+  ReceiptText,
   SquareKanbanIcon,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";
@@ -163,6 +164,36 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           >
             <PackageIcon className="shrink-0" />
             {opened && <Text className="font-medium">{t("orders")}</Text>}
+          </div>
+        </Link>
+      )}
+      {authStore.isAuthenticated && (
+        <Link href={ROUTES.INVOICES} className="text-xl font-bold">
+          <div
+            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
+              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
+                pathname,
+                ROUTES.INVOICES,
+              ),
+            })}
+          >
+            <ReceiptText className="shrink-0" />
+            {opened && <Text className="font-medium">{t("invoices")}</Text>}
+          </div>
+        </Link>
+      )}
+      {authStore.isAuthenticated && (
+        <Link href={ROUTES.REQUISITES} className="text-xl font-bold">
+          <div
+            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
+              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
+                pathname,
+                ROUTES.REQUISITES,
+              ),
+            })}
+          >
+            <ReceiptText className="shrink-0" />
+            {opened && <Text className="font-medium">{t("requisites")}</Text>}
           </div>
         </Link>
       )}
