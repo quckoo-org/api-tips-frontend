@@ -58,6 +58,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   useEffect(() => {
+    const pathWithoutLocale = getPathWithoutLocale();
+    const route = routesConfig.find((r) => r.path === pathWithoutLocale);
     (async () => {
       if (!TokenService.getAccessToken()) {
         const { newAccessToken } = await TokenService.refreshToken(checkAccess);
@@ -69,7 +71,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentUser && accessToken) {
       authStore.login(currentUser ?? null);
     }
-  }, [router, pathname, currentUser, checkAccess, isInitialized, accessToken]);
+    if (route?.requiresAuth && !authStore.isAccess(route.roles)) {
+      router.push(ROUTES.HOME);
+    }
+  }, [
+    router,
+    pathname,
+    currentUser,
+    checkAccess,
+    isInitialized,
+    accessToken,
+    getPathWithoutLocale,
+  ]);
 
   if (!isInitialized) {
     return (

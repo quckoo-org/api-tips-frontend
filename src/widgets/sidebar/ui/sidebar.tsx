@@ -42,13 +42,10 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
 
   const isActiveRoute = (pathname: string, route: string) => {
     const parts = pathname.split("/").filter(Boolean); // Разбиваем URL и убираем пустые элементы
-    console.log(parts, "parts");
     const currentRoute = "/" + parts[1]; // Второй элемент — это ROUTE (после lang)
 
     return currentRoute === route;
   };
-
-  console.log(pathname, "pathname");
 
   return (
     <aside
