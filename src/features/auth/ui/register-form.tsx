@@ -10,8 +10,13 @@ import {
 } from "@mantine/core";
 import clsx from "clsx";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  validateCaptcha,
+} from "react-simple-captcha";
 import { CountrySelect } from "@/entities/country";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
@@ -31,12 +36,22 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<RegisterReqT>({
     defaultValues: { email: "", firstname: "", lastname: "", password: "" },
   });
 
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, []);
+
   const onSubmit = async (req: RegisterReqT) => {
-    registerMutation.mutateAsync(req);
+    if (validateCaptcha(req.captcha)) {
+      registerMutation.mutateAsync(req);
+      return;
+    }
+    setError("captcha", { message: t("invalid_captcha") });
+    loadCaptchaEnginge(6);
   };
 
   return (
@@ -116,6 +131,17 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
           />
         )}
       />
+      <div className={"[&_a]:text-sm"}>
+        <LoadCanvasTemplate />
+        <TextInput
+          className="basis-1/2"
+          placeholder={t("enter_captcha")}
+          {...register("captcha", {
+            required: t("captcha_is_required"),
+          })}
+          error={errors.captcha?.message}
+        />
+      </div>
       {!!registerMutation.error && (
         <Text className="text-red-500 mt-2" size="2xs">
           {registerMutation.error?.response?.data.Message}

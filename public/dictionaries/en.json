@@ -188,5 +188,8 @@
   "actions": "Actions",
   "home": "Home",
   "new_password": "New Password",
-  "enter_your_new_password": "Enter your new password"
+  "enter_your_new_password": "Enter your new password",
+  "enter_captcha": "Enter captcha",
+  "captcha_is_required": "Captcha is required",
+  "invalid_captcha": "Invalid captcha"
 }
