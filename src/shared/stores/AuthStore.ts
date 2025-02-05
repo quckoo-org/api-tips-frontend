@@ -36,7 +36,7 @@ class AuthStore {
   }
 
   isAccess(rolesHasAccess: ROLES[] | string[]) {
-    return rolesHasAccess.length && this.user?.roles
+    return rolesHasAccess?.length && this.user?.roles
       ? this.user?.roles.some((userRole) =>
           rolesHasAccess.includes(userRole as ROLES),
         )
