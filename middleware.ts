@@ -3,7 +3,6 @@ import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { ROUTES } from "@/shared/router";
 import { i18n } from "./config/i18n/i18n-config";
 
 function getLocale(request: NextRequest): string | undefined {
@@ -33,15 +32,15 @@ function checkAuth(
   const authToken = request.cookies.get("jwt")?.value;
   const { pathname } = request.nextUrl;
   const paths = [
-    `/${locale}${ROUTES.LOGIN}`,
-    `/${locale}${ROUTES.REGISTER}`,
-    `/${locale}${ROUTES.FORGOT_PASSWORD}`,
-    `/${locale}${ROUTES.RESET}`,
+    `/${locale}/login`,
+    `/${locale}/register`,
+    `/${locale}/forgot-password`,
+    `/${locale}/reset`,
   ];
   // Редирект для авторизованных пользователей
   if (authToken && paths?.includes(pathname)) {
     return NextResponse.redirect(
-      new URL("/" + locale + ROUTES.TARIFFS, request.url),
+      new URL("/" + locale + "/tariffs", request.url),
     );
   }
 }
