@@ -214,6 +214,7 @@
   "order_id_is_required": "Order is required",
   "invoice_guid": "GUID",
   "invoice_ref_number": "REF-number",
+  "invoice_ref_number_is_required": "REF-number is required",
   "enter_invoice_ref_number": "Enter REF-number",
   "invoice_status": "Status",
   "invoices_payment_type_bank": "Bank",
