@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { User } from "@/shared/proto/api_tips_access/v1/api_tips_access";
+import { UserResponse } from "@/shared/stores/AuthStore";
 
 export type RegisterReqT = {
   email: string;
@@ -17,7 +17,7 @@ export type LoginByEmailReqT = {
 };
 
 export type LoginByEmailResT = {
-  user: User;
+  user: UserResponse;
   Jwt: string;
 };
 
