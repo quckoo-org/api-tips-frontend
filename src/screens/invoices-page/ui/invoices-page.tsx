@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
-import toast from "react-hot-toast";
 import { InvoicePaymentText, useGetInvoices } from "@/entities/invoices";
 import { ValidPayment } from "@/entities/invoices/model/types";
 
@@ -14,6 +13,7 @@ import { OrderStatusText } from "@/entities/order";
 import { InvoicesFilters, InvoicesFiltersT } from "@/features/invoices-filters";
 import {
   useCreateInvoiceModal,
+  useDownloadInvoice,
   useUpdateInvoiceModal,
 } from "@/features/manage-invoices";
 import { formatDate } from "@/shared/lib";
@@ -32,6 +32,7 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
   const { t } = useTranslations();
   const createModal = useCreateInvoiceModal();
   const updateModal = useUpdateInvoiceModal();
+  const downloadInvoice = useDownloadInvoice();
 
   const invoicesQuery = useGetInvoices();
   const [filtersResult, setFiltersResult] = useState<InvoicesFiltersT>({
@@ -39,7 +40,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     createdDate: null,
     paymentDate: null,
   });
-
   const columns = useMemo<MRT_ColumnDef<Invoice>[]>(
     () => [
       {
@@ -156,7 +156,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     filtersResult.paymentDate,
     invoicesQuery.data?.invoices,
   ]);
-
   const table = useReactTable({
     columns,
     data: filteredInvoices ?? [],
@@ -173,7 +172,13 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
           >
             {t("update_invoice")}
           </Menu.Item>
-          <Menu.Item onClick={() => toast("Functionality not implemented yet")}>
+          <Menu.Item
+            onClick={() =>
+              downloadInvoice.mutateAsync({
+                invoiceId: cell.row.original.guid!,
+              })
+            }
+          >
             {t("download_invoice")}
           </Menu.Item>
         </Menu.Dropdown>

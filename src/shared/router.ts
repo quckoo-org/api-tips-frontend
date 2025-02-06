@@ -92,5 +92,6 @@ export const routesConfig: Array<{
     path: ROUTES.INVOICES,
     requiresAuth: true,
     isAdmin: false,
+    roles: [ROLES.ADMIN],
   },
 ];

@@ -35,6 +35,11 @@ service ApiTipsInvoiceService {
    */
   rpc UpdateInvoice (UpdateInvoiceRequest) returns (UpdateInvoiceResponse);
 
+  /*
+   * Изменение счета
+   */
+  rpc GeneratePdfForInvoice (GeneratePdfForInvoiceRequest) returns (GeneratePdfForInvoiceResponse);
+
 }
 
 message GetInvoicesRequest {
@@ -133,6 +138,30 @@ message UpdateInvoiceResponse {
    * Счет после обновления
    */
   Invoice invoice = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 2;
+}
+
+/*
+ * Запрос на генерацию PDF-файла счета
+ */
+message GeneratePdfForInvoiceRequest {
+
+  /*
+   * Идентификатор (guid) счета
+   */
+  string invoice_id = 1;
+}
+
+message GeneratePdfForInvoiceResponse {
+
+  /*
+   * Счёт в формате base64
+   */
+  bytes invoice_pdf = 1;
 
   /*
    * Мета информация ответа

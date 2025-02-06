@@ -67,16 +67,16 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
         <Controller
           name="amountOfRequests"
           control={control}
-          rules={{ required: t("amount_of_requests_is_required") }}
+          rules={{ required: t("invoice_amount_of_requests_is_required") }}
           render={({ field }) => (
             <NumberInput
-              label={t("amount_of_requests")}
+              label={t("invoice_amount_of_requests")}
               withAsterisk
               hideControls
               allowNegative={false}
               allowDecimal={false}
               value={field.value}
-              placeholder={t("enter_amount_of_requests")}
+              placeholder={t("enter_invoice_amount_of_requests")}
               onChange={field.onChange}
               error={errors.amountOfRequests?.message}
             />
