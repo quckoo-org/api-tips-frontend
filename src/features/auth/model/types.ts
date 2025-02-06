@@ -7,6 +7,7 @@ export type RegisterReqT = {
   firstname: string;
   lastname: string;
   cca3: string;
+  captcha: string;
 };
 
 export type RegisterErrorT = AxiosError<{ Message: string }>;
