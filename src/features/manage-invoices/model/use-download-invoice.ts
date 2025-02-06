@@ -20,10 +20,6 @@ export const useDownloadInvoice = () => {
       return response;
     },
     onSuccess: (pdfForInvoiceResponse) =>
-      generateFile(
-        pdfForInvoiceResponse.invoicePdf as unknown as Uint8Array,
-        "invoice",
-        false,
-      ),
+      generateFile(pdfForInvoiceResponse.invoicePdf, "invoice", false, ".pdf"),
   });
 };

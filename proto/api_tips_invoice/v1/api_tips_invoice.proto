@@ -161,7 +161,7 @@ message GeneratePdfForInvoiceResponse {
   /*
    * Счёт в формате base64
    */
-  google.protobuf.StringValue invoice_pdf = 1;
+  bytes invoice_pdf = 1;
 
   /*
    * Мета информация ответа
