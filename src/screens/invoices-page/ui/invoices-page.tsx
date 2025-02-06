@@ -40,7 +40,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     createdDate: null,
     paymentDate: null,
   });
-  console.log(invoicesQuery.data?.invoices, "asdasd");
   const columns = useMemo<MRT_ColumnDef<Invoice>[]>(
     () => [
       {
@@ -135,21 +134,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
 
   const filteredInvoices = useMemo(() => {
     return invoicesQuery.data?.invoices.filter((invoice) => {
-      console.log(
-        invoice.invoiceOwner?.email.includes(filtersResult.email),
-        filtersResult.createdDate
-          ? dayjs(invoice.createdDate).isSame(
-              dayjs(filtersResult.createdDate),
-              "day",
-            )
-          : true,
-        filtersResult.paymentDate
-          ? dayjs(invoice.paymentDate).isSame(
-              dayjs(filtersResult.paymentDate),
-              "day",
-            )
-          : true,
-      );
       return (
         invoice.invoiceOwner?.email.includes(filtersResult.email) &&
         (filtersResult.createdDate
@@ -172,7 +156,6 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     filtersResult.paymentDate,
     invoicesQuery.data?.invoices,
   ]);
-  console.log(filteredInvoices, "filtered");
   const table = useReactTable({
     columns,
     data: filteredInvoices ?? [],
