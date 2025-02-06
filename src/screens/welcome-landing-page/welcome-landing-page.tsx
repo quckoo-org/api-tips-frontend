@@ -259,10 +259,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
               </div>
               <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center flex-wrap justify-center">
                 {tariffsQuery.data?.tariffs.length &&
-                  [
-                    ...tariffsQuery.data!.tariffs,
-                    ...tariffsQuery.data!.tariffs,
-                  ].map((tariff) => (
+                  tariffsQuery.data.tariffs.map((tariff) => (
                     <div
                       key={tariff.id}
                       className="xl:p-6 lg:py-8 mt-4 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl  min-h-[19rem] basis-1/5"
