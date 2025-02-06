@@ -3,6 +3,7 @@ import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { ROUTES } from "@/shared/router";
 import { i18n } from "./config/i18n/i18n-config";
 
 function getLocale(request: NextRequest): string | undefined {
@@ -27,16 +28,22 @@ function getLocale(request: NextRequest): string | undefined {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function checkAuth(
   request: NextRequest,
-  locale?: string,
+  locale: string | undefined,
 ): NextResponse | undefined {
-  const token = request.cookies.get("auth-token");
-
-  if (!token) {
-    const loginUrl = new URL(`${locale}/login`, request.nextUrl.origin);
-    return NextResponse.redirect(loginUrl);
+  const authToken = request.cookies.get("jwt")?.value;
+  const { pathname } = request.nextUrl;
+  const paths = [
+    `/${locale}${ROUTES.LOGIN}`,
+    `/${locale}${ROUTES.REGISTER}`,
+    `/${locale}${ROUTES.FORGOT_PASSWORD}`,
+    `/${locale}${ROUTES.RESET}`,
+  ];
+  // Редирект для авторизованных пользователей
+  if (authToken && paths?.includes(pathname)) {
+    return NextResponse.redirect(
+      new URL("/" + locale + ROUTES.TARIFFS, request.url),
+    );
   }
-
-  return undefined;
 }
 
 export function middleware(request: NextRequest) {
@@ -58,6 +65,8 @@ export function middleware(request: NextRequest) {
     );
   }
 
+  return checkAuth(request, locale);
+  // Редирект для авторизованных пользователей
   // if (pathname.startsWith("/login")) {
   //   return NextResponse.next();
   // }
