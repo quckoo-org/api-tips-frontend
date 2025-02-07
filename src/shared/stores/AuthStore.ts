@@ -36,6 +36,7 @@ class AuthStore {
   }
 
   isAccess(rolesHasAccess: ROLES[] | string[]) {
+    //проверка на массив
     const rolesForAccess = Array.isArray(rolesHasAccess)
       ? rolesHasAccess
       : [rolesHasAccess];
