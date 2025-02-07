@@ -40,8 +40,11 @@ class AuthStore {
     const rolesForAccess = Array.isArray(rolesHasAccess)
       ? rolesHasAccess
       : [rolesHasAccess];
+    const userRolesForAccess = Array.isArray(this.user?.roles)
+      ? this.user?.roles
+      : [this.user?.roles];
     return rolesForAccess?.length && this.user?.roles
-      ? this.user.roles?.some((userRole) =>
+      ? userRolesForAccess?.some((userRole) =>
           rolesForAccess.includes(userRole as ROLES),
         )
       : false;
