@@ -36,9 +36,12 @@ class AuthStore {
   }
 
   isAccess(rolesHasAccess: ROLES[] | string[]) {
-    return rolesHasAccess?.length && this.user?.roles
-      ? this.user?.roles.some((userRole) =>
-          rolesHasAccess.includes(userRole as ROLES),
+    const rolesForAccess = Array.isArray(rolesHasAccess)
+      ? rolesHasAccess
+      : [rolesHasAccess];
+    return rolesForAccess?.length && this.user?.roles
+      ? this.user.roles?.some((userRole) =>
+          rolesForAccess.includes(userRole as ROLES),
         )
       : false;
   }
