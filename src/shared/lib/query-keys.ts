@@ -11,4 +11,7 @@ export const QUERY_KEYS = {
   RESET_PASSWORD: "reset_password",
   REQUISITES: "requisites",
   INVOICES: "invoices",
+  HISTORIES: "histories",
+  HISTORIES_BY_USER: "histories_by_user",
+  DETAILED_HISTORIES: "detailed_histories",
 };

@@ -194,6 +194,21 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
+      {authStore.isAuthenticated && (
+        <Link href={ROUTES.HISTORIES} className="text-xl font-bold">
+          <div
+            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
+              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
+                pathname,
+                ROUTES.HISTORIES,
+              ),
+            })}
+          >
+            <ReceiptText className="shrink-0" />
+            {opened && <Text className="font-medium">{t("histories")}</Text>}
+          </div>
+        </Link>
+      )}
       <div className="mt-auto">
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>

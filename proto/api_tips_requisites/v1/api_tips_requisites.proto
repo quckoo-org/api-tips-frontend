@@ -19,7 +19,7 @@ import "google/protobuf/wrappers.proto";
 import 'general_entities/v1/general_entities.proto';
 
 service ApiTipsRequisitesService {
-
+  
   /*
    * Получение всех платежных данных
    */
@@ -103,24 +103,25 @@ message CryptoWallet {
    * Номер расчётного счета
    */
   google.protobuf.StringValue address = 1;
-
+  
   /*
    * Справочник крипто-валюты
    */
   google.protobuf.StringValue wallet = 2;
-
+  
   /*
    * Токен для крипто-кошелька
    */
   google.protobuf.StringValue token = 3;
-
+  
   /*
    * Тип крипто-валюты
    */
   google.protobuf.StringValue crypto_currency_type = 4;
-
+  
   /*
    * Признак запрета счёта
    */
   google.protobuf.BoolValue is_banned = 5;
 }
+
