@@ -37,15 +37,3 @@ ingress:
         {{else}}
         - dev.api-tips.quckoo.net
         {{end}}
-
-additionalEnvs:
-  {{ if eq .Environment.Name "production" }}
-  - name: NEXT_PUBLIC_API_URL
-    value: "https://prod.api-tips.api.quckoo.net"
-  {{ else if eq .Environment.Name "stage" }}
-  - name: NEXT_PUBLIC_API_URL
-    value: "https://stage.api-tips.api.quckoo.net"
-  {{else}}
-  - name: NEXT_PUBLIC_API_URL
-    value: "https://dev.api-tips.api.quckoo.net"
-  {{end}}
