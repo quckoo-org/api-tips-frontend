@@ -10,7 +10,7 @@ import { loggerMiddleware } from "./loggerMiddleware";
 import { TokenService } from "../lib";
 
 const channel = createChannel(
-  process.env.NEXT_PUBLIC_API_URL ?? "https://beta.api-tips.api.quckoo.net",
+  process.env.NEXT_PUBLIC_API_URL ?? "https://dev.api-tips.api.quckoo.net",
 );
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
