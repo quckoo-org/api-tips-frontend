@@ -1,5 +1,6 @@
 export { useCreateInvoice } from "./model/use-create-invoice";
 export { useUpdateInvoice } from "./model/use-update-invoice";
+export { useDownloadInvoice } from "./model/use-download-invoice";
 
 export { InvoiceForm } from "./ui/invoice-form";
 export { CreateInvoiceModal } from "./ui/create-invoice-modal";

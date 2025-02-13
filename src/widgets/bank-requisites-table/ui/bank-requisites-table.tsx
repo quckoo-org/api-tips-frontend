@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import clsx from "clsx";
 import {
   MantineReactTable,
@@ -9,6 +9,7 @@ import {
 } from "mantine-react-table";
 import { FC, useMemo } from "react";
 import { useGetRequisites } from "@/entities/requisites";
+import { BanRequisiteButton } from "@/features/manage-requisites";
 import { useTranslations } from "@/shared/locale/translations";
 import { BankAccount } from "@/shared/proto/api_tips_requisites/v1/api_tips_requisites";
 
@@ -58,7 +59,10 @@ export const BankRequisitesTable: FC<RequisitesPageProps> = ({ className }) => {
         header: t("is_banned"),
         enableSorting: false,
         Cell: ({ cell }) => (
-          <Checkbox checked={cell.row.original.isBanned} disabled={true} />
+          <BanRequisiteButton
+            requisiteId={cell.row.original.requisiteId}
+            checked={!!cell.row.original.isBanned}
+          />
         ),
       },
     ],

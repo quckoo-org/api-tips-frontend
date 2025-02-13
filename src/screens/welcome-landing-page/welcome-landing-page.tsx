@@ -18,6 +18,8 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
+import { useGetTariffs } from "@/entities/tariff";
+import { fromDecimal } from "@/shared/lib";
 import { ROUTES } from "@/shared/router";
 import { Button } from "@/shared/ui/button";
 import { FloatingIndicator } from "@/shared/ui/floating-indicator";
@@ -32,6 +34,8 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const [opened, handlers] = useDisclosure();
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
+
+  const tariffsQuery = useGetTariffs({});
 
   return (
     <>
@@ -253,143 +257,56 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                   smarterer with AI precision.
                 </Text>
               </div>
-              <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center">
-                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
-                  <Text
-                    size="md"
-                    tt="uppercase"
-                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
-                  >
-                    Basic
-                  </Text>
-                  <Title size="h3" className="lg:text-xl lg:leading-xl mb-7">
-                    Ace Up Your Sleeve
-                  </Title>
-                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                    <Title size="h2">17 USD</Title>
-                    <Text className="lg:text-sm mb-1">/ per month</Text>
-                  </div>
-                  <Button
-                    className="lg:mb-5 mb-10"
-                    size="lg"
-                    variant="black"
-                    fullWidth={isMobile}
-                  >
-                    Get Basic Plan
-                  </Button>
-                  <ul className="list-disc flex flex-col gap-y-2 ml-4">
-                    <li className="lg:text-sm lg:leading:sm">
-                      Basic hand analysis and real-time suggestions.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Access to pre-flop strategies for common scenarios.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Weekly performance reports.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Community forum access for tips and tricks.
-                    </li>
-                  </ul>
-                </div>
-                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 px-10 py-16 bg-white rounded-xl basis-1/3 min-h-[52rem] relative overflow-hidden">
-                  <Image
-                    width={360}
-                    height={340}
-                    className="lg:h-[231px] lg:w-[218px] lg:-top-6 lg:-right-20 h-[359px] w-[339px] absolute -right-40 top-4 -z-1"
-                    src="/plan-block-bg.png"
-                    alt="pattern"
-                  />
-                  <Text
-                    tt="uppercase"
-                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
-                  >
-                    Professional
-                  </Text>
-                  <Title
-                    size="h3"
-                    className="lg:text-xl lg:leading-xl lg:mb-5 mb-7"
-                  >
-                    Royal Advantage
-                  </Title>
-                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                    <Title size="h2">78 USD</Title>
-                    <Text className="lg:text-sm mb-1">/ per month</Text>
-                  </div>
-                  <Button
-                    className="lg:mb-5 mb-10"
-                    size="lg"
-                    variant="gradient"
-                    fullWidth={isMobile}
-                  >
-                    Get Professional Plan
-                  </Button>
-                  <ul className="list-disc flex flex-col gap-y-2 max-w-64 ml-4">
-                    <li className="lg:text-sm lg:leading:sm">
-                      All basic plan features.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Advanced decision-making insights.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Personalized strategy recommendations based on play
-                      history.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Real-time bluff detection and counter-strategies.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Priority access to new features.
-                    </li>
-                  </ul>
-                </div>
-                <div className="xl:p-6 lg:py-8 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl basis-1/3 min-h-[49rem]">
-                  <Text
-                    tt="uppercase"
-                    className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
-                  >
-                    Elite
-                  </Text>
-                  <Title
-                    size="h3"
-                    className="lg:text-xl lg:leading-xl lg:mb-5 mb-7"
-                  >
-                    Full House Mastery
-                  </Title>
-                  <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
-                    <Title size="h2">124 USD</Title>
-                    <Text className="lg:text-sm mb-1">/ per month</Text>
-                  </div>
-                  <Button
-                    className="lg:mb-5 mb-10"
-                    size="lg"
-                    variant="black"
-                    fullWidth={isMobile}
-                  >
-                    Get Elit Plan
-                  </Button>
-                  <ul className="list-disc flex flex-col gap-y-2 ml-4">
-                    <li className="lg:text-sm lg:leading:sm">
-                      All professional plan features.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Comprehensive game simulations and what-if scenarios.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      One-on-one strategy sessions with AI poker experts.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Access to exclusive high-level strategies and AI tools.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Unlimited hand history storage and analysis.
-                    </li>
-                    <li className="lg:text-sm lg:leading:sm">
-                      Dedicated 24/7 support for instant troubleshooting and
-                      guidance.
-                    </li>
-                  </ul>
-                </div>
+              <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center flex-wrap justify-center">
+                {tariffsQuery.data?.tariffs.length &&
+                  tariffsQuery.data.tariffs.map((tariff) => (
+                    <div
+                      key={tariff.id}
+                      className="xl:p-6 lg:py-8 mt-4 lg:px-5 lg:basis-full lg:w-full lg:min-h-0 p-10 bg-white rounded-xl  min-h-[19rem] basis-1/5"
+                    >
+                      <Text
+                        size="md"
+                        tt="uppercase"
+                        className="lg:text-sm lg:leading-sm lg:mb-0 opacity-30 mb-2.5"
+                      >
+                        {tariff.name}
+                      </Text>
+                      {/*<Title size="h3" className="lg:text-xl lg:leading-xl mb-7">*/}
+                      {/*  Ace Up Your Sleeve*/}
+                      {/*  {tariff.name}*/}
+                      {/*</Title>*/}
+                      <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                        <Title size="h2">
+                          {fromDecimal(tariff.totalPrice) +
+                            " " +
+                            tariff.currency}
+                        </Title>
+                        <Text className="lg:text-sm mb-1">/ per month</Text>
+                      </div>
+                      <Button
+                        className="lg:mb-5 mb-10"
+                        size="lg"
+                        variant={tariff.name === "Base" ? "gradient" : "black"}
+                        fullWidth={isMobile}
+                      >
+                        Get {tariff.name} Plan
+                      </Button>
+                      {/*<ul className="list-disc flex flex-col gap-y-2 ml-4">*/}
+                      {/*  <li className="lg:text-sm lg:leading:sm">*/}
+                      {/*    Basic hand analysis and real-time suggestions.*/}
+                      {/*  </li>*/}
+                      {/*  <li className="lg:text-sm lg:leading:sm">*/}
+                      {/*    Access to pre-flop strategies for common scenarios.*/}
+                      {/*  </li>*/}
+                      {/*  <li className="lg:text-sm lg:leading:sm">*/}
+                      {/*    Weekly performance reports.*/}
+                      {/*  </li>*/}
+                      {/*  <li className="lg:text-sm lg:leading:sm">*/}
+                      {/*    Community forum access for tips and tricks.*/}
+                      {/*  </li>*/}
+                      {/*</ul>*/}
+                    </div>
+                  ))}
               </div>
             </Container>
           </motion.div>

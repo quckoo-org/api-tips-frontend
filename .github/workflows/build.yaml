@@ -42,6 +42,13 @@ jobs:
           echo "Branch [${GITHUB_REF##*/}] would be deployed to [${{ inputs.environment }}]" >> "$GITHUB_STEP_SUMMARY"
           exit 0
 
+      - id: step_stage
+        name: Stage
+        if: ${{ inputs.environment == 'stage' && github.ref_type == 'tag' }}
+        run: |
+          echo "Branch [${GITHUB_REF##*/}] would be deployed to [${{ inputs.environment }}]" >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
       - id: step_production
         name: Production
         if: ${{ inputs.environment == 'production' && github.ref_type == 'tag' }}
@@ -50,7 +57,7 @@ jobs:
           exit 0
 
       - name: Fail
-        if: steps.step_development.conclusion == 'skipped' && steps.step_production.conclusion == 'skipped'
+        if: steps.step_development.conclusion == 'skipped' && steps.step_stage.conclusion == 'skipped' && steps.step_production.conclusion == 'skipped'
         run: |
           echo "Deploy failed! Production includes only tagged versions, development excludes tagged versions!" >> "$GITHUB_STEP_SUMMARY"
           exit 1

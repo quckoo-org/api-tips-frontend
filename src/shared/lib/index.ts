@@ -1,4 +1,4 @@
-export { formatDate } from "./formatDate";
+export { formatDate } from "./format-date";
 export {
   createDecimal,
   toDecimal,
@@ -13,3 +13,4 @@ export { createFilterMapper } from "./create-filter-mapper";
 export { QUERY_KEYS } from "./query-keys";
 export { ComposeChildren } from "./compose-children";
 export { ROLES } from "./roels";
+export { generateFile } from "./generate-file";

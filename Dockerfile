@@ -1,6 +1,10 @@
 FROM node:22.11.0-alpine3.20 AS builder
 WORKDIR /app
 
+# Credentials
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL $NEXT_PUBLIC_API_URL
+
 RUN corepack enable
 RUN corepack prepare yarn@4.5.3 --activate
 

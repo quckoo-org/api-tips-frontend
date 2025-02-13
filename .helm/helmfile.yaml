@@ -12,6 +12,7 @@ repositories:
 
 environments:
   development:
+  stage:
   production:
 
 releases:

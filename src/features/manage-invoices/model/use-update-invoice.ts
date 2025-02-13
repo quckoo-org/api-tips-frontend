@@ -26,7 +26,6 @@ export const useUpdateInvoice = () => {
         { queryKey: [QUERY_KEYS.INVOICES] },
         (oldData: GetInvoicesResponse | undefined) => {
           if (!oldData || !invoicesResponse.invoice) return oldData;
-
           return {
             ...oldData,
             invoices: oldData.invoices.map((invoice) =>
