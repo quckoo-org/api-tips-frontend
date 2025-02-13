@@ -35,7 +35,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
 
-  const tariffsQuery = useGetTariffs({});
+  const tariffsQuery = useGetTariffs({ filter: { isHidden: false } });
 
   return (
     <>
@@ -275,13 +275,25 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                       {/*  Ace Up Your Sleeve*/}
                       {/*  {tariff.name}*/}
                       {/*</Title>*/}
-                      <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                      <div className="lg:mb-5 flex gap-x-1 flex-col mb-8">
                         <Title size="h2">
                           {fromDecimal(tariff.totalPrice) +
                             " " +
                             tariff.currency}
                         </Title>
-                        <Text className="lg:text-sm mb-1">/ per month</Text>
+                        <div className="mt-2 flex flex-nowrap items-center">
+                          <Text className="lg:text-sm mr-2" size={"sm"}>
+                            {tariff.currency +
+                              " " +
+                              fromDecimal(tariff.tipPrice)}
+                          </Text>
+                          <Text className="lg:text-sm mr-2">
+                            {tariff.paidTipsCount} tips
+                          </Text>
+                          <Text className=" font-bold " size={"xl"}>
+                            + {tariff.freeTipsCount} Free
+                          </Text>
+                        </div>
                       </div>
                       <Button
                         className="lg:mb-5 mb-10"
