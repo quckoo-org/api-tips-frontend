@@ -1,7 +1,7 @@
 "use client";
 
 import { Text, Title, Skeleton } from "@mantine/core";
-import { CheckIcon } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { useGetDetailedUsers } from "@/entities/user";
 import { Button } from "@/shared/ui/button";
 
@@ -66,7 +66,7 @@ export function ManageProfile() {
                 <Text
                   c={
                     detailedUser?.detailedUser?.user?.verifiedAt
-                      ? "green"
+                      ? "grey"
                       : "red"
                   }
                 >
@@ -75,7 +75,7 @@ export function ManageProfile() {
                     : "Not Verified"}
                 </Text>
                 {detailedUser?.detailedUser?.user?.verifiedAt && (
-                  <CheckIcon size={16} className="text-green-500" />
+                  <CircleCheck size={25} fill="#40C057" stroke={"white"} />
                 )}
               </>
             )}
