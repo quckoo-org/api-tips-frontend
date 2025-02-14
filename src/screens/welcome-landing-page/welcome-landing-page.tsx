@@ -281,17 +281,18 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                             " " +
                             tariff.currency}
                         </Title>
-                        <div className="mt-2 flex flex-nowrap items-center">
+                        <div className="mt-2 flex flex-nowrap flex-col ">
                           <Text className="lg:text-sm mr-2" size={"sm"}>
+                            the cost of 1 request -{" "}
                             {tariff.currency +
                               " " +
                               fromDecimal(tariff.tipPrice)}
                           </Text>
                           <Text className="lg:text-sm mr-2">
-                            {tariff.paidTipsCount} tips
+                            {tariff.paidTipsCount} requests
                           </Text>
                           <Text className=" font-bold " size={"xl"}>
-                            + {tariff.freeTipsCount} Free
+                            + {tariff.freeTipsCount} requests free
                           </Text>
                         </div>
                       </div>
