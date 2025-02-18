@@ -1,0 +1,357 @@
+/*
+  Copyright (c) 2025
+
+  Description:
+    Internal interaction contract
+
+  Owner: 
+    dev team
+    
+  Methods:
+    - GetHistories ( Получение истории операций сгруппированных по показателю для всех пользователей )
+    - GetHistoriesByUser ( Получение истории операций сгруппированных по месяцам для одного пользователя )
+    - GetDetailedHistories ( Получение детальной истории операций по пользователю )
+    - DebitAllTips ( Списание всех подсказок со всех пользователей )
+    - UpdateBalance ( Изменение баланса отдельного пользователя )
+*/
+
+syntax = "proto3";
+package api.tips.balance.v1;
+option csharp_namespace = "ApiTips.Api.Balance.V1";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import 'custom_enums/v1/custom_enums.proto';
+import 'general_entities/v1/general_entities.proto';
+
+service ApiTipsBalanceService {
+  /*
+   * Получение истории операций сгруппированных по выбранному показателю по всем пользователям
+   */
+  rpc GetHistories (GetHistoriesRequest)
+  returns (GetHistoriesResponse);
+  
+  /*
+   * Получение истрории операций сгруппированных по месяцам для одного пользователя
+   */
+  rpc GetHistoriesByUser (GetHistoriesByUserRequest)
+  returns (GetHistoriesByUserResponse);
+
+  /*
+   * Получение детальной истории операций по пользователю
+   */
+  rpc GetDetailedHistories (GetDetailedHistoriesRequest) returns (GetDetailedHistoriesResponse);
+
+  /*
+   * Списание всех подсказок со всех пользователей
+   */
+  rpc DebitAllTips (DebitAllTipsRequest) returns (DebitAllTipsResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Добавить запись в историю баланса отдельного пользователя - ручной способ изменить баланс для админа
+   */
+  rpc UpdateBalance (UpdateBalanceRequest) returns (UpdateBalanceResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+}
+
+/*
+ * Запрос - получение истории операций сгруппированных по выбранному показателю по всем пользователям
+ */
+message GetHistoriesRequest {
+  /*
+   * Дата начала периода сбора истории операций
+   */
+  google.protobuf.Timestamp start_date = 1;
+
+  /*
+   * Дата конца диапазона сбора истории операций
+   */
+  google.protobuf.Timestamp end_date = 2;
+
+  /*
+   * Один из индикаторов по которым будет идти группировака данных
+   */
+  oneof aggregate_indicator {
+    bool aggregate_by_month = 3;
+    bool aggregate_by_user = 4;
+  }
+}
+
+/*
+ * Ответ - получение истории операций сгруппированных по выбранному показателю по всем пользователям
+ */
+message GetHistoriesResponse {
+  /*
+   * Список агрегированных данных истории баланса
+   */
+  repeated History histories = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение истрории операций сгруппированных по месяцам для одного пользователя
+ */
+message GetHistoriesByUserRequest {
+  /*
+   * Дата начала периода сбора истории операций
+   */
+  google.protobuf.Timestamp start_date = 1;
+
+  /*
+   * Дата конца диапазона сбора истории операций
+   */
+  google.protobuf.Timestamp end_date = 2;
+
+  /*
+   * Идентификатор пользователя по которому необходимо сгруппировать историю операций
+   */
+  int64 user_id = 3;
+}
+
+/*
+ * Ответ - получение истрории операций сгруппированных по месяцам для одного пользователя
+ */
+message GetHistoriesByUserResponse {
+  /*
+   * Идентификатор пользователя по которому собрана история операций
+   */
+  int64 user_id = 1;
+
+  /*
+   * Агрегированные данные истории баланса по месяцам для указанного пользователя
+   */
+  repeated History histories = 2;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение детальной истории операций по пользователю 
+ */
+message GetDetailedHistoriesRequest {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 user_id = 1;
+
+  /*
+   * Дата начала диапазона сбора истории операций
+   */
+  google.protobuf.Timestamp start_date = 2;
+
+  /*
+   * Дата конца диапазона сбора истории операций
+   */
+  google.protobuf.Timestamp end_date = 3;
+}
+
+/*
+ * Ответ - получение детальной истории операций по пользователю
+ */
+message GetDetailedHistoriesResponse {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 user_id = 1;
+  
+  /*
+   * История изменения баланса по указанному пользователю за указанный период
+   */
+  repeated DetailedHistory detailed_histories = 2;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - списание всех подсказок со всех пользователей
+ */
+message DebitAllTipsRequest {}
+
+/*
+ * Ответ - списание всех подсказок со всех пользователей
+ */
+message DebitAllTipsResponse {
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - изменение баланса отдельного пользователя
+ */
+message UpdateBalanceRequest {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 user_id = 1;
+
+  /*
+   * Величина на которую необходимо изменить количество бесплатных подсказок
+   */
+  optional int64 free_tips_count = 2;
+
+  /*
+   * Величина на которую необходимо изменить количество оплаченных подсказок 
+   */
+  optional int64 paid_tips_count = 3;
+
+  /*
+   * Тип операции (поплнение/списание)
+   */
+  custom_enums.v1.BalanceOperationType operation_type = 4;
+
+  /*
+   * Описание причины изменения баланса (покупка/списание/промо)
+   */
+  string reason = 5;
+}
+
+/*
+ * Ответ - изменение баланса отдельного пользователя
+ */
+message UpdateBalanceResponse {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 user_id = 1;
+  /*
+   * Добавленная операция в историю баланса указанного пользователя
+   */
+  optional DetailedHistory detailed_history = 2;
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+
+/* ---------- Entities ---------- */
+
+/*
+ * Сущность сгруппированной истории за указанный период
+ */
+message History {
+  /*
+   * Дата начала периода за который собрана история
+   */
+  google.protobuf.Timestamp start_date = 1;
+
+  /*
+   * Дата конца периода за который собрана история
+   */
+  google.protobuf.Timestamp end_date = 2;
+
+  /*
+   * Сгруппированные данные за указанный период ( список данных в случае разделения по пользователям )
+   */
+  repeated HistoryData history_data = 3;
+}
+
+/*
+ * Сущность тарифа
+ */
+message HistoryData {
+  /*
+   * Количество бесплатных подсказок, которые были начислены
+   */
+  optional int64 credited_free_tips_count = 1;
+
+  /*
+   * Количество оплаченных подсказок, которые были начислены
+   */
+  optional int64 credited_paid_tips_count = 2;
+
+  /*
+   * Общее количество подсказок, которые были списаны
+   */
+  optional int64 debited_tips_count = 3;
+  
+  /*
+   * Пользователь, по которому сгруппирована история (если отсутствует, то данные собраны по всем пользователям)
+   */
+  optional User user = 4;
+}
+
+/*
+ * Сущность пользователя
+ */
+message User {
+  /*
+   * Идентификатор пользователя
+   */
+  int64 id = 1;
+  
+  /*
+   * Почта пользователя
+   */
+  string email = 2;
+
+  /*
+   * Имя пользователя
+   */
+  string first_name = 3;
+
+  /*
+   * Фамилия пользователя
+   */
+  string last_name = 4;
+}
+
+/*
+ * Сущность записи в истории баланса
+ */
+message DetailedHistory {
+  /*
+   * Идентификатор операции
+   */
+  int64 id = 1;
+
+  /*
+   * Величина изменения количества бесплатных подсказок
+   */
+  optional int64 free_tips_count_changed_to = 2;
+
+  /*
+   * Величина изменения количества платных подсказок
+   */
+  optional int64 paid_tips_count_changed_to = 3;
+
+  /*
+   * Общая величина изменения количества подсказок
+   */
+  optional int64 total_tips_count_changed_to = 4;
+
+  /*
+   * Тип операции (поплнение/списание)
+   */
+  custom_enums.v1.BalanceOperationType operation_type = 5;
+
+  /*
+   * Причина изменения баланса (покупка/списание/промо)
+   */
+  string reason = 6;
+
+  /*
+   * Дата совершения операции
+   */
+  google.protobuf.Timestamp operation_date = 7;
+
+  /*
+   * Общий остаток подсказок на балансе после совершения операции
+   */
+  int64 total_tips_balance = 8;
+}

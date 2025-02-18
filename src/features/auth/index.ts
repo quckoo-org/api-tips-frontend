@@ -6,3 +6,6 @@ export { ResetForm } from "./ui/reset-form";
 
 export { useVerifyUser } from "./model/use-verify-user";
 export { usePasswordRecovery } from "./model/use-password-recovery";
+
+export { useUpdatePasswordModal } from "./ui/use-update-password-modal";
+export { UpdatePasswordButton } from "./ui/update-password-button";

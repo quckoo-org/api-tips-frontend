@@ -13,6 +13,8 @@
     - AddOrder ( Создание заказа )
     - SetOrderStatusPaid ( Обновление статуса заказа на "Оплачен" )
     - SetOrderStatusCancelled ( Обновление статуса заказа на "Отменён" )
+    - GetAccessToken ( Получение актуального токена пользователя для запросов подсказок по оплаченным заказам )
+    - UpdateAccessToken ( Геренерация нового токена для оплаченных заказов пользователя )
 */
 
 syntax = "proto3";
@@ -56,6 +58,18 @@ service ApiTipsOrderService {
   rpc SetOrderStatusCancelled (SetOrderStatusCancelledRequest) returns (SetOrderStatusCancelledResponse){
     option idempotency_level = IDEMPOTENT;
   };
+
+  /*
+   * Получение актуального токена пользователя
+   */
+  rpc GetAccessToken (GetAccessTokenRequest) returns (GetAccessTokenResponse);
+
+  /*
+   * Геренерация нового токена для оплаченных заказов пользователя
+   */
+  rpc UpdateAccessToken (UpdateAccessTokenRequest) returns (UpdateAccessTokenResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
 }
 
 /*
@@ -72,6 +86,7 @@ message GetOrdersRequest {
    */
   message Filter {
     optional custom_enums.v1.OrderStatus order_status = 1;
+    optional string user_email = 2;
   }
 }
 
@@ -191,6 +206,46 @@ message SetOrderStatusCancelledResponse {
    */
   optional Order order = 1;
   
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - получение актуального токена пользователя
+ */
+message GetAccessTokenRequest {}
+
+/*
+ * Ответ - получение актуального токена пользователя
+ */
+message GetAccessTokenResponse {
+  /*
+   * Актуальный токен пользователя
+   */
+  optional string access_token = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - геренерация нового токена для оплаченных заказов пользователя
+ */
+message UpdateAccessTokenRequest {}
+
+/*
+ * Ответ - геренерация нового токена для оплаченных заказов пользователя
+ */
+message UpdateAccessTokenResponse {
+  /*
+   * Обновленный токен пользователя
+   */
+  optional string access_token = 1;
+
   /*
    * Мета информация ответа
    */
