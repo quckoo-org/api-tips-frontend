@@ -31,12 +31,7 @@ function checkAuth(
 ): NextResponse | undefined {
   const authToken = request.cookies.get("jwt")?.value;
   const { pathname } = request.nextUrl;
-  const paths = [
-    `/${locale}/login`,
-    `/${locale}/register`,
-    `/${locale}/forgot-password`,
-    `/${locale}/reset`,
-  ];
+  const paths = [`/${locale}/login`, `/${locale}/register`];
   // Редирект для авторизованных пользователей
   if (authToken && paths?.includes(pathname)) {
     return NextResponse.redirect(

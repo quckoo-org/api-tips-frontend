@@ -13,6 +13,7 @@ import { useChangePassword } from "@/features/auth/model/use-change-password";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
+import { useGetPasswordValidationRules } from "../model/utils";
 
 type ResetFormProps = {
   email: string;
@@ -28,6 +29,7 @@ export const ResetForm: FC<ResetFormProps> = ({ className, code, email }) => {
   } = useForm<ChangePasswordFormValuesT>();
   const router = useRouter();
   const changePasswordQuery = useChangePassword();
+  const passwordRules = useGetPasswordValidationRules();
 
   const onSubmit = (data: ChangePasswordFormValuesT) => {
     const changePasswordRequest: ChangePasswordReqT = {
@@ -72,10 +74,7 @@ export const ResetForm: FC<ResetFormProps> = ({ className, code, email }) => {
             placeholder={t("enter_your_new_password")}
             {...register("password", {
               required: t("password_required"),
-              minLength: {
-                value: 8,
-                message: t("password_must_be_more_then_8_characters_long"),
-              },
+              ...passwordRules,
             })}
             error={errors.password?.message}
           />
