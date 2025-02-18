@@ -50,58 +50,56 @@ export const UpdatePasswordModal: FC<UpdatePasswordModalProps> = ({
   };
 
   return (
-    <div className={clsx("", className)}>
-      <Modal
-        className={clsx("", className)}
-        withinPortal
-        title={t("update_password")}
-        onClose={onClose}
-        opened={true}
+    <Modal
+      className={clsx("", className)}
+      withinPortal
+      title={t("update_password")}
+      onClose={onClose}
+      opened={true}
+    >
+      <form
+        className="flex flex-col gap-y-4"
+        onSubmit={handleSubmit(onUpdatePassword)}
       >
-        <form
-          className="flex flex-col gap-y-4"
-          onSubmit={handleSubmit(onUpdatePassword)}
+        <PasswordInput
+          label={
+            <div className="flex justify-between w-full">
+              <span>{t("current_password")}</span>
+              <Link
+                href={ROUTES.FORGOT_PASSWORD}
+                className="text-sm text-primary-600 font-normal"
+              >
+                {t("forgot")}?
+              </Link>
+            </div>
+          }
+          placeholder={t("Password")}
+          {...register("oldPassword", {
+            required: t("password_is_required"),
+          })}
+          labelProps={{ className: "w-full" }}
+          error={errors.oldPassword?.message}
+        />
+        <PasswordInput
+          label={t("new_password")}
+          placeholder={t("6_characters")}
+          {...register("newPassword", {
+            required: t("password_is_required"),
+            ...passwordValidationRules,
+          })}
+          error={errors.newPassword?.message}
+        />
+        <Button
+          disabled={updatePasswordMutation.isPending}
+          loading={updatePasswordMutation.isPending}
+          radius="lg"
+          color="dark"
+          type="submit"
+          className="w-full mt-2.5"
         >
-          <PasswordInput
-            label={
-              <div className="flex justify-between w-full">
-                <span>{t("current_password")}</span>
-                <Link
-                  href={ROUTES.FORGOT_PASSWORD}
-                  className="text-sm text-primary-600 font-normal"
-                >
-                  {t("forgot")}?
-                </Link>
-              </div>
-            }
-            placeholder={t("Password")}
-            {...register("oldPassword", {
-              required: t("password_is_required"),
-            })}
-            labelProps={{ className: "w-full" }}
-            error={errors.oldPassword?.message}
-          />
-          <PasswordInput
-            label={t("new_password")}
-            placeholder={t("6_characters")}
-            {...register("newPassword", {
-              required: t("password_is_required"),
-              ...passwordValidationRules,
-            })}
-            error={errors.newPassword?.message}
-          />
-          <Button
-            disabled={updatePasswordMutation.isPending}
-            loading={updatePasswordMutation.isPending}
-            radius="lg"
-            color="dark"
-            type="submit"
-            className="w-full mt-2.5"
-          >
-            {t("update_password")}
-          </Button>
-        </form>
-      </Modal>
-    </div>
+          {t("update_password")}
+        </Button>
+      </form>
+    </Modal>
   );
 };
