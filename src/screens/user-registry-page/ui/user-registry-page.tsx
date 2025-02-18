@@ -6,6 +6,7 @@ import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
 import { useGetUsers } from "@/entities/user";
+import { UpdatePasswordButton } from "@/features/auth";
 import {
   BlockUserButton,
   HideUserButton,
@@ -202,6 +203,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
           <Button size="sm" onClick={createModal.createUser}>
             {t("create_user")}
           </Button>
+          <UpdatePasswordButton />
         </div>
         <UserRegistryFilters
           className="grow mb-6"

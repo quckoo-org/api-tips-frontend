@@ -19,7 +19,7 @@ import "google/protobuf/wrappers.proto";
 import 'general_entities/v1/general_entities.proto';
 
 service ApiTipsRequisitesService {
-
+  
   /*
    * Получение всех платежных данных
    */
@@ -62,7 +62,7 @@ message GetAllRequisitesResponse {
  * Запрос на смену статуса реквизита
  */
 message SetRequisiteActivityRequest {
-
+  
   /*
    * Запрос на смену статуса реквизита
    */
@@ -88,7 +88,7 @@ message SetRequisiteActivityResponse {
    * Обновлённый статус платёжного реквизита
    */
   bool is_banned = 2;
-
+  
   /*
    * Мета информация ответа
    */
@@ -103,8 +103,8 @@ message BankAccount {
   /*
    * Идентификатор платежных реквизитов
    */
-  int64 requisite_id = 1;
-
+  int64 requisite_id = 1; 
+  
   /*
    * Наименование банка
    */
@@ -151,22 +151,22 @@ message CryptoWallet {
    * Номер расчётного счета
    */
   google.protobuf.StringValue address = 1;
-
+  
   /*
    * Справочник крипто-валюты
    */
   google.protobuf.StringValue wallet = 2;
-
+  
   /*
    * Токен для крипто-кошелька
    */
   google.protobuf.StringValue token = 3;
-
+  
   /*
    * Тип крипто-валюты
    */
   google.protobuf.StringValue crypto_currency_type = 4;
-
+  
   /*
    * Признак запрета счёта
    */
@@ -177,3 +177,4 @@ message CryptoWallet {
    */
   int64 requisite_id = 6;
 }
+

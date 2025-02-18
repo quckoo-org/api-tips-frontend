@@ -208,6 +208,22 @@ message GetUserDetailedResponse {
   api.tips.general_entities.v1.GeneralResponse response = 10;
 }
 
+message GetUserDetailedRequest {
+
+}
+
+message GetUserDetailedResponse {
+  /*
+   * Пользователь c детализированной информацией
+   */
+  DetailedUser detailed_user = 1;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
 /*
  * Запрос - получение списка пользователей с ролями
  */
@@ -368,6 +384,37 @@ message ChangeUserPasswordRequest {
    */
   string new_password = 2;
 
+  /*
+   * Почта пользователя, которому необходимо изменить пароль
+   */
+  string email = 3;
+}
+
+/*
+ * Ответ - смена пароля пользователя
+ */
+message ChangeUserPasswordResponse {
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - смена пароля пользователя
+ */
+message ChangeUserPasswordRequest {
+  /*
+   * Старый пароль
+   */
+  string old_password = 1;
+  
+  /*
+   * Новый пароль
+   */
+  string new_password = 2;
+  
   /*
    * Почта пользователя, которому необходимо изменить пароль
    */

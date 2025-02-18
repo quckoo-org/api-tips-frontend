@@ -6,6 +6,7 @@ import {
   Burger,
   Container,
   Drawer,
+  Flex,
   Text,
   Title,
   UnstyledButton,
@@ -35,7 +36,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
 
-  const tariffsQuery = useGetTariffs({});
+  const tariffsQuery = useGetTariffs({ filter: { isHidden: false } });
 
   return (
     <>
@@ -275,22 +276,39 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                       {/*  Ace Up Your Sleeve*/}
                       {/*  {tariff.name}*/}
                       {/*</Title>*/}
-                      <div className="lg:mb-5 flex gap-x-1 items-end mb-8">
+                      <Flex
+                        gap={15}
+                        className="lg:mb-5 gap-x-1 flex-col justify-between mb-8 "
+                      >
                         <Title size="h2">
                           {fromDecimal(tariff.totalPrice) +
                             " " +
                             tariff.currency}
                         </Title>
-                        <Text className="lg:text-sm mb-1">/ per month</Text>
-                      </div>
-                      <Button
-                        className="lg:mb-5 mb-10"
-                        size="lg"
-                        variant={tariff.name === "Base" ? "gradient" : "black"}
-                        fullWidth={isMobile}
-                      >
-                        Get {tariff.name} Plan
-                      </Button>
+                        <Text
+                          className="lg:text-sm mr-2 text-nowrap"
+                          size={"sm"}
+                        >
+                          the cost of 1 request -{" "}
+                          {tariff.currency + " " + fromDecimal(tariff.tipPrice)}
+                        </Text>
+                        <Text className="lg:text-sm mr-2 font-bold " size="h3">
+                          {tariff.paidTipsCount} requests
+                        </Text>
+                        <Text size={"xl"}>
+                          + {tariff.freeTipsCount} requests free
+                        </Text>
+                        <Button
+                          size="lg"
+                          variant={
+                            tariff.name === "Base" ? "gradient" : "black"
+                          }
+                          fullWidth={isMobile}
+                        >
+                          Get {tariff.name} Plan
+                        </Button>
+                      </Flex>
+
                       {/*<ul className="list-disc flex flex-col gap-y-2 ml-4">*/}
                       {/*  <li className="lg:text-sm lg:leading:sm">*/}
                       {/*    Basic hand analysis and real-time suggestions.*/}

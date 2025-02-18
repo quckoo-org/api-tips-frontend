@@ -4,9 +4,9 @@
   Description:
     Internal interaction contract
 
-  Owner:
+  Owner: 
     dev team
-
+    
   Methods:
 */
 
@@ -39,7 +39,7 @@ service ApiTipsInvoiceService {
    * Изменение счета
    */
   rpc GeneratePdfForInvoice (GeneratePdfForInvoiceRequest) returns (GeneratePdfForInvoiceResponse);
-
+ 
 }
 
 message GetInvoicesRequest {
@@ -63,7 +63,7 @@ message GetInvoicesResponse {
  * Запрос на создание нового счёта
  */
 message CreateInvoiceRequest {
-
+  
   /*
    * Тип оплаты
    */
@@ -88,7 +88,7 @@ message CreateInvoiceRequest {
    * Идентификатор заказа
    */
   int64  orderId = 5;
-
+  
 }
 
 /*
@@ -97,9 +97,9 @@ message CreateInvoiceRequest {
 message CreateInvoiceResponse {
   /*
    * Созданный счет
-   */
+   */    
   Invoice invoice = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -111,20 +111,20 @@ message CreateInvoiceResponse {
  *  Запрос на обновление счета
  */
 message UpdateInvoiceRequest {
-
+  
   /*
    * Идентификатор (Guid) счёта для обновления
    */
   string invoice_id = 1;
-
+  
   /*
    * REF-номер
-   */
+   */ 
   optional string ref_number = 2;
-
+  
   /*
    * Общее количество запросов
-   */
+   */ 
   google.protobuf.Int64Value amount_of_requests = 3;
 
 }
@@ -136,9 +136,9 @@ message UpdateInvoiceResponse {
 
   /*
    * Счет после обновления
-   */
+   */ 
   Invoice invoice = 1;
-
+  
   /*
    * Мета информация ответа
    */
@@ -189,7 +189,7 @@ message Invoice {
    *  - полностью зависит от заказа, на который он создаётся (берётся такой же статус)
    */
   custom_enums.v1.OrderStatus status = 3;
-
+  
   /*
    * REF-номер счета
    */

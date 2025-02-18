@@ -22,6 +22,7 @@ import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { RegisterReqT } from "../model/types";
 import { useRegisterUser } from "../model/use-register-user";
+import { useGetPasswordValidationRules } from "../model/utils";
 
 type RegisterFormProps = {
   className?: string;
@@ -30,6 +31,7 @@ type RegisterFormProps = {
 export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
   const { t } = useTranslations();
   const registerMutation = useRegisterUser();
+  const passwordRules = useGetPasswordValidationRules();
 
   const {
     control,
@@ -112,10 +114,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
         placeholder={t("Password")}
         {...register("password", {
           required: t("password_is_required"),
-          minLength: {
-            value: 8,
-            message: t("password_must_be_more_then_8_characters_long"),
-          },
+          ...passwordRules,
         })}
         error={errors.password?.message}
       />

@@ -40,3 +40,8 @@ export type ChangePasswordReqT = {
 export type ChangePasswordResT = { message: string };
 export type ChangePasswordErrorT = AxiosError<{ Message: string }>;
 export type ChangePasswordFormValuesT = Pick<ChangePasswordReqT, "password">;
+
+export type UpdatePasswordFormValuesT = {
+  oldPassword: string;
+  newPassword: string;
+};
