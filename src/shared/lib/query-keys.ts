@@ -11,4 +11,5 @@ export const QUERY_KEYS = {
   RESET_PASSWORD: "reset_password",
   REQUISITES: "requisites",
   INVOICES: "invoices",
+  DETAILED_USER: "detailed_user",
 };

@@ -47,17 +47,17 @@ service ApiTipsAccessService {
    * Получение списка пользователей с ролями
    */
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
-  
+
   /*
    * Получение пользователя по идентификатору 
    */
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
 
   /*
-   * Детальное получение пользователя по идентификатору 
+   * Детальное получение пользователя по идентификатору
    */
   rpc GetUserDetailed (GetUserDetailedRequest) returns (GetUserDetailedResponse);
-  
+
   /*
    * Создание пользователя и присвоение ему ролей
    */
@@ -71,12 +71,12 @@ service ApiTipsAccessService {
   rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse){
     option idempotency_level = IDEMPOTENT;
   };
-  
+
   rpc ChangeUserPassword (ChangeUserPasswordRequest) returns (ChangeUserPasswordResponse){
     option idempotency_level = IDEMPOTENT;
   };
   // Роли
-  
+
   /*
    * Получение списка ролей с разрешениями
    */
@@ -107,7 +107,7 @@ service ApiTipsAccessService {
   rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse){
     option idempotency_level = IDEMPOTENT;
   };
-  
+
   // Разрешения
 
   /*
@@ -171,21 +171,37 @@ service ApiTipsAccessService {
 }
 
 /*
- * Запрос - получение пользователя по идентификатору 
+ * Запрос - получение пользователя по идентификатору
  */
 message GetUserRequest {
   google.protobuf.Int64Value user_id = 1;
 }
 
 /*
- * Ответ - получение пользователя по идентификатору 
+ * Ответ - получение пользователя по идентификатору
  */
 message GetUserResponse {
   /*
    * Пользователь
    */
   optional User user = 1;
-  
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+message GetUserDetailedRequest {
+
+}
+
+message GetUserDetailedResponse {
+  /*
+   * Пользователь c детализированной информацией
+   */
+  DetailedUser detailed_user = 1;
+
   /*
    * Мета информация ответа
    */
@@ -236,7 +252,7 @@ message GetUsersResponse {
    * Пользователи
    */
   repeated User users = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -251,7 +267,7 @@ message AddUserRequest {
    * Почта пользователя
    */
   string email = 1;
-  
+
   /*
    * Имя пользователя
    */
@@ -266,12 +282,12 @@ message AddUserRequest {
    * Код страны пользователя (ISO 3166-1 alpha-3)
    */
   string cca3 = 4;
-  
+
   /*
    * Список идентификаторов ролей
    */
   repeated int64 roles_ids = 5;
-  
+
 }
 
 /*
@@ -282,7 +298,7 @@ message AddUserResponse {
    * Пользователь
    */
   optional User user = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -297,7 +313,7 @@ message UpdateUserRequest {
    * Идентификатор обновляемого пользователя
    */
   google.protobuf.Int64Value user_id = 1;
-  
+
   /*
    * Почта пользователя
    */
@@ -347,7 +363,38 @@ message UpdateUserResponse {
    * Пользователь
    */
   User user = 1;
-  
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - смена пароля пользователя
+ */
+message ChangeUserPasswordRequest {
+  /*
+   * Старый пароль
+   */
+  string old_password = 1;
+
+  /*
+   * Новый пароль
+   */
+  string new_password = 2;
+
+  /*
+   * Почта пользователя, которому необходимо изменить пароль
+   */
+  string email = 3;
+}
+
+/*
+ * Ответ - смена пароля пользователя
+ */
+message ChangeUserPasswordResponse {
+
   /*
    * Мета информация ответа
    */
@@ -452,7 +499,7 @@ message AddRoleResponse {
    * Роль
    */
   optional Role role = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -487,7 +534,7 @@ message UpdateRoleResponse {
    * Роль
    */
   optional Role role = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -584,7 +631,7 @@ message AddPermissionResponse {
    * Разрешение
    */
   optional Permission permission = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -619,7 +666,7 @@ message UpdatePermissionResponse {
    * Разрешение
    */
   optional Permission permission = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -689,7 +736,7 @@ message AddMethodResponse {
    * Метод
    */
   optional Method method = 1;
-  
+
   /*
    * ��ета информация ответа
    */
@@ -719,7 +766,7 @@ message UpdateMethodResponse {
    * Метод
    */
   optional Method method = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -761,7 +808,7 @@ message User {
    * Идентификатор пользователя
    */
   int64 id = 1;
-  
+
   /*
    * Почта пользователя
    */
