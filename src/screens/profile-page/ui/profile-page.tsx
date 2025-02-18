@@ -3,7 +3,7 @@
 import { Text, Title, Skeleton } from "@mantine/core";
 import { CircleCheck } from "lucide-react";
 import { useGetDetailedUsers } from "@/entities/user";
-import { Button } from "@/shared/ui/button";
+import { UpdatePasswordButton } from "@/features/auth";
 
 export function ManageProfile() {
   const { data: detailedUser, isLoading } = useGetDetailedUsers();
@@ -95,9 +95,7 @@ export function ManageProfile() {
           {isLoading ? (
             <Skeleton width={160} height={40} radius="sm" />
           ) : (
-            <Button size="md" variant="black">
-              Update Password
-            </Button>
+            <UpdatePasswordButton />
           )}
         </div>
       </div>
