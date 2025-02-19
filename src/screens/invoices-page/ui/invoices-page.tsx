@@ -40,6 +40,7 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
     createdDate: null,
     paymentDate: null,
   });
+
   const columns = useMemo<MRT_ColumnDef<Invoice>[]>(
     () => [
       {
@@ -206,7 +207,7 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
           <Title size="h1" className="mb-6">
             {t("invoices")}
           </Title>
-          <Button size="sm" onClick={createModal.addInvoice}>
+          <Button size="sm" onClick={() => createModal.addInvoice()}>
             {t("create_invoice")}
           </Button>
         </div>
