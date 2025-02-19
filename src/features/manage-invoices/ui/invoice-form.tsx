@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { clsx } from "clsx";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useInvoicesPaymentType } from "@/entities/invoices";
 import { useGetOrders } from "@/entities/order";
@@ -24,6 +24,7 @@ type InvoiceFormProps = {
   onSuccess: (invoice: CreateInvoiceFormValuesT) => Promise<void>;
   isLoading: boolean;
   error?: string;
+  orderId?: number;
 };
 
 export const InvoiceForm: FC<InvoiceFormProps> = ({
@@ -32,6 +33,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   invoice,
   isLoading,
   error,
+  orderId,
 }) => {
   const { t } = useTranslations();
   const { getAllPaymentsOptions } = useInvoicesPaymentType();
@@ -49,9 +51,11 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
     formState: { errors },
     control,
     watch,
+    setValue,
   } = useForm<CreateInvoiceFormValuesT>({
     defaultValues: {
       ...invoice,
+      orderId: orderId ? orderId.toString() : undefined,
       totalAmount: invoice?.totalAmount
         ? fromDecimal(invoice?.totalAmount)
         : undefined,
@@ -63,7 +67,12 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
     (order) => order.id.toString() === selectedOrderId,
   );
 
-  console.log(selectedOrder);
+  // eslint-disable-next-line
+  useEffect(() => {
+    setValue("totalAmount", fromDecimal(selectedOrder?.tariff?.totalPrice));
+    setValue("amountOfRequests", selectedOrder?.tariff?.totalTipsCount);
+  }, [selectedOrder, setValue]);
+
   const onSubmit = (data: CreateInvoiceFormValuesT) => {
     onSuccess(data);
   };
@@ -102,6 +111,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
               disabled={true}
               value={selectedOrder?.tariff?.totalTipsCount}
               placeholder={t("enter_invoice_amount_of_requests")}
+              error={errors.amountOfRequests?.message}
             />
           )}
         />

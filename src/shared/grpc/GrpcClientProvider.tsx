@@ -1,8 +1,10 @@
+import { useRouter } from "next/navigation";
 import { retryMiddleware } from "nice-grpc-client-middleware-retry";
 import { Client, createChannel, createClientFactory } from "nice-grpc-web";
 import { PropsWithChildren } from "react";
 import { useMemo } from "use-memo-one";
 
+import { ROUTES } from "@/shared/router";
 import { AuthMiddleware } from "./AuthMiddleware";
 import { GrpcClientsContextValue, grpcClientsContext } from "./context";
 import { errorMiddleware } from "./errorMiddleware";
@@ -14,13 +16,19 @@ const channel = createChannel(
 );
 
 export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
+  const router = useRouter();
   const value = useMemo((): GrpcClientsContextValue => {
     let clientFactory = createClientFactory()
       .use(loggerMiddleware)
       .use(retryMiddleware);
 
     clientFactory = clientFactory
-      .use(AuthMiddleware({ getAccessToken: TokenService.getAccessToken }))
+      .use(
+        AuthMiddleware({
+          getAccessToken: TokenService.getAccessToken,
+          onRefreshFail: () => router.push(ROUTES.HOME),
+        }),
+      )
       .use(errorMiddleware);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +46,7 @@ export const GrpcClientsProvider = ({ children }: PropsWithChildren) => {
         return client;
       },
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
