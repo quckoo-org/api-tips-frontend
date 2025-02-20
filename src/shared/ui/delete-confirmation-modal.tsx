@@ -8,6 +8,7 @@ type DeleteConfirmationModalProps<T> = {
   onClose: (response?: T) => void;
   handleDelete: () => void;
   modalText?: string;
+  modalTitle?: string;
   isLoading?: boolean;
 };
 export const DeleteConfirmationModal = <T,>({
@@ -16,14 +17,16 @@ export const DeleteConfirmationModal = <T,>({
   onClose,
   modalText,
   isLoading,
+  modalTitle,
 }: DeleteConfirmationModalProps<T>) => {
   const { t } = useTranslations();
-  modalText = t("delete_confirmation_text");
+  modalText = modalText ? modalText : t("delete_confirmation_text");
+  modalTitle = modalTitle ? modalTitle : t("delete_confirmation");
   return (
     <Modal
       onClose={onClose}
       opened
-      title={t("delete_confirmation")}
+      title={modalTitle}
       centered
       className={clsx("", className)}
     >
@@ -33,7 +36,7 @@ export const DeleteConfirmationModal = <T,>({
           {t("cancel")}
         </Button>
         <Button color="red" onClick={handleDelete} loading={isLoading}>
-          {t("delete")}
+          {t("submit")}
         </Button>
       </Group>
     </Modal>

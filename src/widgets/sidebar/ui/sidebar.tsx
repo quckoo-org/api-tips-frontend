@@ -7,6 +7,7 @@ import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
   LogOut,
+  HistoryIcon,
   PackageIcon,
   ReceiptText,
   Settings,
@@ -193,6 +194,21 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           >
             <ReceiptText className="shrink-0" />
             {opened && <Text className="font-medium">{t("requisites")}</Text>}
+          </div>
+        </Link>
+      )}
+      {authStore.isAuthenticated && (
+        <Link href={ROUTES.HISTORIES} className="text-xl font-bold">
+          <div
+            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
+              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
+                pathname,
+                ROUTES.HISTORIES,
+              ),
+            })}
+          >
+            <HistoryIcon className="shrink-0" />
+            {opened && <Text className="font-medium">{t("histories")}</Text>}
           </div>
         </Link>
       )}
