@@ -71,7 +71,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentUser && accessToken) {
       authStore.login(currentUser ?? null);
     }
-    if (route?.requiresAuth && !authStore.isAccess(route.roles)) {
+    if (
+      route?.requiresAuth &&
+      route.roles?.length &&
+      !authStore.isAccess(route.roles)
+    ) {
       router.push(ROUTES.HOME);
     }
   }, [
