@@ -35,7 +35,7 @@ function checkAuth(
   // Редирект для авторизованных пользователей
   if (authToken && paths?.includes(pathname)) {
     return NextResponse.redirect(
-      new URL("/" + locale + "/tariffs", request.url),
+      new URL("/" + locale + "/profile", request.url),
     );
   }
 }

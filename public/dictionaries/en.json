@@ -247,5 +247,8 @@
   "enter_reason": "Enter reason",
   "crediting": "Crediting",
   "debiting": "Debiting",
-  "are_you_sure_you_want_to_debit_all_tips_from_all_users": "Are you sure you want to debit all tips from all users?"
+  "are_you_sure_you_want_to_debit_all_tips_from_all_users": "Are you sure you want to debit all tips from all users?",
+  "free_tips": "Free tips",
+  "paid_tips": "Paid tips",
+  "balance": "Balance"
 }

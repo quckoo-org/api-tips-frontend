@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
-import { QUERY_KEYS } from "@/shared/lib";
+import { QUERY_KEYS, ROLES } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -33,7 +33,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const queryClient = useQueryClient();
-
+  const { isAccess } = authStore;
   const [opened, handlers] = useDisclosure(true);
 
   const logout = async () => {
@@ -101,7 +101,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           {opened && <Text className="font-medium">{t("home")}</Text>}
         </div>
       </Link>
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.ADMINISTRATION} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -118,7 +118,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN, ROLES.MANAGER]) && (
         <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -137,7 +137,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.TARIFFS} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -152,7 +152,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.ORDERS} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -167,7 +167,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.INVOICES} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -182,7 +182,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.REQUISITES} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -197,7 +197,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           </div>
         </Link>
       )}
-      {authStore.isAuthenticated && (
+      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
         <Link href={ROUTES.HISTORIES} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
@@ -228,13 +228,15 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item
-              component="a"
-              href={ROUTES.PROFILE}
-              leftSection={<Settings size={12} />}
-            >
-              Profile
-            </Menu.Item>
+            {isAccess([ROLES.ADMIN, ROLES.WebUser]) && (
+              <Menu.Item
+                component="a"
+                href={ROUTES.PROFILE}
+                leftSection={<Settings size={12} />}
+              >
+                Profile
+              </Menu.Item>
+            )}
             <Menu.Item onClick={logout} leftSection={<LogOut size={12} />}>
               Logout
             </Menu.Item>
