@@ -219,5 +219,21 @@
   "invoices_payment_type_bank": "Bank",
   "invoices_payment_type_crypto": "Crypto",
   "invoices_payment_type_unspecified": "Unspecified",
-  "invoice_created_date": "Created date"
+  "invoice_created_date": "Created date",
+  "debit_all_tips": "Debit all tips",
+  "history": "History",
+  "histories": "Histories",
+  "all_time": "All time",
+  "period": "Period",
+  "debited_tips": "Debited tips",
+  "operation_type": "Operation Type",
+  "reason": "Reason",
+  "enter_paid_tips_count": "Enter paid tips count",
+  "enter_free_tips_count": "Enter free tips count",
+  "debited_tips_count": "Debited tips count",
+  "enter_debited_tips_count": "Enter debited tips count",
+  "enter_reason": "Enter reason",
+  "crediting": "Crediting",
+  "debiting": "Debiting",
+  "are_you_sure_you_want_to_debit_all_tips_from_all_users": "Are you sure you want to debit all tips from all users?"
 }

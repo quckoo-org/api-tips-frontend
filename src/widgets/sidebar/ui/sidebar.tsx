@@ -6,6 +6,7 @@ import clsx from "clsx";
 import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
+  HistoryIcon,
   PackageIcon,
   ReceiptText,
   SquareKanbanIcon,
@@ -204,7 +205,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
               ),
             })}
           >
-            <ReceiptText className="shrink-0" />
+            <HistoryIcon className="shrink-0" />
             {opened && <Text className="font-medium">{t("histories")}</Text>}
           </div>
         </Link>

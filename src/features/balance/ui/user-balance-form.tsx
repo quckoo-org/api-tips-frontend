@@ -31,9 +31,10 @@ export const UserBalanceForm: FC<UserBalanceFormProps> = ({
   } = useForm<UpdateBalanceRequest>({
     defaultValues: {
       userId,
-      freeTipsCount: undefined,
+      creditedFreeTipsCount: undefined,
+      debitedTipsCount: undefined,
       operationType: BalanceOperationType.BALANCE_OPERATION_TYPE_CREDITING,
-      paidTipsCount: undefined,
+      creditedPaidTipsCount: undefined,
       reason: "",
     },
   });
@@ -70,14 +71,20 @@ export const UserBalanceForm: FC<UserBalanceFormProps> = ({
         <TextInput
           label={t("paid_tips_count")}
           placeholder={t("enter_paid_tips_count")}
-          {...register("paidTipsCount", {})}
-          error={errors.paidTipsCount?.message}
+          {...register("creditedPaidTipsCount", {})}
+          error={errors.creditedPaidTipsCount?.message}
         />
         <TextInput
           label={t("free_tips_count")}
           placeholder={t("enter_free_tips_count")}
-          {...register("freeTipsCount", {})}
-          error={errors.freeTipsCount?.message}
+          {...register("creditedFreeTipsCount", {})}
+          error={errors.creditedFreeTipsCount?.message}
+        />
+        <TextInput
+          label={t("debited_tips_count")}
+          placeholder={t("enter_debited_tips_count")}
+          {...register("debitedTipsCount", {})}
+          error={errors.debitedTipsCount?.message}
         />
         <TextInput
           label={t("reason")}
@@ -85,7 +92,7 @@ export const UserBalanceForm: FC<UserBalanceFormProps> = ({
           {...register("reason")}
           error={errors.reason?.message}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{t("submit")}</Button>
       </Flex>
     </form>
   );

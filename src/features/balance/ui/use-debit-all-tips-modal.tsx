@@ -17,7 +17,7 @@ export function useDebitAllTipsModal() {
     <DeleteConfirmationModal
       {...modalProps}
       modalTitle={t("debit_all_tips")}
-      modalText={t("are_you_sure_you_want_to_debit_all_tips_from_all_users?")}
+      modalText={t("are_you_sure_you_want_to_debit_all_tips_from_all_users")}
       isLoading={debitMutation.isPending}
     />
   ) : undefined;
