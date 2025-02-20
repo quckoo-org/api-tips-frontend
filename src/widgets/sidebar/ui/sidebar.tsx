@@ -6,9 +6,11 @@ import clsx from "clsx";
 import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
+  LogOut,
   HistoryIcon,
   PackageIcon,
   ReceiptText,
+  Settings,
   SquareKanbanIcon,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";
@@ -226,7 +228,16 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item onClick={logout}>Logout</Menu.Item>
+            <Menu.Item
+              component="a"
+              href={ROUTES.PROFILE}
+              leftSection={<Settings size={12} />}
+            >
+              Profile
+            </Menu.Item>
+            <Menu.Item onClick={logout} leftSection={<LogOut size={12} />}>
+              Logout
+            </Menu.Item>
           </Menu.Dropdown>
         </Menu>
       </div>

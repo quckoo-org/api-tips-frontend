@@ -5,14 +5,18 @@ ingress:
     kubernetes.io/ingress.class: nginx
     {{ if eq .Environment.Name "production" }}
     cert-manager.io/cluster-issuer: "letsencrypt-api-tips-frontend-prod"
+    {{ else if eq .Environment.Name "stage" }}
+    cert-manager.io/cluster-issuer: "letsencrypt-api-tips-frontend-stage"
     {{else}}
     cert-manager.io/cluster-issuer: "letsencrypt-api-tips-frontend-dev"
     {{end}}
   hosts:
     {{ if eq .Environment.Name "production" }}
-    - host: api-tips.quckoo.net
+    - host: prod.api-tips.quckoo.net
+    {{ else if eq .Environment.Name "stage" }}
+    - host: stage.api-tips.quckoo.net
     {{else}}
-    - host: beta.api-tips.quckoo.net
+    - host: dev.api-tips.quckoo.net
     {{end}}
       paths:
         - path: /
@@ -20,16 +24,16 @@ ingress:
   tls:
     {{ if eq .Environment.Name "production" }}
     - secretName: letsencrypt-api-tips-frontend-prod-tls
+    {{ else if eq .Environment.Name "stage" }}
+    - secretName: letsencrypt-api-tips-frontend-stage-tls
     {{else}}
     - secretName: letsencrypt-api-tips-frontend-dev-tls
     {{end}}
       hosts:
         {{ if eq .Environment.Name "production" }}
-        - api-tips.quckoo.net
+        - prod.api-tips.quckoo.net
+        {{ else if eq .Environment.Name "stage" }}
+        - stage.api-tips.quckoo.net
         {{else}}
-        - beta.api-tips.quckoo.net
+        - dev.api-tips.quckoo.net
         {{end}}
-
-additionalEnvs:
-  - name: NEXT_PUBLIC_API_URL
-    value: "https://beta.api-tips.api.quckoo.net"

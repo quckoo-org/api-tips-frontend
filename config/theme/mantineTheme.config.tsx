@@ -146,6 +146,13 @@ export const mantineTheme = createTheme({
         },
       },
     }),
+    DatePickerInput: TextInput.extend({
+      defaultProps: {
+        classNames: {
+          label: "font-semibold mb-1 text-sm",
+        },
+      },
+    }),
     Select: Select.extend({
       defaultProps: {
         classNames: {

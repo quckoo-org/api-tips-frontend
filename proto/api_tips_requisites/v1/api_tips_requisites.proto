@@ -24,6 +24,11 @@ service ApiTipsRequisitesService {
    * Получение всех платежных данных
    */
   rpc GetAllRequisites (GetAllRequisitesRequest) returns (GetAllRequisitesResponse);
+
+  /*
+   * Изменение статуса активности банковского реквизита
+   */
+  rpc SetRequisiteActivity (SetRequisiteActivityRequest) returns (SetRequisiteActivityResponse);
 }
 
 /*
@@ -54,43 +59,86 @@ message GetAllRequisitesResponse {
 }
 
 /*
+ * Запрос на смену статуса реквизита
+ */
+message SetRequisiteActivityRequest {
+  
+  /*
+   * Запрос на смену статуса реквизита
+   */
+  int64 requisite_id = 1;
+
+  /*
+   * Запрос на смену статуса реквизита
+   */
+  bool is_banned = 2;
+}
+
+/*
+ * Ответ на смену статуса реквизита
+ */
+message SetRequisiteActivityResponse {
+
+  /*
+   * Идентификатор платёжного реквизита
+   */
+  int64 requisite_id = 1;
+
+  /*
+   * Обновлённый статус платёжного реквизита
+   */
+  bool is_banned = 2;
+  
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 3;
+}
+
+/*
  * Данные для банковского счета
  */
 message BankAccount {
+
+  /*
+   * Идентификатор платежных реквизитов
+   */
+  int64 requisite_id = 1; 
+  
   /*
    * Наименование банка
    */
-  google.protobuf.StringValue bank_name = 1;
+  google.protobuf.StringValue bank_name = 2;
   /*
    * Адрес банка
    */
-  google.protobuf.StringValue bank_address = 2;
+  google.protobuf.StringValue bank_address = 3;
   /*
    * Swift номер
    */
-  google.protobuf.StringValue swift = 3;
+  google.protobuf.StringValue swift = 4;
   /*
    * Номер аккаунта
    */
-  google.protobuf.StringValue account_number = 4;
+  google.protobuf.StringValue account_number = 5;
   /*
    * Iban номер
    */
-  google.protobuf.StringValue iban = 5;
+  google.protobuf.StringValue iban = 6;
   /*
    * Дополнительная информация
    */
-  google.protobuf.StringValue additional_info = 6;
+  google.protobuf.StringValue additional_info = 7;
 
   /*
    * Тип валюты
    */
-  google.protobuf.StringValue currency_type = 7;
+  google.protobuf.StringValue currency_type = 8;
 
   /*
    * Признак запрета счёта
    */
-  google.protobuf.BoolValue is_banned = 8;
+  google.protobuf.BoolValue is_banned = 9;
 
 }
 
@@ -123,5 +171,10 @@ message CryptoWallet {
    * Признак запрета счёта
    */
   google.protobuf.BoolValue is_banned = 5;
+
+  /*
+   * Идентификатор платежных реквизитов
+   */
+  int64 requisite_id = 6;
 }
 

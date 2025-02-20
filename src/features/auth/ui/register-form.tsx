@@ -10,13 +10,19 @@ import {
 } from "@mantine/core";
 import clsx from "clsx";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  validateCaptcha,
+} from "react-simple-captcha";
 import { CountrySelect } from "@/entities/country";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { RegisterReqT } from "../model/types";
 import { useRegisterUser } from "../model/use-register-user";
+import { useGetPasswordValidationRules } from "../model/utils";
 
 type RegisterFormProps = {
   className?: string;
@@ -25,18 +31,29 @@ type RegisterFormProps = {
 export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
   const { t } = useTranslations();
   const registerMutation = useRegisterUser();
+  const passwordRules = useGetPasswordValidationRules();
 
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<RegisterReqT>({
     defaultValues: { email: "", firstname: "", lastname: "", password: "" },
   });
 
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, []);
+
   const onSubmit = async (req: RegisterReqT) => {
-    registerMutation.mutateAsync(req);
+    if (validateCaptcha(req.captcha)) {
+      registerMutation.mutateAsync(req);
+      return;
+    }
+    setError("captcha", { message: t("invalid_captcha") });
+    loadCaptchaEnginge(6);
   };
 
   return (
@@ -97,10 +114,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
         placeholder={t("Password")}
         {...register("password", {
           required: t("password_is_required"),
-          minLength: {
-            value: 8,
-            message: t("password_must_be_more_then_8_characters_long"),
-          },
+          ...passwordRules,
         })}
         error={errors.password?.message}
       />
@@ -116,6 +130,17 @@ export const RegisterForm: FC<RegisterFormProps> = ({ className }) => {
           />
         )}
       />
+      <div className={"[&_a]:text-sm"}>
+        <LoadCanvasTemplate />
+        <TextInput
+          className="basis-1/2"
+          placeholder={t("enter_captcha")}
+          {...register("captcha", {
+            required: t("captcha_is_required"),
+          })}
+          error={errors.captcha?.message}
+        />
+      </div>
       {!!registerMutation.error && (
         <Text className="text-red-500 mt-2" size="2xs">
           {registerMutation.error?.response?.data.Message}

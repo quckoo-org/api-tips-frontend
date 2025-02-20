@@ -36,9 +36,16 @@ class AuthStore {
   }
 
   isAccess(rolesHasAccess: ROLES[] | string[]) {
-    return rolesHasAccess.length && this.user?.roles
-      ? this.user?.roles.some((userRole) =>
-          rolesHasAccess.includes(userRole as ROLES),
+    //проверка на массив
+    const rolesForAccess = Array.isArray(rolesHasAccess)
+      ? rolesHasAccess
+      : [rolesHasAccess];
+    const userRolesForAccess = Array.isArray(this.user?.roles)
+      ? this.user?.roles
+      : [this.user?.roles];
+    return rolesForAccess?.length && this.user?.roles
+      ? userRolesForAccess?.some((userRole) =>
+          rolesForAccess.includes(userRole as ROLES),
         )
       : false;
   }

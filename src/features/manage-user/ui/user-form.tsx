@@ -112,9 +112,9 @@ export const UserForm: FC<UserFormProps> = ({
         />
         {userId && (
           <>
-            <Checkbox label="Is Deleted" {...register("isDeleted")} />
-            <Checkbox label="Is Blocked" {...register("isBlocked")} />
-            <Checkbox label="Is Verified" {...register("isVerified")} />
+            <Checkbox label={t("hidden")} {...register("isDeleted")} />
+            <Checkbox label={t("blocked")} {...register("isBlocked")} />
+            <Checkbox label={t("verified")} {...register("isVerified")} />
           </>
         )}
         <Button type="submit">Submit</Button>

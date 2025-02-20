@@ -5,9 +5,11 @@ import clsx from "clsx";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { OrderStatusText, useGetOrders } from "@/entities/order";
 import { useGetTariffs } from "@/entities/tariff";
 import { useGetUsers } from "@/entities/user";
+import { useCreateInvoiceModal } from "@/features/manage-invoices";
 import {
   useAddOrderModal,
   useCancelOrder,
@@ -36,6 +38,8 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
   const paidOrderMutation = usePaidOrder();
   const usersQuery = useGetUsers({});
   const tariffsQuery = useGetTariffs({});
+  const createInvoiceModal = useCreateInvoiceModal();
+
   const [filtersResult, setFiltersResult] = useState<GetOrdersRequest_Filter>({
     orderStatus: undefined,
   });
@@ -153,7 +157,15 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
               <Text>{t("cancel_order")}</Text>
             </div>
           </Menu.Item>
-          <Menu.Item>{t("create_bill")}</Menu.Item>
+          <Menu.Item
+            onClick={() =>
+              createInvoiceModal.addInvoice(cell.row.original.id, () =>
+                toast.success(t("invoice_created_successfully")),
+              )
+            }
+          >
+            <Text>{t("create_invoice")}</Text>
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     ),
@@ -195,6 +207,7 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
         <MantineReactTable table={table} />
       </div>
       {createModal.modal}
+      {createInvoiceModal.modal}
     </MenageOrderProvider>
   );
 };

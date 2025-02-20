@@ -15,6 +15,7 @@ export const enum ROUTES {
   REQUISITES = "/requisites",
   INVOICES = "/invoices",
   HISTORIES = "/histories",
+  PROFILE = "/profile",
 }
 
 export const routesConfig: Array<{
@@ -97,6 +98,12 @@ export const routesConfig: Array<{
   },
   {
     path: ROUTES.HISTORIES,
+    requiresAuth: true,
+    isAdmin: false,
+    roles: [ROLES.ADMIN],
+  },
+  {
+    path: ROUTES.REQUISITES,
     requiresAuth: true,
     isAdmin: false,
     roles: [ROLES.ADMIN],

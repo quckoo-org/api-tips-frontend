@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { clsx } from "clsx";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useInvoicesPaymentType } from "@/entities/invoices";
 import { useGetOrders } from "@/entities/order";
@@ -24,6 +24,7 @@ type InvoiceFormProps = {
   onSuccess: (invoice: CreateInvoiceFormValuesT) => Promise<void>;
   isLoading: boolean;
   error?: string;
+  orderId?: number;
 };
 
 export const InvoiceForm: FC<InvoiceFormProps> = ({
@@ -32,6 +33,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   invoice,
   isLoading,
   error,
+  orderId,
 }) => {
   const { t } = useTranslations();
   const { getAllPaymentsOptions } = useInvoicesPaymentType();
@@ -40,6 +42,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   const ordersOptions = ordersQuery.data?.orders.map((order) => ({
     value: order.id.toString(),
     label: order.id.toString(),
+    order: order,
   }));
 
   const {
@@ -47,14 +50,28 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
     register,
     formState: { errors },
     control,
+    watch,
+    setValue,
   } = useForm<CreateInvoiceFormValuesT>({
     defaultValues: {
       ...invoice,
+      orderId: orderId ? orderId.toString() : undefined,
       totalAmount: invoice?.totalAmount
         ? fromDecimal(invoice?.totalAmount)
         : undefined,
     },
   });
+
+  const selectedOrderId = watch("orderId");
+  const selectedOrder = ordersQuery.data?.orders.find(
+    (order) => order.id.toString() === selectedOrderId,
+  );
+
+  // eslint-disable-next-line
+  useEffect(() => {
+    setValue("totalAmount", fromDecimal(selectedOrder?.tariff?.totalPrice));
+    setValue("amountOfRequests", selectedOrder?.tariff?.totalTipsCount);
+  }, [selectedOrder, setValue]);
 
   const onSubmit = (data: CreateInvoiceFormValuesT) => {
     onSuccess(data);
@@ -63,21 +80,37 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={clsx("", className)}>
       <Flex direction="column" gap="md">
-        {!!error && <Text color="red">{error}</Text>}
+        {!!error && <Text c="red">{error}</Text>}
+        <Controller
+          control={control}
+          name="orderId"
+          rules={{ required: t("order_id_is_required") }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              searchable
+              withAsterisk
+              placeholder={t("select_order_id")}
+              label={t("order_id")}
+              error={errors.orderId?.message}
+              data={ordersOptions}
+            />
+          )}
+        />
         <Controller
           name="amountOfRequests"
           control={control}
-          rules={{ required: t("amount_of_requests_is_required") }}
-          render={({ field }) => (
+          rules={{ required: t("invoice_amount_of_requests_is_required") }}
+          render={() => (
             <NumberInput
-              label={t("amount_of_requests")}
+              label={t("invoice_amount_of_requests")}
               withAsterisk
               hideControls
               allowNegative={false}
               allowDecimal={false}
-              value={field.value}
-              placeholder={t("enter_amount_of_requests")}
-              onChange={field.onChange}
+              disabled={true}
+              value={selectedOrder?.tariff?.totalTipsCount}
+              placeholder={t("enter_invoice_amount_of_requests")}
               error={errors.amountOfRequests?.message}
             />
           )}
@@ -86,16 +119,15 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
           name="totalAmount"
           control={control}
           rules={{ required: t("total_amount_is_required") }}
-          render={({ field }) => (
+          render={() => (
             <NumberInput
               label={t("total_amount")}
               withAsterisk
               hideControls
               allowNegative={false}
               decimalScale={2}
-              value={field.value}
-              placeholder={t("enter_total_amount")}
-              onChange={field.onChange}
+              value={fromDecimal(selectedOrder?.tariff?.totalPrice)}
+              disabled={true}
               error={errors.totalAmount?.message}
             />
           )}
@@ -113,22 +145,6 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
               label={t("payment_type")}
               error={errors.paymentType?.message}
               data={getAllPaymentsOptions()}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="orderId"
-          rules={{ required: t("order_id_is_required") }}
-          render={({ field }) => (
-            <Select
-              {...field}
-              searchable
-              withAsterisk
-              placeholder={t("select_order_id")}
-              label={t("order_id")}
-              error={errors.orderId?.message}
-              data={ordersOptions}
             />
           )}
         />

@@ -15,11 +15,15 @@ import {
 type CreateInvoiceModalProps = {
   className?: string;
   onClose: (invoice?: Invoice) => void;
+  orderId?: number;
+  onSuccess?: () => void;
 };
 
 export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
   className,
   onClose,
+  orderId,
+  onSuccess,
 }) => {
   const { t } = useTranslations();
   const addInvoiceMutation = useCreateInvoice();
@@ -30,10 +34,15 @@ export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
       totalAmount: toDecimal(req.totalAmount),
       orderId: +req.orderId,
     };
-    const invoiceResponse =
-      await addInvoiceMutation.mutateAsync(invoiceRequest);
 
-    onClose(invoiceResponse.invoice);
+    addInvoiceMutation.mutate(invoiceRequest, {
+      onSuccess: (invoiceResponse) => {
+        onClose(invoiceResponse.invoice);
+        if (onSuccess) {
+          onSuccess();
+        }
+      },
+    });
   };
 
   return (
@@ -47,6 +56,7 @@ export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
         isLoading={addInvoiceMutation.isPending}
         onSuccess={onCreateInvoice}
         error={addInvoiceMutation.error?.description}
+        orderId={orderId}
       />
     </Modal>
   );
