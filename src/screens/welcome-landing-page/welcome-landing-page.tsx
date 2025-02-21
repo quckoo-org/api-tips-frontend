@@ -19,7 +19,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { useGetTariffs } from "@/entities/tariff";
+import { useGetClientTariffs } from "@/entities/tariff";
 import { useGetCurrentUser } from "@/entities/user";
 import { fromDecimal, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
@@ -39,7 +39,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
   const user = useGetCurrentUser(TokenService.getAccessToken());
-  const tariffsQuery = useGetTariffs({ filter: { isHidden: false } });
+  const tariffsQuery = useGetClientTariffs();
 
   return (
     <>
@@ -272,7 +272,10 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                 </Text>
               </div>
               <div className="lg:flex-col lg:gap-y-2.5 flex gap-x-5 items-center flex-wrap justify-center">
-                {tariffsQuery.data?.tariffs.length &&
+                {!tariffsQuery.data?.tariffs.length && (
+                  <Text className="text-white">No current tariffs</Text>
+                )}
+                {!!tariffsQuery.data?.tariffs.length &&
                   tariffsQuery.data.tariffs.map((tariff) => (
                     <div
                       key={tariff.id}
