@@ -16,6 +16,7 @@ export const enum ROUTES {
   INVOICES = "/invoices",
   HISTORIES = "/histories",
   PROFILE = "/profile",
+  DASHBOARD = "/dashboard",
 }
 
 export const routesConfig: Array<{

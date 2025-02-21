@@ -11,7 +11,6 @@ export const useGetCurrentUser = (token: string | undefined): UserResponse => {
     const base64 = base64Url.replace("-", "+").replace("_", "/");
 
     const user = JSON.parse(window.atob(base64));
-    user.roles = [user.roles];
     return user;
   }
 

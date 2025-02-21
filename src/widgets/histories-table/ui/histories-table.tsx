@@ -9,25 +9,30 @@ import {
 } from "@mantine/core";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import React, { useState } from "react";
-import { useGetHistories } from "@/entities/histrory";
-import { useGetDetailedHistories } from "@/entities/histrory/model/use-get-histories";
 import { dayjs } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
-import { User } from "@/shared/proto/api_tips_balance/v1/api_tips_balance";
+import {
+  GetHistoriesResponse,
+  User,
+} from "@/shared/proto/api_tips_balance/v1/api_tips_balance";
 import { BalanceOperationType } from "@/shared/proto/custom_enums/v1/custom_enums";
 
 export type HistoriesTableProps = {
-  dates: Date[];
-  updateUserBalance: (userId: number) => void;
+  updateUserBalance?: (userId: number) => void;
+  onSelectDate: (date: Date) => void;
+  onSelectUserIds?: (date: number[]) => void;
+  data?: GetHistoriesResponse;
+  isLoading: boolean;
 };
 
 export const HistoriesTable: React.FC<HistoriesTableProps> = ({
   updateUserBalance,
-  dates,
+  onSelectDate,
+  onSelectUserIds,
+  isLoading,
+  data,
 }) => {
   const { t } = useTranslations();
-  const [selectedYear, setSelectedYear] = useState<Date | undefined>(undefined);
-  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
 
   const [openedYears, setOpenedYears] = useState<{ [key: string]: boolean }>(
     {},
@@ -40,15 +45,6 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
   );
   const [openedDays, setOpenedDays] = useState<{ [key: string]: boolean }>({});
 
-  const historiesQuery = useGetHistories({
-    startDate: dates[0],
-    endDate: dates[1],
-  });
-  const historiesDetailedQuery = useGetDetailedHistories({
-    date: selectedYear,
-    userIds: selectedUsers,
-  });
-
   const toggleYear = (year?: string) => {
     if (!year) return;
 
@@ -56,8 +52,8 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
   };
 
   const toggleMonth = (year: Date, month: Date, users: User[]) => {
-    setSelectedYear(month);
-    setSelectedUsers(users.map((user) => user.id));
+    onSelectDate(month);
+    onSelectUserIds?.(users.map((user) => user.id));
     const _year = formatDateToString(year);
     const _month = formatDateToString(month);
     setOpenedMonths((prev) => ({
@@ -92,11 +88,11 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
   return (
     <Box pos="relative">
       <LoadingOverlay
-        visible={historiesQuery.isLoading || historiesDetailedQuery.isLoading}
+        visible={isLoading}
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-      <Table highlightOnHover>
+      <Table highlightOnHover verticalSpacing="md">
         <Table.Thead>
           <Table.Tr>
             <Table.Th></Table.Th>
@@ -112,7 +108,17 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {historiesQuery.data?.years.map((year) => (
+          {data?.years.length === 0 ||
+            (!data?.years && (
+              <Table.Tr className="">
+                <Table.Td colSpan={10}>
+                  <Text className="text-center italic text-gray-500">
+                    {t("no_data")}
+                  </Text>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          {data?.years.map((year) => (
             <React.Fragment key={formatDateToString(year.date)}>
               <Table.Tr className="bg-gray-200">
                 <Table.Td>
@@ -221,13 +227,19 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                               </Table.Td>
                               <Table.Td />
                               <Table.Td>
-                                <UnstyledButton
-                                  onClick={() => updateUserBalance(user.id)}
-                                >
-                                  <Text className="text-sm font-bold cursor-pointer  hover:text-primary-600 hover:underline">
+                                {updateUserBalance ? (
+                                  <UnstyledButton
+                                    onClick={() => updateUserBalance(user.id)}
+                                  >
+                                    <Text className="text-sm font-bold cursor-pointer  hover:text-primary-600 hover:underline">
+                                      {`${user.firstName} ${user.lastName}`}
+                                    </Text>
+                                  </UnstyledButton>
+                                ) : (
+                                  <Text className="text-sm font-bold">
                                     {`${user.firstName} ${user.lastName}`}
                                   </Text>
-                                </UnstyledButton>
+                                )}
                               </Table.Td>
                               <Table.Td>{user.email}</Table.Td>
                               <Table.Td />

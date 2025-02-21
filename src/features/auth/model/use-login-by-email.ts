@@ -28,7 +28,7 @@ export const useLoginByEmail = () => {
         expires: dayjs().add(15, "minute").toDate(),
       });
       authStore.login(data.user);
-      router.push(ROUTES.USER_REGISTRY);
+      router.push(ROUTES.HOME);
     },
   });
 };
