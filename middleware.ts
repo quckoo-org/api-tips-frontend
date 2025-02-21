@@ -4,8 +4,6 @@ import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { ROLES } from "@/shared/lib";
-import { ROUTES } from "@/shared/router";
 import { i18n } from "./config/i18n/i18n-config";
 
 function getLocale(request: NextRequest): string | undefined {
@@ -35,7 +33,7 @@ export function checkAuth(
   console.log(authToken, "authToken");
 
   const { pathname } = request.nextUrl;
-  const paths = [`/${locale}${ROUTES.LOGIN}`, `/${locale}${ROUTES.REGISTER}`];
+  const paths = [`/${locale}$/login`, `/${locale}$/register`];
 
   if (!authToken) {
     return;
@@ -53,15 +51,15 @@ export function checkAuth(
 
     const userRoles = decodedToken?.roles;
 
-    if (userRoles?.includes(ROLES.ADMIN) && paths?.includes(pathname)) {
+    if (userRoles?.includes("Admin") && paths?.includes(pathname)) {
       return NextResponse.redirect(
-        new URL(`/${locale}/${ROUTES.TARIFFS}`, request.url),
+        new URL(`/${locale}/$/tariffs`, request.url),
       );
     }
 
-    if (userRoles?.includes(ROLES.WebUser) && paths?.includes(pathname)) {
+    if (userRoles?.includes("WebUser") && paths?.includes(pathname)) {
       return NextResponse.redirect(
-        new URL(`/${locale}/${ROUTES.DASHBOARD}`, request.url),
+        new URL(`/${locale}/dashboard`, request.url),
       );
     }
   } catch (error) {
