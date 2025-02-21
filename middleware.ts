@@ -1,8 +1,11 @@
 import { match as matchLocale } from "@formatjs/intl-localematcher";
+import jwt from "jsonwebtoken"; // Используем для декодирования токена
 import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { ROLES } from "@/shared/lib";
+import { ROUTES } from "@/shared/router";
 import { i18n } from "./config/i18n/i18n-config";
 
 function getLocale(request: NextRequest): string | undefined {
@@ -24,19 +27,42 @@ function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function checkAuth(
+export function checkAuth(
   request: NextRequest,
   locale: string | undefined,
 ): NextResponse | undefined {
   const authToken = request.cookies.get("jwt")?.value;
   const { pathname } = request.nextUrl;
-  const paths = [`/${locale}/login`, `/${locale}/register`];
-  // Редирект для авторизованных пользователей
-  if (authToken && paths?.includes(pathname)) {
-    return NextResponse.redirect(
-      new URL("/" + locale + "/tariffs", request.url),
-    );
+  const paths = [`/${locale}${ROUTES.LOGIN}`, `/${locale}${ROUTES.REGISTER}`];
+
+  if (!authToken) {
+    return;
+  }
+
+  try {
+    const decodedToken = jwt.decode(authToken) as { roles?: string[] };
+
+    if (!decodedToken || !decodedToken.roles) {
+      console.error("Некорректный токен или отсутствуют роли");
+      return;
+    }
+
+    const userRoles = decodedToken.roles;
+
+    if (userRoles.includes(ROLES.ADMIN) && paths?.includes(pathname)) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/${ROUTES.TARIFFS}`, request.url),
+      );
+    }
+
+    if (userRoles.includes(ROLES.WebUser) && paths?.includes(pathname)) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/${ROUTES.DASHBOARD}`, request.url),
+      );
+    }
+  } catch (error) {
+    console.error("Ошибка при обработке токена: ", error);
+    return;
   }
 }
 
