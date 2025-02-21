@@ -33,7 +33,7 @@ export function checkAuth(
   console.log(authToken, "authToken");
 
   const { pathname } = request.nextUrl;
-  const paths = [`/${locale}$/login`, `/${locale}$/register`];
+  const paths = [`/${locale}/login`, `/${locale}/register`];
 
   if (!authToken) {
     return;
@@ -52,9 +52,7 @@ export function checkAuth(
     const userRoles = decodedToken?.roles;
 
     if (userRoles?.includes("Admin") && paths?.includes(pathname)) {
-      return NextResponse.redirect(
-        new URL(`/${locale}/$/tariffs`, request.url),
-      );
+      return NextResponse.redirect(new URL(`/${locale}/tariffs`, request.url));
     }
 
     if (userRoles?.includes("WebUser") && paths?.includes(pathname)) {
