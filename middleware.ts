@@ -42,20 +42,20 @@ export function checkAuth(
   try {
     const decodedToken = jwt.decode(authToken) as { roles?: string[] };
 
-    if (!decodedToken || !decodedToken.roles) {
+    if (!decodedToken || !decodedToken?.roles) {
       console.error("Некорректный токен или отсутствуют роли");
       return;
     }
 
-    const userRoles = decodedToken.roles;
+    const userRoles = decodedToken?.roles;
 
-    if (userRoles.includes(ROLES.ADMIN) && paths?.includes(pathname)) {
+    if (userRoles?.includes(ROLES.ADMIN) && paths?.includes(pathname)) {
       return NextResponse.redirect(
         new URL(`/${locale}/${ROUTES.TARIFFS}`, request.url),
       );
     }
 
-    if (userRoles.includes(ROLES.WebUser) && paths?.includes(pathname)) {
+    if (userRoles?.includes(ROLES.WebUser) && paths?.includes(pathname)) {
       return NextResponse.redirect(
         new URL(`/${locale}/${ROUTES.DASHBOARD}`, request.url),
       );

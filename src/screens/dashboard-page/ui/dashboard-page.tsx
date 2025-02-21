@@ -4,9 +4,7 @@ import { Button, Loader, Title } from "@mantine/core";
 import clsx from "clsx";
 import { FC, useState } from "react";
 import {
-  useGetDetailedHistories,
   useGetDetailedHistoriesByUser,
-  useGetHistories,
   useGetUserHistories,
 } from "@/entities/histrory";
 import { useGetDetailedUsers } from "@/entities/user";
@@ -34,6 +32,8 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
     startDate: dates[0],
     endDate: dates[1],
   });
+
+  console.log(historiesQuery.data, "historiesQuery");
 
   const historiesDetailedQuery = useGetDetailedHistoriesByUser({
     date: selectedDate,
@@ -72,6 +72,7 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
       />
       <HistoriesTable
         onSelectDate={handleSelectDate}
+        data={historiesQuery.data}
         isLoading={historiesQuery.isLoading || historiesDetailedQuery.isLoading}
       />
     </div>

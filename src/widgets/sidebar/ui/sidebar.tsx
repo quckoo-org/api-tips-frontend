@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Menu, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconHome, IconUsers } from "@tabler/icons-react";
@@ -103,11 +105,11 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
       ],
     };
 
-    if (currentUser.roles.includes(ROLES.ADMIN)) {
+    if (currentUser?.roles.includes(ROLES.ADMIN)) {
       return routes[ROLES.ADMIN];
     }
 
-    if (currentUser.roles.includes(ROLES.WebUser)) {
+    if (currentUser?.roles.includes(ROLES.WebUser)) {
       return routes[ROLES.WebUser];
     }
 

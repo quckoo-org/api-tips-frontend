@@ -16,6 +16,7 @@ import {
 } from "@/shared/proto/api_tips_balance/v1/api_tips_balance";
 
 export const useGetUserHistories = (req: GetHistoriesByUserRequest) => {
+  console.log(req, "req");
   const { getHistoriesByUser } = useHistoryClient();
   return useQuery<GetHistoriesByUserResponse>({
     queryKey: [QUERY_KEYS.HISTORIES, req],
@@ -41,6 +42,7 @@ export const useGetDetailedHistoriesByUser = (
 
       return response;
     },
+    enabled: !!req.date,
   });
 
   useEffect(() => {
