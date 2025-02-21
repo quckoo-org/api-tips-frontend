@@ -32,6 +32,8 @@ export function checkAuth(
   locale: string | undefined,
 ): NextResponse | undefined {
   const authToken = request.cookies.get("jwt")?.value;
+  console.log(authToken, "authToken");
+
   const { pathname } = request.nextUrl;
   const paths = [`/${locale}${ROUTES.LOGIN}`, `/${locale}${ROUTES.REGISTER}`];
 
@@ -41,6 +43,8 @@ export function checkAuth(
 
   try {
     const decodedToken = jwt.decode(authToken) as { roles?: string[] };
+
+    console.log(decodedToken, "decodedToken");
 
     if (!decodedToken || !decodedToken?.roles) {
       console.error("Некорректный токен или отсутствуют роли");
