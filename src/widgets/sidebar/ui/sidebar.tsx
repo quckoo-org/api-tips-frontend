@@ -15,6 +15,7 @@ import {
   ReceiptText,
   Settings,
   SquareKanbanIcon,
+  Landmark,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import Image from "next/image";
@@ -95,7 +96,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
         {
           path: ROUTES.REQUISITES,
           text: t("requisites"),
-          icon: ReceiptText,
+          icon: Landmark,
         },
         {
           path: ROUTES.HISTORIES,

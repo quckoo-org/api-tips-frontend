@@ -74,6 +74,7 @@ export const useGetDetailedHistoriesByUser = (
         },
       );
     }
+    // eslint-disable-next-line
   }, [detailedHistoryQuery.data, detailedHistoryQuery.isSuccess]);
 
   return detailedHistoryQuery;

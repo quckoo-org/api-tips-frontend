@@ -23,37 +23,32 @@ export const routesConfig: Array<{
   path: ROUTES;
   requiresAuth: boolean;
   isAdmin: boolean;
-  roles: ROLES[];
+  roles?: ROLES[];
 }> = [
   {
     path: ROUTES.HOME,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.LOGIN,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.REGISTER,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.VERIFY,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.FORBIDDEN,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.USER_REGISTRY,
@@ -83,13 +78,11 @@ export const routesConfig: Array<{
     path: ROUTES.RESET,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.FORGOT_PASSWORD,
     requiresAuth: false,
     isAdmin: false,
-    roles: [ROLES.ADMIN],
   },
   {
     path: ROUTES.INVOICES,
@@ -108,5 +101,11 @@ export const routesConfig: Array<{
     requiresAuth: true,
     isAdmin: false,
     roles: [ROLES.ADMIN],
+  },
+  {
+    path: ROUTES.PROFILE,
+    requiresAuth: true,
+    isAdmin: false,
+    roles: [ROLES.ADMIN, ROLES.WebUser, ROLES.MANAGER],
   },
 ];
