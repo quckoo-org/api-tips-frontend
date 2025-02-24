@@ -20,7 +20,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { useGetClientTariffs } from "@/entities/tariff";
-import { fromDecimal } from "@/shared/lib";
+import { useGetCurrentUser } from "@/entities/user";
+import { fromDecimal, TokenService } from "@/shared/lib";
+import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
 import { Button } from "@/shared/ui/button";
@@ -33,10 +35,11 @@ type WelcomeLandingPageProps = {
 export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   className,
 }) => {
+  const { t } = useTranslations();
   const [opened, handlers] = useDisclosure();
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
-
+  const user = useGetCurrentUser(TokenService.getAccessToken());
   const tariffsQuery = useGetClientTariffs();
   console.log(authStore.user);
   return (
@@ -89,19 +92,29 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                       <UnstyledButton className="px-3.5 py-2 font-semibold">
                         Contact Sales
                       </UnstyledButton>
-                      <Link href={ROUTES.LOGIN}>
-                        <UnstyledButton className="px-3 py-2 font-semibold">
-                          Login
-                        </UnstyledButton>
-                      </Link>
-                      <Link href={ROUTES.REGISTER}>
-                        <Button
-                          className="bg-custom-gradient border-0 ml-3"
-                          size="md"
-                        >
-                          Get Started
-                        </Button>
-                      </Link>
+                      {user ? (
+                        <Link href={ROUTES.PROFILE}>
+                          <Button className="bg-custom-gradient border-0 ml-3">
+                            {t("go_to_dashboard")}
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Link href={ROUTES.LOGIN}>
+                          <UnstyledButton className="px-3 py-2 font-semibold">
+                            Login
+                          </UnstyledButton>
+                        </Link>
+                      )}
+                      {!user && (
+                        <Link href={ROUTES.REGISTER}>
+                          <Button
+                            className="bg-custom-gradient border-0 ml-3"
+                            size="md"
+                          >
+                            Get Started
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   )}
                 </div>

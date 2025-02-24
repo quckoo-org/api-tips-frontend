@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Menu, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconHome, IconUsers } from "@tabler/icons-react";
@@ -6,8 +8,9 @@ import clsx from "clsx";
 import {
   CircleDollarSignIcon,
   CircleUserRoundIcon,
-  LogOut,
   HistoryIcon,
+  LayoutDashboardIcon,
+  LogOut,
   PackageIcon,
   ReceiptText,
   Settings,
@@ -18,7 +21,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
-import { QUERY_KEYS, ROLES } from "@/shared/lib";
+import { useGetCurrentUser } from "@/entities/user";
+import { QUERY_KEYS, ROLES, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -33,7 +37,8 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { isAccess } = authStore;
+  const currentUser = useGetCurrentUser(TokenService.getAccessToken());
+
   const [opened, handlers] = useDisclosure(true);
 
   const logout = async () => {
@@ -50,14 +55,75 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
     return currentRoute === route;
   };
 
+  const getRoutes = () => {
+    const routes = {
+      [ROLES.WebUser]: [
+        { path: ROUTES.HOME, text: t("home"), icon: IconHome },
+        {
+          path: ROUTES.DASHBOARD,
+          text: t("dashboard"),
+          icon: LayoutDashboardIcon,
+        },
+      ],
+      [ROLES.ADMIN]: [
+        { path: ROUTES.HOME, text: t("home"), icon: IconHome },
+        {
+          path: ROUTES.ADMINISTRATION,
+          text: t("administration"),
+          icon: SquareKanbanIcon,
+        },
+        {
+          path: ROUTES.USER_REGISTRY,
+          text: t("user_registry"),
+          icon: IconUsers,
+        },
+        {
+          path: ROUTES.TARIFFS,
+          text: t("tariffs"),
+          icon: CircleDollarSignIcon,
+        },
+        {
+          path: ROUTES.ORDERS,
+          text: t("orders"),
+          icon: PackageIcon,
+        },
+        {
+          path: ROUTES.INVOICES,
+          text: t("invoices"),
+          icon: ReceiptText,
+        },
+        {
+          path: ROUTES.REQUISITES,
+          text: t("requisites"),
+          icon: ReceiptText,
+        },
+        {
+          path: ROUTES.HISTORIES,
+          text: t("histories"),
+          icon: HistoryIcon,
+        },
+      ],
+    };
+
+    if (currentUser?.roles.includes(ROLES.ADMIN)) {
+      return routes[ROLES.ADMIN];
+    }
+
+    if (currentUser?.roles.includes(ROLES.WebUser)) {
+      return routes[ROLES.WebUser];
+    }
+
+    return [{ path: ROUTES.HOME, text: t("home"), icon: IconHome }];
+  };
+
   return (
     <aside
       className={clsx(
         "flex flex-col bg-gray-50 px-4 py-6 transition-all duration-200",
         className,
         {
-          ["w-[75px]"]: !opened, // Закрытое состояние
-          ["w-[250px]"]: opened, // Открытое состояние
+          ["w-[75px]"]: !opened,
+          ["w-[250px]"]: opened,
         },
       )}
     >
@@ -82,136 +148,22 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
             />
           )}
         </div>
-        {/*{opened && (*/}
-        {/*  <ActionIcon onClick={handlers.close}>*/}
-        {/*    <PanelLeftCloseIcon />*/}
-        {/*  </ActionIcon>*/}
-        {/*)}*/}
       </div>
-      <Link href={ROUTES.HOME} className="text-xl font-bold">
-        <div
-          className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-            ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-              pathname,
-              ROUTES.HOME,
-            ),
-          })}
-        >
-          <IconHome className="shrink-0" />
-          {opened && <Text className="font-medium">{t("home")}</Text>}
-        </div>
-      </Link>
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.ADMINISTRATION} className="text-xl font-bold">
+      {getRoutes().map((route) => (
+        <Link key={route.path} href={route.path} className="text-xl font-bold">
           <div
             className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
               ["bg-indigo-100 text-primary-600"]: isActiveRoute(
                 pathname,
-                ROUTES.ADMINISTRATION,
+                route.path,
               ),
             })}
           >
-            <SquareKanbanIcon className="shrink-0" />
-            {opened && (
-              <Text className="font-medium">{t("administration")}</Text>
-            )}
+            <route.icon />
+            {opened && <Text className="font-medium">{route.text}</Text>}
           </div>
         </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN, ROLES.MANAGER]) && (
-        <Link href={ROUTES.USER_REGISTRY} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.USER_REGISTRY,
-              ),
-            })}
-          >
-            <IconUsers className="shrink-0" />
-            {opened && (
-              <Text className="font-medium text-nowrap">
-                {t("user_registry")}
-              </Text>
-            )}
-          </div>
-        </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.TARIFFS} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.TARIFFS,
-              ),
-            })}
-          >
-            <CircleDollarSignIcon className="shrink-0" />
-            {opened && <Text className="font-medium">{t("tariffs")}</Text>}
-          </div>
-        </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.ORDERS} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.ORDERS,
-              ),
-            })}
-          >
-            <PackageIcon className="shrink-0" />
-            {opened && <Text className="font-medium">{t("orders")}</Text>}
-          </div>
-        </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.INVOICES} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.INVOICES,
-              ),
-            })}
-          >
-            <ReceiptText className="shrink-0" />
-            {opened && <Text className="font-medium">{t("invoices")}</Text>}
-          </div>
-        </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.REQUISITES} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.REQUISITES,
-              ),
-            })}
-          >
-            <ReceiptText className="shrink-0" />
-            {opened && <Text className="font-medium">{t("requisites")}</Text>}
-          </div>
-        </Link>
-      )}
-      {authStore.isAuthenticated && isAccess([ROLES.ADMIN]) && (
-        <Link href={ROUTES.HISTORIES} className="text-xl font-bold">
-          <div
-            className={clsx("flex gap-x-2 p-2.5 rounded-sm ", {
-              ["bg-indigo-100 text-primary-600"]: isActiveRoute(
-                pathname,
-                ROUTES.HISTORIES,
-              ),
-            })}
-          >
-            <HistoryIcon className="shrink-0" />
-            {opened && <Text className="font-medium">{t("histories")}</Text>}
-          </div>
-        </Link>
-      )}
+      ))}
       <div className="mt-auto">
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
@@ -228,15 +180,13 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            {isAccess([ROLES.ADMIN, ROLES.WebUser]) && (
-              <Menu.Item
-                component="a"
-                href={ROUTES.PROFILE}
-                leftSection={<Settings size={12} />}
-              >
-                Profile
-              </Menu.Item>
-            )}
+            <Menu.Item
+              component="a"
+              href={ROUTES.PROFILE}
+              leftSection={<Settings size={12} />}
+            >
+              Profile
+            </Menu.Item>
             <Menu.Item onClick={logout} leftSection={<LogOut size={12} />}>
               Logout
             </Menu.Item>

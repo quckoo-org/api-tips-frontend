@@ -248,6 +248,10 @@
   "crediting": "Crediting",
   "debiting": "Debiting",
   "are_you_sure_you_want_to_debit_all_tips_from_all_users": "Are you sure you want to debit all tips from all users?",
+  "go_to_dashboard": "Go to dashboard",
+  "your_balance": "Your balance",
+  "dashboard": "Dashboard",
+  "top_up_balance": "Top up balance",
   "free_tips": "Free tips",
   "paid_tips": "Paid tips",
   "balance": "Balance"
