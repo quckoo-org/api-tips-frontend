@@ -1,10 +1,28 @@
 import { match as matchLocale } from "@formatjs/intl-localematcher";
-import jwt from "jsonwebtoken"; // Используем для декодирования токена
 import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import { i18n } from "./config/i18n/i18n-config";
+const decodeJwt = <T = never>(token: string): T | null => {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) return null;
+
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join(""),
+    );
+
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Invalid JWT:", error);
+    return null;
+  }
+};
 
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
@@ -40,7 +58,7 @@ export function checkAuth(
   }
 
   try {
-    const decodedToken = jwt.decode(authToken) as { roles?: string[] };
+    const decodedToken = decodeJwt(authToken) as { roles?: string[] };
 
     console.log(decodedToken, "decodedToken");
 
