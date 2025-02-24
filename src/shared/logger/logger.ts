@@ -1,3 +1,5 @@
+"use client";
+
 import isEmpty from "lodash.isempty";
 import pino from "pino";
 
