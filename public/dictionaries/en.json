@@ -255,5 +255,10 @@
   "top_up_balance": "Top up balance",
   "free_tips": "Free tips",
   "paid_tips": "Paid tips",
-  "balance": "Balance"
+  "balance": "Balance",
+  "my_orders": "My orders",
+  "download_invoice_in_order": "Download invoice",
+  "order_pay_type": "Payment type",
+  "order_paid_at": "Paid",
+  "invoice_guid_order": "Invoice guid"
 }

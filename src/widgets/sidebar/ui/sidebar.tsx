@@ -16,6 +16,7 @@ import {
   Settings,
   SquareKanbanIcon,
   Landmark,
+  FileBadge,
 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import Image from "next/image";
@@ -102,6 +103,11 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           path: ROUTES.HISTORIES,
           text: t("histories"),
           icon: HistoryIcon,
+        },
+        {
+          path: ROUTES.MY_ORDERS,
+          text: t("my_orders"),
+          icon: FileBadge,
         },
       ],
     };

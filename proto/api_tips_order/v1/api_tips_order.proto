@@ -9,12 +9,11 @@
     
   Methods:
     - GetOrders ( Получение списка заказов )
+    - GetOrdersForClient (Получение списка заказов для клиента)
     - GetOrder ( Получение заказа )
     - AddOrder ( Создание заказа )
     - SetOrderStatusPaid ( Обновление статуса заказа на "Оплачен" )
     - SetOrderStatusCancelled ( Обновление статуса заказа на "Отменён" )
-    - GetAccessToken ( Получение актуального токена пользователя для запросов подсказок по оплаченным заказам )
-    - UpdateAccessToken ( Геренерация нового токена для оплаченных заказов пользователя )
 */
 
 syntax = "proto3";
@@ -32,14 +31,18 @@ service ApiTipsOrderService {
    * Получение списка заказов
    */
   rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
-  
+
+  /*
+   * Получение списка заказов
+   */
+  rpc GetOrdersForClient (GetOrdersForClientRequest) returns (GetOrdersForClientResponse);
   /*
    * Получение заказа
    */
   rpc GetOrder (GetOrderRequest) returns (GetOrderResponse);
-  
+
   /*
-   * Создание заказа 
+   * Создание заказа
    */
   rpc AddOrder (AddOrderRequest) returns (AddOrderResponse){
     option idempotency_level = IDEMPOTENT;
@@ -56,18 +59,6 @@ service ApiTipsOrderService {
    * Обновление статуса заказа на "Отменён"
    */
   rpc SetOrderStatusCancelled (SetOrderStatusCancelledRequest) returns (SetOrderStatusCancelledResponse){
-    option idempotency_level = IDEMPOTENT;
-  };
-
-  /*
-   * Получение актуального токена пользователя
-   */
-  rpc GetAccessToken (GetAccessTokenRequest) returns (GetAccessTokenResponse);
-
-  /*
-   * Геренерация нового токена для оплаченных заказов пользователя
-   */
-  rpc UpdateAccessToken (UpdateAccessTokenRequest) returns (UpdateAccessTokenResponse){
     option idempotency_level = IDEMPOTENT;
   };
 }
@@ -90,6 +81,20 @@ message GetOrdersRequest {
   }
 }
 
+message GetOrdersForClientRequest {
+}
+
+message GetOrdersForClientResponse {
+  /*
+   * Заказы
+   */
+  repeated Order orders = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
 /*
  * Ответ - получение списка заказов
  */
@@ -98,7 +103,7 @@ message GetOrdersResponse {
    * Заказы
    */
   repeated Order orders = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -106,21 +111,21 @@ message GetOrdersResponse {
 }
 
 /*
- * Запрос - получение заказа по идентификатору 
+ * Запрос - получение заказа по идентификатору
  */
 message GetOrderRequest {
   google.protobuf.Int64Value order_id = 1;
 }
 
 /*
- * Ответ - получение заказа по идентификатору 
+ * Ответ - получение заказа по идентификатору
  */
 message GetOrderResponse {
   /*
    * Заказ
    */
   optional Order order = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -134,7 +139,7 @@ message AddOrderRequest {
   /*
    * Идентификатор пользователя
    */
-  int64 user_id = 1;
+  optional int64 user_id = 1;
 
   /*
    * Идентификатор тарифа
@@ -150,7 +155,7 @@ message AddOrderResponse {
    * Заказ
    */
   optional Order order = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -180,7 +185,7 @@ message SetOrderStatusPaidResponse {
    * Заказ
    */
   optional Order order = 1;
-  
+
   /*
    * Мета информация ответа
    */
@@ -205,46 +210,6 @@ message SetOrderStatusCancelledResponse {
    * Заказ
    */
   optional Order order = 1;
-  
-  /*
-   * Мета информация ответа
-   */
-  api.tips.general_entities.v1.GeneralResponse response = 10;
-}
-
-/*
- * Запрос - получение актуального токена пользователя
- */
-message GetAccessTokenRequest {}
-
-/*
- * Ответ - получение актуального токена пользователя
- */
-message GetAccessTokenResponse {
-  /*
-   * Актуальный токен пользователя
-   */
-  optional string access_token = 1;
-  
-  /*
-   * Мета информация ответа
-   */
-  api.tips.general_entities.v1.GeneralResponse response = 10;
-}
-
-/*
- * Запрос - геренерация нового токена для оплаченных заказов пользователя
- */
-message UpdateAccessTokenRequest {}
-
-/*
- * Ответ - геренерация нового токена для оплаченных заказов пользователя
- */
-message UpdateAccessTokenResponse {
-  /*
-   * Обновленный токен пользователя
-   */
-  optional string access_token = 1;
 
   /*
    * Мета информация ответа
@@ -286,11 +251,12 @@ message Order {
   /*
    * Пользователь оформивший заказ
    */
-  User user = 6;
+  optional User user = 6;
 
   /*
-   * to do сформированный счёт по заказу
+   * Сформированный счёт по заказу
    */
+  optional Invoice invoice = 7;
 }
 
 /*
@@ -308,7 +274,7 @@ message Tariff {
   string name = 2;
 
   /*
-   * Общее количество подсказок 
+   * Общее количество подсказок
    */
   optional int64 total_tips_count = 3;
 
@@ -316,7 +282,7 @@ message Tariff {
    * Общая стоимость
    */
   api.tips.custom_types.v1.Decimal total_price = 4;
-  
+
   /*
    * Валюта тарифа, ISO 4217
    */
@@ -331,7 +297,7 @@ message User {
    * Идентификатор пользователя
    */
   int64 id = 1;
-  
+
   /*
    * Почта пользователя
    */
@@ -346,4 +312,15 @@ message User {
    * Фамилия пользователя
    */
   string last_name = 4;
+}
+
+/*
+ * Сущность счета
+ */
+message Invoice {
+
+  /*
+   * Идентификатор счета
+   */
+  optional string guid = 1;
 }
