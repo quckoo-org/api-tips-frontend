@@ -6,10 +6,13 @@ import dayjs from "dayjs";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
-import { InvoicePaymentText, useGetInvoices } from "@/entities/invoices";
+import {
+  InvoicePaymentText,
+  InvoiceStatusText,
+  useGetInvoices,
+} from "@/entities/invoices";
 import { ValidPayment } from "@/entities/invoices/model/types";
 
-import { OrderStatusText } from "@/entities/order";
 import { InvoicesFilters, InvoicesFiltersT } from "@/features/invoices-filters";
 import {
   useCreateInvoiceModal,
@@ -20,7 +23,7 @@ import { formatDate } from "@/shared/lib";
 import { sortDecimal } from "@/shared/lib/decimal";
 import { useTranslations } from "@/shared/locale/translations";
 import { Invoice } from "@/shared/proto/api_tips_invoice/v1/api_tips_invoice";
-import { OrderStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
+import { InvoiceStatus } from "@/shared/proto/custom_enums/v1/custom_enums";
 import { CurrencyCell } from "@/shared/ui";
 import { useReactTable } from "@/shared/ui/use-react-table";
 
@@ -121,7 +124,9 @@ export const InvoicesPage: FC<InvoicesPageProps> = ({ className }) => {
         header: t("invoice_status"),
         sortingFn: "basic",
         Cell: ({ cell }) => (
-          <OrderStatusText status={cell.row.original.status as OrderStatus} />
+          <InvoiceStatusText
+            status={cell.row.original.status as InvoiceStatus}
+          />
         ),
       },
       {

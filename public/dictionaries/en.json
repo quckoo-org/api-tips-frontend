@@ -255,5 +255,11 @@
   "top_up_balance": "Top up balance",
   "free_tips": "Free tips",
   "paid_tips": "Paid tips",
-  "balance": "Balance"
+  "balance": "Balance",
+  "invoice_status_unspecified": "Unspecified",
+  "invoice_status_created": "Created",
+  "invoice_status_paid": "Paid",
+  "invoice_status_cancelled": "Cancelled",
+  "invoice_status_unrecognized": "Unrecognized",
+  "enter_invoice_status": "Enter invoice status"
 }
