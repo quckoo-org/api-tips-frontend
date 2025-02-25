@@ -9,7 +9,7 @@ import {
   AddOrderRequest,
 } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 import { UserOrderForm } from "./user-order-form";
-import { useAddOrder } from "../model/use-add-order";
+import { useAddUserOrder } from "../model/use-add-user-order";
 
 type AddOrderModalProps = {
   className?: string;
@@ -21,7 +21,7 @@ export const AddUserOrderModal: FC<AddOrderModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslations();
-  const addOrderMutation = useAddOrder();
+  const addOrderMutation = useAddUserOrder();
   const onAddOrder = async (req: Omit<AddOrderRequest, "userId">) => {
     const newOrder: AddOrderRequest = {
       ...req,

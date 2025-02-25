@@ -7,7 +7,7 @@ import {
   GetOrdersResponse,
 } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 
-export const useAddOrder = () => {
+export const useAddUserOrder = () => {
   const { addOrder } = useOrdersClient();
   const queryClient = useQueryClient();
 
@@ -23,10 +23,10 @@ export const useAddOrder = () => {
     },
     onSuccess: (orderResponse) => {
       queryClient.setQueriesData(
-        { queryKey: [QUERY_KEYS.ORDERS] },
+        { queryKey: [QUERY_KEYS.CLIENT_ORDERS] },
         (oldData: GetOrdersResponse | undefined) => {
           if (!oldData || !orderResponse.order) return oldData;
-
+          console.log(orderResponse);
           return {
             ...oldData,
             orders: [...oldData.orders, orderResponse.order],

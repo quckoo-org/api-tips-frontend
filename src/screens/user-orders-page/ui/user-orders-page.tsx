@@ -105,7 +105,7 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
         header: t("order_paid_at"),
         sortingFn: "datetime",
         Cell: ({ cell }) => (
-          <Text size="2xs">{formatDate(cell.row.original.createdAt)}</Text>
+          <Text size="2xs">{formatDate(cell.row.original.paidAt)}</Text>
         ),
       },
       {
