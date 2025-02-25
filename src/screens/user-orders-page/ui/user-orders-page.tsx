@@ -37,7 +37,6 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
   });
 
   const ordersQuery = useGetOrdersForClient();
-  console.log(ordersQuery);
   const filteredOrders = useMemo(() => {
     return ordersQuery.data?.orders.filter((order) =>
       filtersResult.orderStatus

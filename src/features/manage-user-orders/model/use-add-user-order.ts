@@ -26,7 +26,6 @@ export const useAddUserOrder = () => {
         { queryKey: [QUERY_KEYS.CLIENT_ORDERS] },
         (oldData: GetOrdersResponse | undefined) => {
           if (!oldData || !orderResponse.order) return oldData;
-          console.log(orderResponse);
           return {
             ...oldData,
             orders: [...oldData.orders, orderResponse.order],
