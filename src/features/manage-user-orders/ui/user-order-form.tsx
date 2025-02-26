@@ -4,22 +4,22 @@ import { Button, Flex, Select, Text } from "@mantine/core";
 import { clsx } from "clsx";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { menageOrderDepsContext } from "@/features/manage-order";
-import { AddOrderFormValuesT } from "@/features/manage-order/model/types";
-import { useGetOrder } from "@/features/manage-order/model/use-get-order";
+import { manageUserOrderDepsContext } from "@/features/manage-user-orders";
+import { AddUserOrderFormValuesT } from "@/features/manage-user-orders/model/types";
+import { useGetOrder } from "@/features/manage-user-orders/model/use-get-order";
 import { useStrictContext } from "@/shared/hooks/useSctrictContext";
 import { useTranslations } from "@/shared/locale/translations";
 import { AddOrderRequest } from "@/shared/proto/api_tips_order/v1/api_tips_order";
 
-type OrderFormProps = {
+type UserOrderFormProps = {
   className?: string;
   orderId?: number;
-  onSuccess: (order: AddOrderRequest) => Promise<void>;
+  onSuccess: (order: Omit<AddOrderRequest, "userId">) => Promise<void>;
   isLoading: boolean;
   error?: string;
 };
 
-export const OrderForm: FC<OrderFormProps> = ({
+export const UserOrderForm: FC<UserOrderFormProps> = ({
   className,
   onSuccess,
   orderId,
@@ -28,26 +28,23 @@ export const OrderForm: FC<OrderFormProps> = ({
 }) => {
   const { t } = useTranslations();
   const orderQuery = useGetOrder({ orderId });
-  const { getTariffs, getUsers } = useStrictContext(menageOrderDepsContext);
+  const { getTariffs } = useStrictContext(manageUserOrderDepsContext);
 
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<AddOrderFormValuesT>({
+  } = useForm<AddUserOrderFormValuesT>({
     defaultValues: {
-      userId: undefined,
       tariffId: undefined,
     },
     values: {
-      userId: orderQuery.data?.order?.user?.id.toString(),
       tariffId: orderQuery.data?.order?.tariff?.id.toString(),
     },
   });
 
-  const onSubmit = (data: AddOrderFormValuesT) => {
-    const result: AddOrderRequest = {
-      userId: Number(data.userId)!,
+  const onSubmit = (data: AddUserOrderFormValuesT) => {
+    const result: Omit<AddOrderRequest, "userId"> = {
       tariffId: Number(data.tariffId)!,
     };
     onSuccess(result);
@@ -57,21 +54,6 @@ export const OrderForm: FC<OrderFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} className={clsx("", className)}>
       <Flex direction="column" gap="md">
         {!!error && <Text color="red">{error}</Text>}
-        <Controller
-          control={control}
-          name="userId"
-          rules={{ required: t("required_field") }}
-          render={({ field }) => (
-            <Select
-              {...field}
-              searchable
-              placeholder={t("select_order")}
-              label={t("order")}
-              error={errors.userId?.message}
-              data={getUsers()}
-            />
-          )}
-        />
         <Controller
           control={control}
           name="tariffId"

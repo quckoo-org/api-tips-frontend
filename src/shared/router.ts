@@ -9,6 +9,7 @@ export const enum ROUTES {
   FORBIDDEN = "/forbidden",
   TARIFFS = "/tariffs",
   ORDERS = "/orders",
+  MY_ORDERS = "/my-orders",
   ADMINISTRATION = "/administration",
   RESET = "/reset",
   FORGOT_PASSWORD = "/forgot-password",
@@ -104,6 +105,12 @@ export const routesConfig: Array<{
   },
   {
     path: ROUTES.PROFILE,
+    requiresAuth: true,
+    isAdmin: false,
+    roles: [ROLES.ADMIN, ROLES.WebUser, ROLES.MANAGER],
+  },
+  {
+    path: ROUTES.MY_ORDERS,
     requiresAuth: true,
     isAdmin: false,
     roles: [ROLES.ADMIN, ROLES.WebUser, ROLES.MANAGER],
