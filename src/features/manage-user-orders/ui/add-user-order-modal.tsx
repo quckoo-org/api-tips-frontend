@@ -23,10 +23,7 @@ export const AddUserOrderModal: FC<AddOrderModalProps> = ({
   const { t } = useTranslations();
   const addOrderMutation = useAddUserOrder();
   const onAddOrder = async (req: Omit<AddOrderRequest, "userId">) => {
-    const newOrder: AddOrderRequest = {
-      ...req,
-    };
-    const orderResponse = await addOrderMutation.mutateAsync(newOrder);
+    const orderResponse = await addOrderMutation.mutateAsync(req);
 
     onClose(orderResponse.order);
   };

@@ -88,7 +88,7 @@ export const OrderForm: FC<OrderFormProps> = ({
           )}
         />
         <Button loading={isLoading} type="submit">
-          Submit
+          {t("submit")}
         </Button>
       </Flex>
     </form>

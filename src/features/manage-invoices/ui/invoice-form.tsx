@@ -155,7 +155,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
           error={errors.description?.message}
         />
         <Button loading={isLoading} type="submit">
-          Submit
+          {t("submit")}
         </Button>
       </Flex>
     </form>
