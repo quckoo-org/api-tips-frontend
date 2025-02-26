@@ -32,7 +32,9 @@ export const createFilterMapper = <
     toSearchParams: (filters: Partial<T>): string => {
       const queryObject: Record<string, string> = Object.entries(filters)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .filter(([_, value]) => value !== undefined) // Убираем undefined
+        .filter(
+          ([_, value]) => value !== undefined && value !== null && value !== "",
+        ) // Убираем undefined
         .reduce(
           (acc, [key, value]) => {
             acc[key] = String(value); // Преобразуем boolean и другие типы в строку

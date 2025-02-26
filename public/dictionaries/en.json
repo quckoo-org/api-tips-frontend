@@ -20,7 +20,7 @@
   "is_blocked": "Blocked",
   "show_blocked": "Show blocked",
   "hide_blocked": "Hide blocked",
-  "is_hidden": "Deleted",
+  "is_hidden": "Hidden",
   "blocked": "Blocked",
   "show_hidden": "Show hidden",
   "hide_hidden": "Hide hidden",
@@ -266,5 +266,7 @@
   "user": "User",
   "select_user": "Select user",
   "change_user_balance": "Change user balance",
-  "update_user_balance": "Update user balance"
+  "update_user_balance": "Update user balance",
+  "show": "Show",
+  "hide": "Hide"
 }

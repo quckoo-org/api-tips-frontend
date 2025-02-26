@@ -4,7 +4,8 @@ import { ActionIcon, Button, Menu, Text, Title, Tooltip } from "@mantine/core";
 import clsx from "clsx";
 import { EllipsisIcon } from "lucide-react";
 import { MantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
-import { FC, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FC, useMemo } from "react";
 import { useGetUsers } from "@/entities/user";
 import {
   BlockUserButton,
@@ -14,7 +15,7 @@ import {
   VerifyUserButton,
 } from "@/features/manage-user";
 import { UserRegistryFilters } from "@/features/user-registry-filters";
-import { formatDate } from "@/shared/lib";
+import { createFilterMapper, formatDate } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import {
   GetUsersRequest_Filter,
@@ -28,28 +29,18 @@ type UserRegistryPageProps = {
 
 export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
   const { t } = useTranslations();
+  const searchParams = useSearchParams();
+  const filterMapper = createFilterMapper();
+
+  const filters = useMemo(
+    () => filterMapper.toFilters(searchParams) as GetUsersRequest_Filter,
+    [searchParams],
+  );
 
   const createModal = useCreateUserModal();
   const updateModal = useUpdateUserModal();
-  const [filtersResult, setFiltersResult] = useState<GetUsersRequest_Filter>({
-    isDeleted: false,
-    isBlocked: undefined,
-    isVerified: undefined,
-    email: "",
-  });
 
-  const usersQuery = useGetUsers({
-    ...(filtersResult.isDeleted !== undefined
-      ? { isDeleted: filtersResult.isDeleted }
-      : {}),
-    ...(filtersResult.isBlocked !== undefined
-      ? { isBlocked: filtersResult.isBlocked }
-      : {}),
-    ...(filtersResult.isVerified !== undefined
-      ? { isVerified: filtersResult.isVerified }
-      : {}),
-    ...(filtersResult.email !== "" ? { email: filtersResult.email } : {}),
-  });
+  const usersQuery = useGetUsers(filters);
 
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
@@ -187,8 +178,7 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
     },
   });
 
-  const handleSubmitFilters = (data: GetUsersRequest_Filter) => {
-    setFiltersResult(data);
+  const handleSubmitFilters = () => {
     table.setPageIndex(0);
   };
 
@@ -205,7 +195,6 @@ export const UserRegistryPage: FC<UserRegistryPageProps> = ({ className }) => {
         </div>
         <UserRegistryFilters
           className="grow mb-6"
-          result={filtersResult}
           onSubmit={handleSubmitFilters}
           isPending={usersQuery.isFetching}
         />

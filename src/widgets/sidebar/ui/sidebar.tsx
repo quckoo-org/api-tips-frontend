@@ -22,8 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
-import { useGetCurrentUser } from "@/entities/user";
-import { QUERY_KEYS, ROLES, TokenService } from "@/shared/lib";
+import { getCurrentUser, QUERY_KEYS, ROLES, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -38,7 +37,7 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
   const { t } = useTranslations();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const currentUser = useGetCurrentUser(TokenService.getAccessToken());
+  const currentUser = getCurrentUser(TokenService.getAccessToken());
 
   const [opened, handlers] = useDisclosure(true);
 

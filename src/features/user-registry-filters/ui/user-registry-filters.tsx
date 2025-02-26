@@ -4,86 +4,90 @@ import { Loader, Select, TextInput } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { createFilterMapper } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
-import { GetUsersRequest_Filter } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 
 type UserRegistryFiltersProps = {
   className?: string;
-  onSubmit: (data: GetUsersRequest_Filter) => void;
+  onSubmit: () => void;
   isPending: boolean;
-  result: GetUsersRequest_Filter;
+};
+
+type UserRegistryFiltersStateT = {
+  email: string | undefined;
+  isBlocked: boolean | null;
+  isDeleted: boolean | null;
+  isVerified: boolean | null;
+};
+
+const defaultValues = {
+  isBlocked: null,
+  isDeleted: false,
+  isVerified: null,
+  email: undefined,
 };
 
 export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
   className,
   onSubmit,
   isPending,
-  result,
 }) => {
   const searchParams = useSearchParams();
   const { t } = useTranslations();
-
   const router = useRouter();
-
   const filterMapper = createFilterMapper();
-  const { handleSubmit, register, watch, control } =
-    useForm<GetUsersRequest_Filter>({
-      defaultValues: {
-        isBlocked: undefined,
-        isDeleted: result.isDeleted ?? undefined,
-        isVerified: undefined,
-        email: "",
-      },
-      values: filterMapper.toFilters(searchParams) as GetUsersRequest_Filter,
+
+  const filtersFromParams = useMemo(() => {
+    return filterMapper.toFilters(searchParams) as UserRegistryFiltersStateT;
+  }, [searchParams]);
+
+  const { handleSubmit, register, watch, control, reset } =
+    useForm<UserRegistryFiltersStateT>({
+      defaultValues,
     });
 
-  const debouncedSubmit = useDebouncedCallback(
-    (data: GetUsersRequest_Filter) => {
-      const filters = {
-        ...data,
-        isVerified: data.isVerified ?? undefined,
-        isBlocked: data.isBlocked ?? undefined,
-        isDeleted: data.isDeleted ?? undefined,
-      };
+  useEffect(() => {
+    reset(filtersFromParams);
+    onSubmit();
 
-      const queryString = filterMapper.toSearchParams(filters);
+    if (!searchParams.size) {
+      const queryString = filterMapper.toSearchParams(defaultValues);
       router.push(`?${queryString}`);
-      onSubmit(data);
+    }
+  }, []);
+
+  const debouncedSubmit = useDebouncedCallback(
+    (data: UserRegistryFiltersStateT) => {
+      const queryString = filterMapper.toSearchParams(data);
+      router.push(`?${queryString}`);
+      onSubmit();
     },
     300,
   );
 
-  // eslint-disable-next-line
-  const handleSubmitForm = (data: Partial<GetUsersRequest_Filter>) => {
-    const filteredData = Object.fromEntries(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(data).filter(([_, value]) => value !== undefined),
-    ) as unknown as GetUsersRequest_Filter;
-
-    debouncedSubmit(filteredData);
-  };
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    const subscription = watch((data) => handleSubmit(handleSubmitForm)(data));
+    // @ts-ignore
+    const subscription = watch((data) => handleSubmit(debouncedSubmit)(data));
     return () => subscription.unsubscribe();
-  }, [handleSubmit, handleSubmitForm, watch]);
+  }, [handleSubmit, debouncedSubmit, watch]);
 
-  const handleMapToFilters = (value: string | null) => {
-    return value === "true" ? true : value === "false" ? false : null;
-  };
+  const booleanOptions = [
+    { value: "true", label: t("show") },
+    { value: "false", label: t("hide") },
+  ];
 
-  const handleMapToSelectValue = (value: boolean | undefined) => {
-    return value === true ? "true" : value === false ? "false" : "null";
-  };
+  const FIELDS = [
+    { label: t("is_blocked"), field: "isBlocked" },
+    { label: t("is_verified"), field: "isVerified" },
+    { label: t("is_hidden"), field: "isDeleted" },
+  ] as const;
 
   return (
     <form
-      onSubmit={handleSubmit(handleSubmitForm)}
+      onSubmit={handleSubmit(debouncedSubmit)}
       className={clsx("flex gap-4 items-start", className)}
     >
       <TextInput
@@ -92,62 +96,26 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
         placeholder={t("search")}
         {...register("email")}
       />
-      <Controller
-        control={control}
-        name="isBlocked"
-        render={({ field }) => (
-          <Select
-            {...field}
-            value={handleMapToSelectValue(field.value)}
-            onChange={(value) => field.onChange(handleMapToFilters(value))}
-            placeholder={t("is_blocked")}
-            label={t("is_blocked")}
-            data={[
-              { value: "null", label: t("all") },
-              { value: "true", label: t("show_blocked") },
-              { value: "false", label: t("hide_blocked") },
-            ]}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="isVerified"
-        render={({ field }) => (
-          <Select
-            {...field}
-            value={handleMapToSelectValue(field.value)}
-            onChange={(value) => field.onChange(handleMapToFilters(value))}
-            placeholder={t("is_verified")}
-            label={t("is_verified")}
-            data={[
-              { value: "null", label: t("all") },
-              { value: "true", label: t("show_verified") },
-              { value: "false", label: t("hide_verified") },
-            ]}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="isDeleted"
-        render={({ field }) => {
-          return (
+      {FIELDS.map((field) => (
+        <Controller
+          key={field.field}
+          control={control}
+          name={field.field}
+          render={({ field: { value, onChange, ...rest } }) => (
             <Select
-              {...field}
-              value={handleMapToSelectValue(field.value)}
-              onChange={(value) => field.onChange(handleMapToFilters(value))}
-              placeholder={t("is_hidden")}
-              label={t("is_hidden")}
-              data={[
-                { value: "null", label: t("all") },
-                { value: "true", label: t("show_hidden") },
-                { value: "false", label: t("hide_hidden") },
-              ]}
+              {...rest}
+              clearable
+              value={value === true ? "true" : value === false ? "false" : null}
+              onChange={(val) =>
+                onChange(val === "true" ? true : val === "false" ? false : null)
+              }
+              placeholder={t(field.label)}
+              label={t(field.label)}
+              data={booleanOptions}
             />
-          );
-        }}
-      />
+          )}
+        />
+      ))}
     </form>
   );
 };

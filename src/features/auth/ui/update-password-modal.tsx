@@ -5,9 +5,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import { useGetCurrentUser } from "@/entities/user";
 import { UpdatePasswordFormValuesT } from "@/features/auth/model/types";
-import { TokenService } from "@/shared/lib";
+import { getCurrentUser, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ChangeUserPasswordRequest } from "@/shared/proto/api_tips_access/v1/api_tips_access";
 import { ROUTES } from "@/shared/router";
@@ -25,7 +24,7 @@ export const UpdatePasswordModal: FC<UpdatePasswordModalProps> = ({
 }) => {
   const { t } = useTranslations();
   const passwordValidationRules = useGetPasswordValidationRules();
-  const currentUser = useGetCurrentUser(TokenService.getAccessToken());
+  const currentUser = getCurrentUser(TokenService.getAccessToken());
   const updatePasswordMutation = useUpdatePassword();
 
   const {
