@@ -4,11 +4,13 @@ import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
 import { FC, useState } from "react";
 import { useGetDetailedHistories, useGetHistories } from "@/entities/histrory";
+import { useGetUsers } from "@/entities/user";
 import {
   useDebitAllTipsModal,
   useUpdateUserBalanceModal,
 } from "@/features/balance";
 import { HistoryFilters } from "@/features/history-filters";
+import { BalanceProvider } from "@/screens/histories-page/providers";
 import { dayjs } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { HistoriesTable } from "@/widgets/histories-table";
@@ -19,9 +21,10 @@ type OrdersPageProps = {
 
 export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
   const { t } = useTranslations();
+  const usersQuery = useGetUsers({});
   const [dates, setDates] = useState<[Date, Date]>([
-    dayjs().subtract(1, "year").startOf("year").toDate(),
-    dayjs().add(1, "year").endOf("year").toDate(),
+    dayjs().startOf("year").toDate(),
+    dayjs().endOf("year").toDate(),
   ]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
@@ -51,7 +54,7 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
   };
 
   return (
-    <>
+    <BalanceProvider users={usersQuery.data?.users ?? []}>
       <div className={clsx("", className)}>
         <div className="flex gap-4 justify-between">
           <Title size="h1" className="mb-6">
@@ -78,6 +81,6 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
       </div>
       {debitAllTips.modal}
       {updateUserBalance.modal}
-    </>
+    </BalanceProvider>
   );
 };

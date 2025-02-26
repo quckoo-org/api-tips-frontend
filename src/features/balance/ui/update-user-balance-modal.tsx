@@ -8,14 +8,12 @@ import { useUpdateUserBalance } from "../model/use-update-user-balance";
 
 type UpdateUserModalProps = {
   className?: string;
-  userId: number;
   onClose: (user?: number) => void;
 };
 
 export const UpdateUserBalanceModal: FC<UpdateUserModalProps> = ({
   className,
   onClose,
-  userId,
 }) => {
   const { t } = useTranslations();
   const updateMutation = useUpdateUserBalance();
@@ -35,7 +33,10 @@ export const UpdateUserBalanceModal: FC<UpdateUserModalProps> = ({
       onClose={onClose}
       opened={true}
     >
-      <UserBalanceForm onSuccess={onUpdateUserBalance} userId={userId} />
+      <UserBalanceForm
+        onSuccess={onUpdateUserBalance}
+        isLoading={updateMutation.isPending}
+      />
     </Modal>
   );
 };

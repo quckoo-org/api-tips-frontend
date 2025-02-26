@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Box,
-  LoadingOverlay,
-  Table,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
+import { Box, Button, LoadingOverlay, Table, Text } from "@mantine/core";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import React, { useState } from "react";
 import { dayjs } from "@/shared/lib";
@@ -18,7 +12,7 @@ import {
 import { BalanceOperationType } from "@/shared/proto/custom_enums/v1/custom_enums";
 
 export type HistoriesTableProps = {
-  updateUserBalance?: (userId: number) => void;
+  updateUserBalance?: () => void;
   onSelectDate: (date: Date) => void;
   onSelectUserIds?: (date: number[]) => void;
   data?: GetHistoriesResponse;
@@ -33,7 +27,6 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
   data,
 }) => {
   const { t } = useTranslations();
-
   const [openedYears, setOpenedYears] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -92,7 +85,7 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-      <Table highlightOnHover verticalSpacing="md">
+      <Table stickyHeader highlightOnHover verticalSpacing="md">
         <Table.Thead>
           <Table.Tr>
             <Table.Th></Table.Th>
@@ -105,6 +98,13 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
             <Table.Th>{t("debited_tips")}</Table.Th>
             <Table.Th>{t("operation_type")}</Table.Th>
             <Table.Th>{t("reason")}</Table.Th>
+            {updateUserBalance && (
+              <Table.Th>
+                <Button size="sm" onClick={() => updateUserBalance()}>
+                  {t("change_user_balance")}
+                </Button>
+              </Table.Th>
+            )}
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
@@ -157,6 +157,7 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                 </Table.Td>
                 <Table.Td />
                 <Table.Td />
+                <Table.Td />
               </Table.Tr>
               {openedYears[formatDateToString(year.date)] &&
                 year.months.map((month) => {
@@ -203,6 +204,7 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                         </Table.Td>
                         <Table.Td />
                         <Table.Td />
+                        <Table.Td />
                       </Table.Tr>
                       {openedMonths[
                         `${formatDateToString(year.date)}-${formatDateToString(month.date)}`
@@ -227,22 +229,12 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                               </Table.Td>
                               <Table.Td />
                               <Table.Td>
-                                {updateUserBalance ? (
-                                  <UnstyledButton
-                                    onClick={() => updateUserBalance(user.id)}
-                                  >
-                                    <Text className="text-sm font-bold cursor-pointer  hover:text-primary-600 hover:underline">
-                                      {`${user.firstName} ${user.lastName}`}
-                                    </Text>
-                                  </UnstyledButton>
-                                ) : (
-                                  <Text className="text-sm font-bold">
-                                    {`${user.firstName} ${user.lastName}`}
-                                  </Text>
-                                )}
+                                <Text className="text-sm font-bold">
+                                  {`${user.firstName} ${user.lastName}`}
+                                </Text>
                               </Table.Td>
                               <Table.Td>{user.email}</Table.Td>
-                              <Table.Td />
+                              <Table.Td>{user.totalTipsBalance}</Table.Td>
                               <Table.Td>
                                 <Text className="text-sm text-green-500">
                                   {user.creditedFreeTipsCount}
@@ -254,10 +246,11 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                                 </Text>
                               </Table.Td>
                               <Table.Td>
-                                <Text className="text-sm text-green-500">
+                                <Text className="text-sm text-red-500">
                                   {user.debitedTipsCount}
                                 </Text>
                               </Table.Td>
+                              <Table.Td />
                               <Table.Td />
                               <Table.Td />
                             </Table.Tr>
@@ -319,7 +312,7 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                                         <Table.Td>
                                           {dayjs(
                                             operation.operationDate,
-                                          ).format("mm:ss DD.MM.YYYY")}
+                                          ).format("hh:mm DD.MM.YYYY")}
                                         </Table.Td>
                                         <Table.Td />
                                         <Table.Td />
@@ -350,6 +343,7 @@ export const HistoriesTable: React.FC<HistoriesTableProps> = ({
                                           }
                                         </Table.Td>
                                         <Table.Td>{operation.reason}</Table.Td>
+                                        <Table.Td />
                                       </Table.Tr>
                                     ))}
                                 </React.Fragment>
