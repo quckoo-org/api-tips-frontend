@@ -384,9 +384,13 @@ message User {
   optional int64 debited_tips_count = 7;
 
   /*
+  * Баланс пользователя на конец месяца
+  */
+  optional int64 total_tips_balance = 8;
+  /*
    * Список агрегированной информации по дням
    */
-  repeated Day days = 8;
+  repeated Day days = 9;
 }
 
 /*

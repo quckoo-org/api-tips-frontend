@@ -261,5 +261,10 @@
   "invoice_status_paid": "Paid",
   "invoice_status_cancelled": "Cancelled",
   "invoice_status_unrecognized": "Unrecognized",
-  "enter_invoice_status": "Enter invoice status"
+  "enter_invoice_status": "Enter invoice status",
+  "required_field": "Required field",
+  "user": "User",
+  "select_user": "Select user",
+  "change_user_balance": "Change user balance",
+  "update_user_balance": "Update user balance"
 }
