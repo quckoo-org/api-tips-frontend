@@ -33,6 +33,7 @@ export const createFilterMapper = <
       const queryObject: Record<string, string> = Object.entries(filters)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           ([_, value]) => value !== undefined && value !== null && value !== "",
         ) // Убираем undefined
         .reduce(
