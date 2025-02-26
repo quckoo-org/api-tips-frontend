@@ -20,8 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { useGetClientTariffs } from "@/entities/tariff";
-import { useGetCurrentUser } from "@/entities/user";
-import { fromDecimal, TokenService } from "@/shared/lib";
+import { fromDecimal, getCurrentUser, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -39,7 +38,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const [opened, handlers] = useDisclosure();
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
-  const user = useGetCurrentUser(TokenService.getAccessToken());
+  const user = getCurrentUser(TokenService.getAccessToken());
   const tariffsQuery = useGetClientTariffs();
   console.log(authStore.user);
   return (
