@@ -261,5 +261,7 @@
   "invoice_status_paid": "Paid",
   "invoice_status_cancelled": "Cancelled",
   "invoice_status_unrecognized": "Unrecognized",
-  "enter_invoice_status": "Enter invoice status"
+  "enter_invoice_status": "Enter invoice status",
+  "show": "Show",
+  "hide": "Hide"
 }

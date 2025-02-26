@@ -75,8 +75,8 @@ export const UserRegistryFilters: FC<UserRegistryFiltersProps> = ({
   }, [handleSubmit, debouncedSubmit, watch]);
 
   const booleanOptions = [
-    { value: "true", label: t("yes") },
-    { value: "false", label: t("no") },
+    { value: "true", label: t("show") },
+    { value: "false", label: t("hide") },
   ];
 
   const FIELDS = [
