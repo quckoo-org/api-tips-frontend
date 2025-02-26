@@ -78,6 +78,11 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
         sortingFn: "alphanumeric",
       },
       {
+        accessorKey: "invoice.guid",
+        header: t("invoice_guid_order"),
+        sortingFn: "basic",
+      },
+      {
         accessorKey: "createdAt",
         header: t("order_created_at"),
         sortingFn: "datetime",
