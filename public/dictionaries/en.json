@@ -260,5 +260,11 @@
   "download_invoice_in_order": "Download invoice",
   "order_pay_type": "Payment type",
   "order_paid_at": "Paid",
-  "invoice_guid_order": "Invoice guid"
+  "invoice_guid_order": "Invoice guid",
+  "invoice_status_unspecified": "Unspecified",
+  "invoice_status_created": "Created",
+  "invoice_status_paid": "Paid",
+  "invoice_status_cancelled": "Cancelled",
+  "invoice_status_unrecognized": "Unrecognized",
+  "enter_invoice_status": "Enter invoice status"
 }

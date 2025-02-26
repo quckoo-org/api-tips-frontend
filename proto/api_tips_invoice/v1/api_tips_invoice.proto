@@ -193,7 +193,7 @@ message Invoice {
    * Статус счёта
    *  - полностью зависит от заказа, на который он создаётся (берётся такой же статус)
    */
-  custom_enums.v1.OrderStatus status = 3;
+  custom_enums.v1.InvoiceStatus status = 3;
 
   /*
    * REF-номер счета
