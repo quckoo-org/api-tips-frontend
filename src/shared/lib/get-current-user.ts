@@ -1,6 +1,6 @@
 import { UserResponse } from "@/shared/stores/AuthStore";
 
-export const useGetCurrentUser = (token: string | undefined): UserResponse => {
+export const getCurrentUser = (token: string | undefined): UserResponse => {
   // decode the logged in user
   function parseJwt(token: string | undefined) {
     if (!token) {

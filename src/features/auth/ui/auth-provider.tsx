@@ -2,8 +2,7 @@
 import { Loader, Text } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useGetCurrentUser } from "@/entities/user";
-import { TokenService } from "@/shared/lib";
+import { getCurrentUser, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES, routesConfig } from "@/shared/router";
 import { authStore } from "@/shared/stores/AuthStore";
@@ -15,7 +14,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | undefined>(
     TokenService.getAccessToken(),
   );
-  const currentUser = useGetCurrentUser(TokenService.getAccessToken());
+  const currentUser = getCurrentUser(TokenService.getAccessToken());
   const [isInitialized, setIsInitialized] = useState(true);
 
   const getPathWithoutLocale = useCallback(() => {

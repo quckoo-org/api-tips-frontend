@@ -3,6 +3,7 @@ import Negotiator from "negotiator";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { rootLogger } from "@/shared/logger/logger";
 import { i18n } from "./config/i18n/i18n-config";
 const decodeJwt = <T = never>(token: string): T | null => {
   try {
@@ -79,7 +80,7 @@ export function checkAuth(
       );
     }
   } catch (error) {
-    console.error("Ошибка при обработке токена: ", error);
+    rootLogger.error("Ошибка при обработке токена: ", error);
     return;
   }
 }

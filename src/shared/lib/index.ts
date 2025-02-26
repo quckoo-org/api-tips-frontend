@@ -14,3 +14,4 @@ export { QUERY_KEYS } from "./query-keys";
 export { ComposeChildren } from "./compose-children";
 export { ROLES } from "./roels";
 export { generateFile } from "./generate-file";
+export { getCurrentUser } from "./get-current-user";
