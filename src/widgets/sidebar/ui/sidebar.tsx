@@ -65,6 +65,11 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           text: t("dashboard"),
           icon: LayoutDashboardIcon,
         },
+        {
+          path: ROUTES.MY_ORDERS,
+          text: t("my_orders"),
+          icon: FileBadge,
+        },
       ],
       [ROLES.ADMIN]: [
         { path: ROUTES.HOME, text: t("home"), icon: IconHome },
