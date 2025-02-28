@@ -33,6 +33,8 @@ export const useCreateInvoice = () => {
           };
         },
       );
+
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CLIENT_ORDERS] });
     },
   });
 };

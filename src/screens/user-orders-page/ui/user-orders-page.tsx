@@ -2,12 +2,16 @@
 
 import { ActionIcon, Button, Text, Title, Tooltip } from "@mantine/core";
 import clsx from "clsx";
-import { FileDown } from "lucide-react";
+import { FileDown, FilePlusIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 import { FC, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { OrderStatusText, useGetOrdersForClient } from "@/entities/order";
 import { useGetTariffs } from "@/entities/tariff";
-import { useDownloadInvoice } from "@/features/manage-invoices";
+import {
+  useCreateInvoiceModal,
+  useDownloadInvoice,
+} from "@/features/manage-invoices";
 
 import { useAddUserOrderModal } from "@/features/manage-user-orders";
 import { OrdersFilters, OrdersFiltersT } from "@/features/order-filters";
@@ -31,6 +35,7 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
   const createModal = useAddUserOrderModal();
   const tariffsQuery = useGetTariffs({});
   const downloadInvoice = useDownloadInvoice();
+  const createInvoiceModal = useCreateInvoiceModal();
 
   const [filtersResult, setFiltersResult] = useState<GetOrdersRequest_Filter>({
     orderStatus: undefined,
@@ -44,6 +49,8 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
         : true,
     );
   }, [filtersResult.orderStatus, ordersQuery.data?.orders]);
+
+  console.log(filteredOrders, "filteredOrders");
 
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
@@ -120,7 +127,7 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
     columns,
     data: filteredOrders ?? [],
     renderRowActions: ({ cell }) =>
-      cell.row.original.invoice?.guid && (
+      cell.row.original.invoice?.guid ? (
         <Tooltip label={t("download_invoice_in_order")}>
           <ActionIcon
             variant={"outline"}
@@ -131,6 +138,20 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
             }
           >
             <FileDown size={20} />
+          </ActionIcon>
+        </Tooltip>
+      ) : (
+        <Tooltip label={t("create_invoice")}>
+          <ActionIcon
+            onClick={() =>
+              createInvoiceModal.addInvoice(
+                cell.row.original.id,
+                () => toast.success(t("invoice_created_successfully")),
+                true,
+              )
+            }
+          >
+            <FilePlusIcon size={20} />
           </ActionIcon>
         </Tooltip>
       ),
@@ -169,6 +190,7 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
         <MantineReactTable table={table} />
       </div>
       {createModal.modal}
+      {createInvoiceModal.modal}
     </ManageUserOrderProvider>
   );
 };

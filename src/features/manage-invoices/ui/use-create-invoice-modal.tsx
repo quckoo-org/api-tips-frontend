@@ -7,10 +7,15 @@ export const useCreateInvoiceModal = () => {
     onSuccess?: () => void;
     onClose: (Invoice?: Invoice) => void;
     orderId?: number;
+    isCustomer?: boolean;
   }>();
 
   const modal = modalProps ? <CreateInvoiceModal {...modalProps} /> : undefined;
-  const addInvoice = (orderId?: number, onSuccess?: () => void) => {
+  const addInvoice = (
+    orderId?: number,
+    onSuccess?: () => void,
+    isCustomer?: boolean,
+  ) => {
     return new Promise<Invoice | undefined>((res) => {
       setModalProps({
         onClose: (Invoice) => {
@@ -19,6 +24,7 @@ export const useCreateInvoiceModal = () => {
         },
         orderId,
         onSuccess,
+        isCustomer,
       });
     });
   };
