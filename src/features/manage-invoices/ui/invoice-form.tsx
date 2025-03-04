@@ -25,6 +25,7 @@ type InvoiceFormProps = {
   isLoading: boolean;
   error?: string;
   orderId?: number;
+  isCustomer?: boolean;
 };
 
 export const InvoiceForm: FC<InvoiceFormProps> = ({
@@ -34,6 +35,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
   isLoading,
   error,
   orderId,
+  isCustomer,
 }) => {
   const { t } = useTranslations();
   const { getAllPaymentsOptions } = useInvoicesPaymentType();
@@ -90,6 +92,7 @@ export const InvoiceForm: FC<InvoiceFormProps> = ({
               {...field}
               searchable
               withAsterisk
+              disabled={isCustomer}
               placeholder={t("select_order_id")}
               label={t("order_id")}
               error={errors.orderId?.message}
