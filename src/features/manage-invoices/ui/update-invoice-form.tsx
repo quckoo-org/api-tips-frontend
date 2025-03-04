@@ -60,10 +60,6 @@ export const UpdateInvoiceForm: FC<InvoiceFormProps> = ({
       value: InvoiceStatus.INVOICE_STATUS_PAID,
       label: t("invoice_status_paid"),
     },
-    {
-      value: InvoiceStatus.INVOICE_STATUS_UNSPECIFIED,
-      label: t("invoice_status_unspecified"),
-    },
   ];
 
   const onSubmit = (data: UpdateInvoiceFormValuesT) => {
