@@ -273,5 +273,6 @@
   "change_user_balance": "Change user balance",
   "update_user_balance": "Update user balance",
   "show": "Show",
-  "hide": "Hide"
+  "hide": "Hide",
+  "bank_details": "Bank details"
 }
