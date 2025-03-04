@@ -4,3 +4,4 @@ export { HideUserButton } from "./ui/hide-user-button";
 
 export { useCreateUserModal } from "./ui/use-create-user-modal";
 export { useUpdateUserModal } from "./ui/use-update-user-modal";
+export { useUpdateUserProfileModal } from "./ui/use-update-user-profile-modal";

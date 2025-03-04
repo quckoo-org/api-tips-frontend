@@ -273,5 +273,12 @@
   "change_user_balance": "Change user balance",
   "update_user_balance": "Update user balance",
   "show": "Show",
-  "hide": "Hide"
+  "hide": "Hide",
+  "manage_profile": "Manage Profile",
+  "account_details": "Account Details",
+  "legal_name": "Legal Name",
+  "country_of_residence": "Country Of Residence",
+  "account_status": "Account Status",
+  "login_&_security": "Login & Security",
+  "update_account_details": "Update account details"
 }
