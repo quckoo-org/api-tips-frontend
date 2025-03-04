@@ -108,11 +108,6 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           text: t("histories"),
           icon: HistoryIcon,
         },
-        {
-          path: ROUTES.MY_ORDERS,
-          text: t("my_orders"),
-          icon: FileBadge,
-        },
       ],
     };
 
