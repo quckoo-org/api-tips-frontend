@@ -49,7 +49,7 @@ service ApiTipsAccessService {
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
 
   /*
-   * Получение пользователя по идентификатору 
+   * Получение пользователя по идентификатору
    */
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
 
@@ -72,6 +72,12 @@ service ApiTipsAccessService {
     option idempotency_level = IDEMPOTENT;
   };
 
+  /*
+   * Обновление токена для получения подсказок
+   */
+  rpc UpdateAccessToken (UpdateAccessTokenRequest) returns (UpdateAccessTokenResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
   rpc ChangeUserPassword (ChangeUserPasswordRequest) returns (ChangeUserPasswordResponse){
     option idempotency_level = IDEMPOTENT;
   };
@@ -347,6 +353,28 @@ message UpdateUserResponse {
    * Пользователь
    */
   User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос на изменение токена для получения подсказок
+ */
+message UpdateAccessTokenRequest {
+
+}
+
+/*
+ * Ответ на изменение токена для запроса
+ */
+message UpdateAccessTokenResponse {
+  /*
+   * Пользователь
+   */
+  DetailedUser user = 1;
 
   /*
    * Мета информация ответа
@@ -821,6 +849,11 @@ message DetailedUser {
    * Общий баланс пользователя
    */
   google.protobuf.Int64Value balance = 2;
+
+  /*
+   * Токен для получения подсказок
+   */
+  google.protobuf.StringValue access_token = 3;
 
 }
 

@@ -79,6 +79,11 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           icon: SquareKanbanIcon,
         },
         {
+          path: ROUTES.DASHBOARD,
+          text: t("dashboard"),
+          icon: LayoutDashboardIcon,
+        },
+        {
           path: ROUTES.USER_REGISTRY,
           text: t("user_registry"),
           icon: IconUsers,
