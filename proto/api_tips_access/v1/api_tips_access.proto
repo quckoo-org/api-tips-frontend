@@ -12,19 +12,20 @@
     - GetUser ( Получение пользователя по идентификатору  )
     - AddUser ( Создание пользователя и присвоение ему ролей )
     - UpdateUser ( Обновление пользователя )
-    
+    - UpdateUserProfile ( Обновление данных в профиле пользователя (имя и код страны) )
+
     - GetRoles ( Получение списка ролей с разрешениями )
     - GetRole ( Получение роли с разрешениями и пермишенами )
     - AddRole ( Создание новой роли и назначение ей разрешений )
     - UpdateRole ( Обновление роли (обновление списка разрешений) )
     - DeleteRole ( Удаление роли )
-    
+
     - GetPermissions ( Получение списка разрешений с методами )
     - GetPermission ( Получение разрешения с методами )
     - AddPermission ( Создание нового разрешения и назначение ему методов )
     - UpdatePermission ( Обновление разрешения (обновление списка методов) )
     - DeletePermission ( Удаление разрешения )
-    
+
     - GetMethods ( Получение списка методов )
     - AddMethod ( Создание нового метода )
     - UpdateMethod ( Обновление существующего метода )
@@ -49,7 +50,7 @@ service ApiTipsAccessService {
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
 
   /*
-   * Получение пользователя по идентификатору 
+   * Получение пользователя по идентификатору
    */
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
 
@@ -72,6 +73,19 @@ service ApiTipsAccessService {
     option idempotency_level = IDEMPOTENT;
   };
 
+  /*
+   * Обновление данных в профиле пользователя (имя и код страны)
+   */
+  rpc UpdateUserProfile (UpdateUserProfileRequest) returns (UpdateUserProfileResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
+
+  /*
+   * Обновление токена для получения подсказок
+   */
+  rpc UpdateAccessToken (UpdateAccessTokenRequest) returns (UpdateAccessTokenResponse){
+    option idempotency_level = IDEMPOTENT;
+  };
   rpc ChangeUserPassword (ChangeUserPasswordRequest) returns (ChangeUserPasswordResponse){
     option idempotency_level = IDEMPOTENT;
   };
@@ -290,7 +304,7 @@ message AddUserResponse {
 }
 
 /*
- * Запрос - создание пользователя
+ * Запрос - обновление пользователя
  */
 message UpdateUserRequest {
   /*
@@ -340,13 +354,70 @@ message UpdateUserRequest {
 }
 
 /*
- * Ответ - создание пользователя
+ * Ответ - обновление пользователя
  */
 message UpdateUserResponse {
   /*
    * Пользователь
    */
   User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос - обновление профиля пользователя
+ */
+message UpdateUserProfileRequest {
+  /*
+   * Имя пользователя
+   */
+  optional string first_name = 1;
+
+  /*
+   * Фамилия пользователя
+   */
+  optional string last_name = 2;
+
+  /*
+   * Код страны пользователя (ISO 3166-1 alpha-3)
+   */
+  optional string cca3 = 3;
+}
+
+/*
+ * Ответ - обновление профиля пользователя
+ */
+message UpdateUserProfileResponse {
+  /*
+   * Пользователь
+   */
+  User user = 1;
+
+  /*
+   * Мета информация ответа
+   */
+  api.tips.general_entities.v1.GeneralResponse response = 10;
+}
+
+/*
+ * Запрос на изменение токена для получения подсказок
+ */
+message UpdateAccessTokenRequest {
+
+}
+
+/*
+ * Ответ на изменение токена для запроса
+ */
+message UpdateAccessTokenResponse {
+  /*
+   * Пользователь
+   */
+  DetailedUser user = 1;
 
   /*
    * Мета информация ответа
@@ -821,6 +892,11 @@ message DetailedUser {
    * Общий баланс пользователя
    */
   google.protobuf.Int64Value balance = 2;
+
+  /*
+   * Токен для получения подсказок
+   */
+  google.protobuf.StringValue access_token = 3;
 
 }
 

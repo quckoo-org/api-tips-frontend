@@ -15,3 +15,9 @@ export interface UserFormValues
   isBlocked: boolean;
   isDeleted: boolean;
 }
+
+export type UserProfileFormValuesT = {
+  cca3: string;
+  firstName: string;
+  lastName: string;
+};
