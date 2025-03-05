@@ -282,5 +282,6 @@
   "login_&_security": "Login & Security",
   "update_account_details": "Update account details",
   "bank_details": "Bank details",
-  "update_in": "Update in "
+  "update_in": "Update in ",
+  "token": "Token"
 }
