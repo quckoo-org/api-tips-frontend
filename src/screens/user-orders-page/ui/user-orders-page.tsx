@@ -50,8 +50,6 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
     );
   }, [filtersResult.orderStatus, ordersQuery.data?.orders]);
 
-  console.log(filteredOrders, "filteredOrders");
-
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
       {
