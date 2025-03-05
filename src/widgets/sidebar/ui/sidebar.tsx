@@ -105,18 +105,13 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
         },
         {
           path: ROUTES.REQUISITES,
-          text: t("requisites"),
+          text: t("bank_details"),
           icon: Landmark,
         },
         {
           path: ROUTES.HISTORIES,
-          text: t("histories"),
+          text: t("history"),
           icon: HistoryIcon,
-        },
-        {
-          path: ROUTES.MY_ORDERS,
-          text: t("my_orders"),
-          icon: FileBadge,
         },
       ],
     };

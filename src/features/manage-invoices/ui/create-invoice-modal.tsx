@@ -17,6 +17,7 @@ type CreateInvoiceModalProps = {
   onClose: (invoice?: Invoice) => void;
   orderId?: number;
   onSuccess?: () => void;
+  isCustomer?: boolean;
 };
 
 export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
@@ -24,6 +25,7 @@ export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
   onClose,
   orderId,
   onSuccess,
+  isCustomer,
 }) => {
   const { t } = useTranslations();
   const addInvoiceMutation = useCreateInvoice();
@@ -57,6 +59,7 @@ export const CreateInvoiceModal: FC<CreateInvoiceModalProps> = ({
         onSuccess={onCreateInvoice}
         error={addInvoiceMutation.error?.description}
         orderId={orderId}
+        isCustomer={isCustomer}
       />
     </Modal>
   );

@@ -23,8 +23,8 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
   const detailedUser = useGetDetailedUsers();
 
   const [dates, setDates] = useState<[Date, Date]>([
-    dayjs().subtract(1, "year").startOf("year").toDate(),
-    dayjs().add(1, "year").endOf("year").toDate(),
+    dayjs().startOf("year").toDate(),
+    dayjs().endOf("year").toDate(),
   ]);
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);

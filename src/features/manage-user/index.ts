@@ -5,4 +5,5 @@ export { UpdateUserTipsToken } from "./ui/update-user-tips-token/update-user-tip
 
 export { useCreateUserModal } from "./ui/use-create-user-modal";
 export { useUpdateUserModal } from "./ui/use-update-user-modal";
+export { useUpdateUserProfileModal } from "./ui/use-update-user-profile-modal";
 export { useUpdateTipsToken } from "./model/use-update-token-tips/use-update-token-tips";
