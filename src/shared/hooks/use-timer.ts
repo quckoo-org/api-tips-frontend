@@ -6,10 +6,10 @@ export const useTimer = (initialTime: number = 0) => {
   // Логика для таймера
   useEffect(() => {
     if (timer > 0) {
-      const timer = setInterval(() => {
+      const intervalId = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
-      return () => clearInterval(timer);
+      return () => clearInterval(intervalId);
     }
   }, [timer]);
 
