@@ -280,5 +280,7 @@
   "country_of_residence": "Country Of Residence",
   "account_status": "Account Status",
   "login_&_security": "Login & Security",
-  "update_account_details": "Update account details"
+  "update_account_details": "Update account details",
+  "bank_details": "Bank details"
+
 }
