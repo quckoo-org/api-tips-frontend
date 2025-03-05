@@ -61,6 +61,11 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
       [ROLES.WebUser]: [
         { path: ROUTES.HOME, text: t("home"), icon: IconHome },
         {
+          path: ROUTES.DASHBOARD,
+          text: t("dashboard"),
+          icon: LayoutDashboardIcon,
+        },
+        {
           path: ROUTES.MY_ORDERS,
           text: t("my_orders"),
           icon: FileBadge,
@@ -72,11 +77,6 @@ export const Sidebar: FC<SidebarProps> = observer(({ className }) => {
           path: ROUTES.ADMINISTRATION,
           text: t("administration"),
           icon: SquareKanbanIcon,
-        },
-        {
-          path: ROUTES.DASHBOARD,
-          text: t("dashboard"),
-          icon: LayoutDashboardIcon,
         },
         {
           path: ROUTES.USER_REGISTRY,
