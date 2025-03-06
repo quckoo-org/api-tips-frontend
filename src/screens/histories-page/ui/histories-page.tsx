@@ -2,7 +2,7 @@
 
 import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useGetDetailedHistories, useGetHistories } from "@/entities/histrory";
 import { useGetUsers } from "@/entities/user";
 import {
@@ -28,21 +28,45 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
   ]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [filterByUser, setFilterByUser] = useState<number | null>(null);
 
   const historiesQuery = useGetHistories({
     startDate: dates[0],
     endDate: dates[1],
+    userId: filterByUser ?? undefined,
   });
   const historiesDetailedQuery = useGetDetailedHistories({
     date: selectedDate,
-    userIds: selectedUsers,
+    userIds: filterByUser ? [filterByUser] : selectedUsers,
+    isRequestedOnly: !!filterByUser,
   });
+
+  const usersSelectData = useMemo(() => {
+    if (!usersQuery.data?.users) return [];
+
+    return usersQuery.data.users.map((user) => ({
+      value: user.id.toString(),
+      label: user.email,
+    }));
+  }, [usersQuery.data]);
 
   const updateUserBalance = useUpdateUserBalanceModal();
   const debitAllTips = useDebitAllTipsModal();
 
-  const onSubmitDateRange = (dates: { dates: [Date, Date] }) => {
-    setDates(dates.dates);
+  const handleChangeFilterByUser = (userId: string | null) => {
+    if (userId === null) {
+      setFilterByUser(null);
+      return;
+    }
+    setFilterByUser(Number(userId));
+  };
+
+  const handleSubmitDateRange = (data: {
+    dates: [Date, Date];
+    userId: string | null;
+  }) => {
+    setDates(data.dates);
+    handleChangeFilterByUser(data.userId);
   };
 
   const handleSelectDate = (date: Date) => {
@@ -66,8 +90,9 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
         </div>
         <HistoryFilters
           className="mb-6"
-          onSubmit={onSubmitDateRange}
+          onSubmit={handleSubmitDateRange}
           result={dates}
+          usersData={usersSelectData}
         />
         <HistoriesTable
           data={historiesQuery.data}
