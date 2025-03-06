@@ -22,7 +22,6 @@ export const useGetDetailedUsers = (
           signal,
         },
       );
-
       return response;
     },
     placeholderData: keepPreviousData,

@@ -23,7 +23,6 @@ import { useGetClientTariffs } from "@/entities/tariff";
 import { fromDecimal, getCurrentUser, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
-import { authStore } from "@/shared/stores/AuthStore";
 import { Button } from "@/shared/ui/button";
 import { FloatingIndicator } from "@/shared/ui/floating-indicator";
 
@@ -40,7 +39,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   const isPhone = useMediaQuery("(max-width: 639px)");
   const user = getCurrentUser(TokenService.getAccessToken());
   const tariffsQuery = useGetClientTariffs();
-  console.log(authStore.user);
   return (
     <>
       <div className={clsx("", className)}>

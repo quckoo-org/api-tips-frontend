@@ -131,6 +131,17 @@
               [
                 "shared",
                 {
+                  "segment": "testing"
+                }
+              ]
+            ],
+            "allow": "index.ts"
+          },
+          {
+            "target": [
+              [
+                "shared",
+                {
                   "segment": "ui"
                 }
               ]
@@ -292,5 +303,18 @@
         ]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/testing/**/*.ts",
+        "**/testing/**/*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    }
+  ]
 }
