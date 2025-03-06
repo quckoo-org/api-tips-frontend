@@ -14,11 +14,13 @@ import { useAddUserOrder } from "../model/use-add-user-order";
 type AddOrderModalProps = {
   className?: string;
   onClose: (order?: Order) => void;
+  tariffId?: number;
 };
 
 export const AddUserOrderModal: FC<AddOrderModalProps> = ({
   className,
   onClose,
+  tariffId,
 }) => {
   const { t } = useTranslations();
   const addOrderMutation = useAddUserOrder();
@@ -36,6 +38,7 @@ export const AddUserOrderModal: FC<AddOrderModalProps> = ({
       className={clsx("", className)}
     >
       <UserOrderForm
+        tariffId={tariffId}
         isLoading={addOrderMutation.isPending}
         onSuccess={onAddOrder}
         error={addOrderMutation.error?.description}

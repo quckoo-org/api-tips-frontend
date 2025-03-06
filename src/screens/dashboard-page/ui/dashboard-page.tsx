@@ -2,6 +2,7 @@
 
 import { Button, Loader, Title } from "@mantine/core";
 import clsx from "clsx";
+import Link from "next/link";
 import { FC, useState } from "react";
 import {
   useGetDetailedHistoriesByUser,
@@ -11,6 +12,7 @@ import { useGetDetailedUsers } from "@/entities/user";
 import { HistoryFilters } from "@/features/history-filters";
 import { dayjs } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
+import { ROUTES } from "@/shared/router";
 import { HistoriesTable } from "@/widgets/histories-table";
 
 type DashboardPageProps = {
@@ -63,7 +65,9 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
             {detailedUser.data?.detailedUser?.balance ?? 0}
           </Title>
         </div>
-        <Button color="dark">{t("top_up_balance")}</Button>
+        <Link href={`${ROUTES.MY_ORDERS}?tariffId=${null}`}>
+          <Button color="dark">{t("top_up_balance")}</Button>
+        </Link>
       </div>
       <HistoryFilters
         className="mb-6"

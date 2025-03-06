@@ -14,6 +14,7 @@ import { AddOrderRequest } from "@/shared/proto/api_tips_order/v1/api_tips_order
 type UserOrderFormProps = {
   className?: string;
   orderId?: number;
+  tariffId?: number;
   onSuccess: (order: Omit<AddOrderRequest, "userId">) => Promise<void>;
   isLoading: boolean;
   error?: string;
@@ -23,6 +24,7 @@ export const UserOrderForm: FC<UserOrderFormProps> = ({
   className,
   onSuccess,
   orderId,
+  tariffId,
   isLoading,
   error,
 }) => {
@@ -36,7 +38,7 @@ export const UserOrderForm: FC<UserOrderFormProps> = ({
     control,
   } = useForm<AddUserOrderFormValuesT>({
     defaultValues: {
-      tariffId: undefined,
+      tariffId: tariffId ? tariffId.toString() : undefined,
     },
     values: {
       tariffId: orderQuery.data?.order?.tariff?.id.toString(),

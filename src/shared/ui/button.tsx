@@ -72,23 +72,24 @@ const getStyles = ({
   };
 };
 
-const Button = React.forwardRef<HTMLButtonElement, MantineButtonProps>(
-  ({ className, size, variant, fullWidth, ...props }, ref) => {
-    const Comp = MantineButton;
-    const classes = getStyles({ size, variant, fullWidth, className });
+const Button = React.forwardRef<
+  HTMLButtonElement,
+  MantineButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, size, variant, fullWidth, ...props }, ref) => {
+  const Comp = MantineButton;
+  const classes = getStyles({ size, variant, fullWidth, className });
 
-    return (
-      <Comp
-        ref={ref}
-        {...props}
-        size={size}
-        variant={variant}
-        fullWidth={fullWidth}
-        classNames={classes}
-      />
-    );
-  },
-);
+  return (
+    <Comp
+      ref={ref}
+      {...props}
+      size={size}
+      variant={variant}
+      fullWidth={fullWidth}
+      classNames={classes}
+    />
+  );
+});
 Button.displayName = "Button";
 
 export { Button };
