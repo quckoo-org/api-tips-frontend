@@ -80,6 +80,11 @@ message GetHistoriesRequest {
    * Дата конца диапазона сбора истории операций
    */
   google.protobuf.Timestamp end_date = 2;
+
+  /*
+   * Идентификатор пользователя
+   */
+  optional int64 user_id = 3;
 }
 
 /*
@@ -110,6 +115,11 @@ message GetDetailedHistoriesRequest {
    * Год и месяц за который нужно получиться детальную информацию для пользователей
    */
   google.protobuf.Timestamp date = 2;
+
+  /*
+   * Флаг получения только детальной информации для пользователей из запроса, исключая информацию по остальным пользователям
+   */
+  optional bool is_requested_only = 3;
 }
 
 /*
@@ -384,9 +394,10 @@ message User {
   optional int64 debited_tips_count = 7;
 
   /*
-  * Баланс пользователя на конец месяца
-  */
+   * Баланс пользователя на конец месяца
+   */
   optional int64 total_tips_balance = 8;
+
   /*
    * Список агрегированной информации по дням
    */
