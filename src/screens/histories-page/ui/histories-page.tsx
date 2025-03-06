@@ -2,7 +2,7 @@
 
 import { Button, Title } from "@mantine/core";
 import clsx from "clsx";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useGetDetailedHistories, useGetHistories } from "@/entities/histrory";
 import { useGetUsers } from "@/entities/user";
 import {
@@ -40,6 +40,15 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
     userIds: filterByUser ? [filterByUser] : selectedUsers,
     isRequestedOnly: !!filterByUser,
   });
+
+  const usersSelectData = useMemo(() => {
+    if (!usersQuery.data?.users) return [];
+
+    return usersQuery.data.users.map((user) => ({
+      value: user.id.toString(),
+      label: user.email,
+    }));
+  }, [usersQuery.data]);
 
   const updateUserBalance = useUpdateUserBalanceModal();
   const debitAllTips = useDebitAllTipsModal();
@@ -83,6 +92,7 @@ export const HistoriesPage: FC<OrdersPageProps> = ({ className }) => {
           className="mb-6"
           onSubmit={handleSubmitDateRange}
           result={dates}
+          usersData={usersSelectData}
         />
         <HistoriesTable
           data={historiesQuery.data}

@@ -1,36 +1,27 @@
 "use client";
 
-import { Select } from "@mantine/core";
+import { ComboboxData, Select } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useGetUsers } from "@/entities/user";
 import { useTranslations } from "@/shared/locale/translations";
 
 type HistoryFiltersProps = {
   className?: string;
   onSubmit: (data: { dates: [Date, Date]; userId: null | string }) => void;
   result: [Date, Date];
+  usersData: ComboboxData;
 };
 
 export const HistoryFilters: FC<HistoryFiltersProps> = ({
   className,
   onSubmit,
   result,
+  usersData,
 }) => {
   const { t } = useTranslations();
-  const usersQuery = useGetUsers({});
-
-  const usersSelectData = useMemo(() => {
-    if (!usersQuery.data?.users) return [];
-
-    return usersQuery.data.users.map((user) => ({
-      value: user.id.toString(),
-      label: user.email,
-    }));
-  }, [usersQuery.data]);
 
   const { handleSubmit, watch, control } = useForm<{
     dates: [Date, Date];
@@ -80,22 +71,24 @@ export const HistoryFilters: FC<HistoryFiltersProps> = ({
             />
           )}
         />
-        <Controller
-          control={control}
-          name="userId"
-          render={({ field }) => (
-            <Select
-              {...field}
-              className="w-64"
-              value={field.value}
-              searchable
-              clearable
-              placeholder={t("select_user")}
-              label={t("user")}
-              data={usersSelectData}
-            />
-          )}
-        />
+        {usersData && (
+          <Controller
+            control={control}
+            name="userId"
+            render={({ field }) => (
+              <Select
+                {...field}
+                className="w-64"
+                value={field.value}
+                searchable
+                clearable
+                placeholder={t("select_user")}
+                label={t("user")}
+                data={usersData}
+              />
+            )}
+          />
+        )}
       </div>
     </form>
   );
