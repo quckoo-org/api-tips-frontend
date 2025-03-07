@@ -4,7 +4,8 @@ import { ActionIcon, Button, Text, Title, Tooltip } from "@mantine/core";
 import clsx from "clsx";
 import { FileDown, FilePlusIcon } from "lucide-react";
 import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
-import { FC, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FC, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { OrderStatusText, useGetOrdersForClient } from "@/entities/order";
 import { useGetTariffs } from "@/entities/tariff";
@@ -32,6 +33,8 @@ type OrdersPageProps = {
 
 export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
   const { t } = useTranslations();
+  const searchParams = useSearchParams();
+  const tariffIdQuery = searchParams.get("tariffId");
   const createModal = useAddUserOrderModal();
   const tariffsQuery = useGetTariffs({});
   const downloadInvoice = useDownloadInvoice();
@@ -49,6 +52,17 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
         : true,
     );
   }, [filtersResult.orderStatus, ordersQuery.data?.orders]);
+
+  const handleSubmitFilters = (data: OrdersFiltersT) => {
+    setFiltersResult(data);
+    table.setPageIndex(0);
+  };
+
+  useEffect(() => {
+    if (tariffIdQuery) {
+      createModal.addOrder(Number(tariffIdQuery));
+    }
+  }, []);
 
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
@@ -163,11 +177,6 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
     },
   });
 
-  const handleSubmitFilters = (data: OrdersFiltersT) => {
-    setFiltersResult(data);
-    table.setPageIndex(0);
-  };
-
   return (
     <ManageUserOrderProvider tariffs={tariffsQuery.data?.tariffs ?? []}>
       <div className={clsx("", className)}>
@@ -175,7 +184,7 @@ export const UserOrdersPage: FC<OrdersPageProps> = ({ className }) => {
           <Title size="h1" className="mb-6">
             {t("my_orders")}
           </Title>
-          <Button size="sm" onClick={createModal.addOrder}>
+          <Button size="sm" onClick={() => createModal.addOrder()}>
             {t("create_order")}
           </Button>
         </div>

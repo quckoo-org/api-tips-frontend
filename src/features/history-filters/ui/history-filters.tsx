@@ -12,7 +12,7 @@ type HistoryFiltersProps = {
   className?: string;
   onSubmit: (data: { dates: [Date, Date]; userId: null | string }) => void;
   result: [Date, Date];
-  usersData: ComboboxData;
+  usersData?: ComboboxData;
 };
 
 export const HistoryFilters: FC<HistoryFiltersProps> = ({

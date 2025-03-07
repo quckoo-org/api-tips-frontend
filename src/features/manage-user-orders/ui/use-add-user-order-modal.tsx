@@ -6,17 +6,19 @@ import { AddUserOrderModal } from "./add-user-order-modal";
 export const useAddUserOrderModal = () => {
   const [modalProps, setModalProps] = useState<{
     onClose: (Order?: Order) => void;
+    tariffId?: number;
   }>();
 
   const modal = modalProps ? <AddUserOrderModal {...modalProps} /> : undefined;
 
-  const addOrder = () => {
+  const addOrder = (tariffId?: number) => {
     return new Promise<Order | undefined>((res) => {
       setModalProps({
         onClose: (Order) => {
           res(Order);
           setModalProps(undefined);
         },
+        tariffId,
       });
     });
   };

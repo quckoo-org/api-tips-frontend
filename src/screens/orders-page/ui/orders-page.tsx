@@ -33,7 +33,7 @@ type OrdersPageProps = {
 
 export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
   const { t } = useTranslations();
-  const createModal = useAddOrderModal();
+  const createOrderModal = useAddOrderModal();
   const cancelOrderMutation = useCancelOrder();
   const paidOrderMutation = usePaidOrder();
   const usersQuery = useGetUsers({});
@@ -52,6 +52,11 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
         : {}),
     },
   });
+
+  const handleSubmitFilters = (data: OrdersFiltersT) => {
+    setFiltersResult(data);
+    table.setPageIndex(0);
+  };
 
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
@@ -184,11 +189,6 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
     },
   });
 
-  const handleSubmitFilters = (data: OrdersFiltersT) => {
-    setFiltersResult(data);
-    table.setPageIndex(0);
-  };
-
   return (
     <MenageOrderProvider
       tariffs={tariffsQuery.data?.tariffs ?? []}
@@ -199,7 +199,7 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
           <Title size="h1" className="mb-6">
             {t("orders")}
           </Title>
-          <Button size="sm" onClick={createModal.addOrder}>
+          <Button size="sm" onClick={createOrderModal.addOrder}>
             {t("create_order")}
           </Button>
         </div>
@@ -211,7 +211,7 @@ export const OrdersPage: FC<OrdersPageProps> = ({ className }) => {
         />
         <MantineReactTable table={table} />
       </div>
-      {createModal.modal}
+      {createOrderModal.modal}
       {createInvoiceModal.modal}
     </MenageOrderProvider>
   );

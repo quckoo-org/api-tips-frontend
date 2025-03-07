@@ -18,9 +18,10 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useGetClientTariffs } from "@/entities/tariff";
-import { fromDecimal, getCurrentUser, TokenService } from "@/shared/lib";
+import { fromDecimal, getCurrentUser, ROLES, TokenService } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 import { Button } from "@/shared/ui/button";
@@ -34,11 +35,22 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
   className,
 }) => {
   const { t } = useTranslations();
+  const router = useRouter();
   const [opened, handlers] = useDisclosure();
   const isMobile = useMediaQuery("(max-width: 1023px)");
   const isPhone = useMediaQuery("(max-width: 639px)");
   const user = getCurrentUser(TokenService.getAccessToken());
   const tariffsQuery = useGetClientTariffs();
+
+  const handleTariffRedirect = (tariffId: number) => {
+    if (!!user && user.roles.includes(ROLES.WebUser)) {
+      console.log(123);
+      router.push(`${ROUTES.MY_ORDERS}?tariffId=${tariffId}`);
+      return;
+    }
+    router.push(ROUTES.LOGIN);
+  };
+
   return (
     <>
       <div className={clsx("", className)}>
@@ -313,6 +325,7 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                           + {tariff.freeTipsCount} requests free
                         </Text>
                         <Button
+                          onClick={() => handleTariffRedirect(tariff.id)}
                           size="lg"
                           variant={
                             tariff.name === "Base" ? "gradient" : "black"
