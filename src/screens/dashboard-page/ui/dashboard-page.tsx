@@ -2,13 +2,14 @@
 
 import { Button, Loader, Title } from "@mantine/core";
 import clsx from "clsx";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import {
   useGetDetailedHistoriesByUser,
   useGetUserHistories,
 } from "@/entities/histrory";
 import { useGetDetailedUsers } from "@/entities/user";
 import { HistoryFilters } from "@/features/history-filters";
+import { UpdateUserTipsToken } from "@/features/manage-user";
 import { dayjs } from "@/shared/lib";
 import { useTranslations } from "@/shared/locale/translations";
 import { HistoriesTable } from "@/widgets/histories-table";
@@ -22,8 +23,8 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
   const detailedUser = useGetDetailedUsers();
 
   const [dates, setDates] = useState<[Date, Date]>([
-    dayjs().subtract(1, "year").startOf("year").toDate(),
-    dayjs().add(1, "year").endOf("year").toDate(),
+    dayjs().startOf("year").toDate(),
+    dayjs().endOf("year").toDate(),
   ]);
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -32,8 +33,6 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
     startDate: dates[0],
     endDate: dates[1],
   });
-
-  console.log(historiesQuery.data, "historiesQuery");
 
   const historiesDetailedQuery = useGetDetailedHistoriesByUser({
     date: selectedDate,
@@ -62,6 +61,7 @@ export const DashboardPage: FC<DashboardPageProps> = ({ className }) => {
           >
             {detailedUser.data?.detailedUser?.balance ?? 0}
           </Title>
+          <UpdateUserTipsToken detailedUser={detailedUser.data?.detailedUser} />
         </div>
         <Button color="dark">{t("top_up_balance")}</Button>
       </div>
