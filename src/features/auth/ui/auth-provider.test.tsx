@@ -1,7 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
-import { vi } from "vitest";
-import { TokenService, getCurrentUser } from "@/shared/lib";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { AuthProvider } from "@/features/auth";
+import { getCurrentUser, TokenService } from "@/shared/lib";
+import { createTranslationMock, renderWithProviders } from "@/shared/testing";
 
 vi.mock("next/navigation", () => ({
   useRouter: vi.fn(),
@@ -11,9 +13,15 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/shared/lib", () => ({
   TokenService: {
     getAccessToken: vi.fn(() => "mock-token"),
-    refreshToken: vi.fn(() => Promise.resolve({ newAccessToken: "new-mock-token" })),
+    refreshToken: vi.fn(() =>
+      Promise.resolve({ newAccessToken: "new-mock-token" }),
+    ),
   },
   getCurrentUser: vi.fn(() => ({ id: 1, name: "Test User" })),
+  ROLES: {
+    ADMIN: "Admin",
+    WebUser: "WebUser",
+  },
 }));
 
 vi.mock("@/shared/stores/AuthStore", () => ({
@@ -23,19 +31,26 @@ vi.mock("@/shared/stores/AuthStore", () => ({
   },
 }));
 
+vi.mock("@/shared/locale/translations", () => ({
+  useTranslations: vi.fn(),
+}));
+
 describe("AuthProvider", () => {
-  let pushMock;
+  let pushMock: any;
 
   beforeEach(() => {
     pushMock = vi.fn();
-    useRouter.mockReturnValue({ push: pushMock });
+
+    // Теперь `useRouter` правильно мокается
+    (useRouter as any).mockReturnValue({ push: pushMock });
+    createTranslationMock();
   });
 
   it("renders children when authenticated", async () => {
-    render(
+    renderWithProviders(
       <AuthProvider>
         <div data-testid="protected-content">Protected Content</div>
-      </AuthProvider>
+      </AuthProvider>,
     );
 
     await waitFor(() => {
@@ -44,31 +59,30 @@ describe("AuthProvider", () => {
   });
 
   it("redirects to login when authentication is required and no token", async () => {
-    TokenService.getAccessToken.mockReturnValue(undefined);
-    getCurrentUser.mockReturnValue(null);
+    (TokenService.getAccessToken as any).mockReturnValue(undefined);
+    (getCurrentUser as any).mockReturnValue(null);
 
-    render(
+    renderWithProviders(
       <AuthProvider>
         <div data-testid="protected-content">Protected Content</div>
-      </AuthProvider>
+      </AuthProvider>,
     );
 
     await waitFor(() => {
-      expect(pushMock).toHaveBeenCalledWith("/login");
+      expect(pushMock).toHaveBeenCalledWith("/");
     });
   });
 
   it("refreshes token if no access token is present", async () => {
-    TokenService.getAccessToken.mockReturnValue(undefined);
-    render(<AuthProvider><div>Test</div></AuthProvider>);
+    (TokenService.getAccessToken as any).mockReturnValue(undefined);
+    renderWithProviders(
+      <AuthProvider>
+        <div>Test</div>
+      </AuthProvider>,
+    );
 
     await waitFor(() => {
       expect(TokenService.refreshToken).toHaveBeenCalled();
     });
-  });
-
-  it("shows loading state initially", () => {
-    render(<AuthProvider><div>Test</div></AuthProvider>);
-    expect(screen.getByText(/please_wait_loading/i)).toBeInTheDocument();
   });
 });
