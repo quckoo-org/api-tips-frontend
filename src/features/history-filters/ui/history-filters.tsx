@@ -1,5 +1,6 @@
 "use client";
 
+import { ComboboxData, Select } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDebouncedCallback } from "@mantine/hooks";
 import clsx from "clsx";
@@ -9,28 +10,37 @@ import { useTranslations } from "@/shared/locale/translations";
 
 type HistoryFiltersProps = {
   className?: string;
-  onSubmit: (data: { dates: [Date, Date] }) => void;
+  onSubmit: (data: { dates: [Date, Date]; userId: null | string }) => void;
   result: [Date, Date];
+  usersData?: ComboboxData;
 };
 
 export const HistoryFilters: FC<HistoryFiltersProps> = ({
   className,
   onSubmit,
   result,
+  usersData,
 }) => {
   const { t } = useTranslations();
-  const { handleSubmit, watch, control } = useForm<{ dates: [Date, Date] }>({
-    defaultValues: { dates: result },
+
+  const { handleSubmit, watch, control } = useForm<{
+    dates: [Date, Date];
+    userId: string | null;
+  }>({
+    defaultValues: { dates: result, userId: null },
   });
 
   const debouncedSubmit = useDebouncedCallback(
-    (data: { dates: [Date, Date] }) => {
+    (data: { dates: [Date, Date]; userId: string | null }) => {
       onSubmit(data);
     },
     300,
   );
 
-  const handleSubmitForm = (data: { dates: [Date, Date] }) => {
+  const handleSubmitForm = (data: {
+    dates: [Date, Date];
+    userId: null | string;
+  }) => {
     debouncedSubmit(data);
   };
 
@@ -61,6 +71,24 @@ export const HistoryFilters: FC<HistoryFiltersProps> = ({
             />
           )}
         />
+        {usersData && (
+          <Controller
+            control={control}
+            name="userId"
+            render={({ field }) => (
+              <Select
+                {...field}
+                className="w-64"
+                value={field.value}
+                searchable
+                clearable
+                placeholder={t("select_user")}
+                label={t("user")}
+                data={usersData}
+              />
+            )}
+          />
+        )}
       </div>
     </form>
   );

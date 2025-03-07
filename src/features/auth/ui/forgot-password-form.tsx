@@ -3,17 +3,18 @@
 import { TextInput, Button, Card, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { usePasswordRecovery } from "@/features/auth";
 import { RecoveryPasswordReqT } from "@/features/auth/model/types";
+import { useTimer } from "@/shared/hooks";
 import { useTranslations } from "@/shared/locale/translations";
 import { ROUTES } from "@/shared/router";
 
 export const ForgotPasswordForm = () => {
   const { t } = useTranslations();
   const searchParams = useSearchParams();
-  const [resendCooldown, setResendCooldown] = useState<number>(0); // Таймер повторной отправки
+  const { timer: resendCooldown, setTimer: setResendCooldown } = useTimer();
 
   const { register, handleSubmit } = useForm<RecoveryPasswordReqT>({
     defaultValues: {
@@ -28,16 +29,6 @@ export const ForgotPasswordForm = () => {
 
     setResendCooldown(60);
   };
-
-  // Логика для таймера
-  useEffect(() => {
-    if (resendCooldown > 0) {
-      const timer = setInterval(() => {
-        setResendCooldown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [resendCooldown]);
 
   return (
     <Card

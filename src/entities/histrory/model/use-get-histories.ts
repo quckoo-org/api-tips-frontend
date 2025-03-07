@@ -39,7 +39,7 @@ export const useGetDetailedHistories = (req: GetDetailedHistoriesRequest) => {
 
       return response;
     },
-    enabled: req.userIds.length > 0,
+    enabled: req.userIds.length > 0 && !!req.date,
   });
 
   useEffect(() => {

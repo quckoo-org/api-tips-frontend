@@ -17,4 +17,5 @@ export const QUERY_KEYS = {
   HISTORIES: "histories",
   HISTORIES_BY_USER: "histories_by_user",
   DETAILED_HISTORIES: "detailed_histories",
+  TIPS_TOKEN: "tips_token",
 };

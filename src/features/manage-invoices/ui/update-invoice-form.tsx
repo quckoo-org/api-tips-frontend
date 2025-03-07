@@ -31,8 +31,6 @@ export const UpdateInvoiceForm: FC<InvoiceFormProps> = ({
   isLoading,
   error,
 }) => {
-  console.log(invoice, "invoice");
-
   const { t } = useTranslations();
   const {
     handleSubmit,

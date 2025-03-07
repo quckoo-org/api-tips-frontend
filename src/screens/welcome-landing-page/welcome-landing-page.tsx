@@ -324,7 +324,6 @@ export const WelcomeLandingPage: FC<WelcomeLandingPageProps> = ({
                         <Text size={"xl"}>
                           + {tariff.freeTipsCount} requests free
                         </Text>
-
                         <Button
                           onClick={() => handleTariffRedirect(tariff.id)}
                           size="lg"
