@@ -1,9 +1,100 @@
 ### Api Tips [FrontEnd] ###
 
-#### Harbor registry repo (images & helm charts) ####
+**Api Tips Frontend** — это фронтенд-часть продукта для продажи подсказок.
+#### Структура проекта ####
 
-- [Application url](dev.api-tips.quckoo.net)  [beta version]
+Проект использует архитектуру Feature-Sliced Design (FSD). Подробнее ознакомиться с принципами FSD можно в официальной документации: [Feature-Sliced Design](https://feature-sliced.design/).
+
+Проект включает следующие ключевые директории и файлы:
+
+- **.github/**: файлы и настройки GitHub Actions.
+- **.helm/**: конфигурации для Helm.
+- **.husky/**: хуки для Git.
+- **app/**: исходный код приложения.
+- **config/**: конфигурационные файлы.
+- **envoy/**: конфигурации для Envoy.
+- **proto/**: файлы протоколов.
+- **public/**: публичные статические файлы.
+- **src/**: исходный код фронтенда.
+- **Dockerfile**: инструкция для сборки Docker-образа.
+- **package.json**: зависимости и скрипты для Node.js.
+- **tsconfig.json**: конфигурация TypeScript.
+- **yarn.lock**: файл блокировки зависимостей Yarn.
+
+#### Установка и запуск ####
+
+##### Конфигурация окружения #####
+
+Перед запуском создайте файл `.env` в корневой директории проекта и добавьте в него следующие переменные:
+
 ```sh
-curl dev.api-tips.quckoo.net
+NEXT_PUBLIC_API_URL
 ```
-- [Harbor registry](registry.quckoo.net/api-tips/) [images & helm charts]
+
+Для локального запуска проекта выполните следующие шаги:
+
+1. **Клонируйте репозиторий:**
+
+   ```sh
+   git clone https://github.com/quckoo-org/api-tips-frontend.git
+   ```
+
+2. **Перейдите в директорию проекта:**
+
+   ```sh
+   cd api-tips-frontend
+   ```
+
+3. **Установите зависимости:**
+
+   ```sh
+   yarn install
+   ```
+
+4. **Запустите приложение:**
+
+   ```sh
+   yarn dev
+   ```
+
+   Приложение будет доступно по адресу `http://localhost:3000`.
+
+#### Сборка Docker-образа ####
+
+1. **Соберите образ:**
+
+   ```sh
+   docker build -t api-tips-frontend .
+   ```
+
+2. **Запустите контейнер:**
+
+   ```sh
+   docker run -p 3000:3000 api-tips-frontend
+   ```
+
+   Приложение будет доступно по адресу `http://localhost:3000`.
+
+#### Деплоймент ####
+
+Проект поддерживает деплоймент с использованием Helm.
+
+1. **Установите зависимости:**
+
+   ```sh
+   helm dependency update ./helm/chart
+   ```
+
+2. **Установите релиз:**
+
+   ```sh
+   helm install api-tips-frontend ./helm/chart
+   ```
+
+#### Тестирование ####
+
+Для запуска тестов выполните:
+
+```sh
+yarn test
+```
