@@ -45,11 +45,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return false;
       }
 
-      // TODO CHECK IS ADMIN
-      // if (route.isAdmin && (!currentUser.data || !currentUser.data.user)) {
-      //   router.push(ROUTES.FORBIDDEN);
-      //   return false;
-      // }
       setIsInitialized(true);
       return true;
     },
